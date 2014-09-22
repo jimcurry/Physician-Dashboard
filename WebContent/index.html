@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:ng="http://angularjs.org" id="ng-app" ng-app="dashboardApp" lang="en">
+	<head>
+		<meta charset="ISO-8859-1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<link rel="icon" href="../../favicon.ico">
+
+		<title>Premier Dashboard</title>
+
+		<!--[if lt IE 9]>
+			<script>
+				document.createElement('abn-tree');
+				document.createElement('ng-include');
+				document.createElement('ng-pluralize');
+				document.createElement('ng-view');
+
+				// Optionally these for CSS
+				document.createElement('ng:include');
+				document.createElement('ng:pluralize');
+				document.createElement('ng:view');
+			</script>
+		<![endif]-->
+
+		<!-- xdomain -->
+  		<script src="./lib/xdomain.js"></script>
+  		<script>
+    		xdomain.slaves({
+      			"http://C3dupceapr1.premierinc.com:9010": "/assets/proxy.html",
+      			"https://c3duhcogapp1.premierinc.com:9444": "/ServletGateway/proxy.html"
+    		});
+  		</script>
+
+		<!--  JS Libraries -->
+		<!-- AngularJS -->
+	   <script src="./lib/angular.js"></script>
+		<!-- x2js XML to JSON and vice versa conversion -->
+	   <script src="./lib/xml2json.min.js"></script>
+		<!--  ngDialog -->
+    	<script src="./lib/ngDialog.js"></script>
+
+    	<script src="./dashboardApp.js"></script>
+    	
+    	<!--  Factories -->
+    	<script src="./factories/userService.js"></script>
+
+    	<!--  Controllers -->
+    	<script src="./controllers/dashboardController.js"></script>
+    	<script src="./controllers/loginController.js"></script>
+    	
+		<!--  Style Sheets -->
+		<!-- Bootstrap core CSS -->
+		<link href="./css/bootstrap.css" rel="stylesheet">
+		<link href="./css/bootstrap-theme.css" rel="stylesheet">
+
+		<!-- ngDialog Style Sheets -->
+		<link href="./css/ngDialog.css" rel="stylesheet">
+		<link href="./css/ngDialog-theme-default.css" rel="stylesheet">
+		<link href="./css/ngDialog-theme-plain.css" rel="stylesheet"> 
+
+    	<!--[if lt IE 9]>
+ 			<script src="./lib/respond.min.js"></script>
+		<![endif]-->
+		<!--[if lt IE 8]>
+ 			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+		
+	</head>
+
+	<body ng-controller="dashboardController">
+		<p> Index Page
+		<P> {{user.userName}}
+	</body>
+</html>
