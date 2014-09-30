@@ -8,7 +8,8 @@ dashboardApp.factory("UserService", function($http, $q, CognosMashupURL, CognosN
 		userFirstName : null,
 		userLastName : null,
 		password : null,
-		loginResult : null
+		loginResult : null,
+		isInitialized : false
 		};
 
 function login() {
@@ -42,16 +43,28 @@ function login() {
 	return deferred.promise;
  }
 
-	function initialize() {
-		console.log('initialize userService');
+function initialize() {
+	var deferred = $q.defer();
 
+	console.log('initialize userService');
+
+	if (user.isInitialized) {
+		console.log('Already Initialized');
+		deferred.resolve('Already Initialized');
+	}
+
+	else {
 		getUserInfoFromCognos().then(function(message) {
 			console.log('Got user information, first try');
+			user.isInitialized = true;
+			deferred.resolve('Got user information, first try');
 
 		}, function(message) {
 			if (message == 'Unknow failure') {
 				console.log('Unknow failure getting user info');
-			} else { // Not Logged On
+				deferred.resolve('Unknow failure getting user info');
+			}
+			else { // Not Logged On
 				console.log('Not Logged On');
 
 				login().then(function(message) {
@@ -59,18 +72,26 @@ function login() {
 						console.log('Login worked, try and get user info again.');
 						getUserInfoFromCognos().then(function(message) {
 							console.log('Second try in getting user info woked, we are done.');
+							user.isInitialized = true;
+							deferred.resolve('Second try in getting user info woked, we are done.');
 						}, function(message) {
 							console.log('Second try in getting user info failed, we are done.');
+							deferred.resolve('Second try in getting user info failed, we are done');
 						});
 
-					} else {
+					}
+					else {
 						console.log('Login errored, but in a nice way, we are done.');
+						deferred.resolve('Login errored, but in a nice way, we are done.');
 					}
 				}, function(message) {
 					console.log('Login errored, we are done.');
+					deferred.resolve('Login errored, we are done.');
 				});
 			}
 		});
+	}
+	return deferred.promise;
 }
 
 function getUserInfoFromCognos() {
@@ -88,7 +109,7 @@ function getUserInfoFromCognos() {
 		
 		user.userName = jsonObj.dataSet.dataTable.row.userName;
 		user.userFirstName = jsonObj.dataSet.dataTable.row.givenName;
-		user.useLastName = jsonObj.dataSet.dataTable.row.surname;
+		user.userLastName = jsonObj.dataSet.dataTable.row.surname;
 		
 		var result = 'User Info Populated';
 

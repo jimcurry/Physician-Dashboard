@@ -40,15 +40,25 @@
 	   <script src="./lib/xml2json.min.js"></script>
 		<!--  ngDialog -->
     	<script src="./lib/ngDialog.js"></script>
+		<!--  ui-router -->
+    	<script src="./lib/angular-ui-router.js"></script>
+		<!--  ui-bootstrapr -->
+    	<script src="./lib/ui-bootstrap-tpls-0.11.2.min.js"></script>
 
     	<script src="./dashboardApp.js"></script>
     	
     	<!--  Factories -->
     	<script src="./factories/userService.js"></script>
+    	<script src="./factories/ReportingPeriodService.js"></script>
 
     	<!--  Controllers -->
     	<script src="./controllers/dashboardController.js"></script>
     	<script src="./controllers/loginController.js"></script>
+    	<script src="./controllers/view1Controller.js"></script>
+    	<script src="./controllers/view2Controller.js"></script>
+     	<script src="./controllers/defaultController.js"></script>
+     	<script src="./controllers/snippetsController.js"></script>
+    	
     	
 		<!--  Style Sheets -->
 		<!-- Bootstrap core CSS -->
@@ -70,7 +80,24 @@
 	</head>
 
 	<body ng-controller="dashboardController">
-		<p> Index Page
-		<P> {{user.userName}}
-	</body>
+	<p>Index Page
+	
+	
+	<P>{{user.userFirstName}} {{user.userLastName}}
+	
+	<div class="row-fluid">
+		<div class="col-md-12">
+			<hr>
+		</div>
+	</div>
+	<div ui-view>
+		<i>Place holder</i>
+	</div>
+	<div class="row-fluid">
+		<div class="col-md-12">
+			<hr>
+		</div>
+	</div>
+
+</body>
 </html>
