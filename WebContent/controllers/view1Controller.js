@@ -1,8 +1,8 @@
 var dashboardApp = angular.module("dashboardApp");
 
-dashboardApp.controller("view1Controller", function($scope, $http, $state, $stateParams, $location, UserService, CognosMashupURL, CognosNamespace) {
+dashboardApp.controller("view1Controller", function($scope, $http, $state, $stateParams, $location, userService, CognosMashupURL, CognosNamespace) {
 
-	$scope.user = UserService.user;
+	$scope.user = userService.user;
 	
 	$scope.parm1 = $stateParams.parm1;
 	

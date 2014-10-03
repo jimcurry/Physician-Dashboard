@@ -1,21 +1,21 @@
 var dashboardApp = angular.module("dashboardApp");
 
-dashboardApp.controller("loginController", function($scope, $http, UserService, CognosMashupURL, CognosNamespace) {
+dashboardApp.controller("loginController", function($scope, $http, userService, CognosMashupURL, CognosNamespace) {
 
-	$scope.user = UserService.user;
+	$scope.user = userService.user;
 	
 	var errors = [];
 	
-	UserService.user.loginResult = "User Cancelled";
+	userService.user.loginResult = "User Cancelled";
 	
 	$scope.OK = function() {
 		errors = [];
 		
-		if (!UserService.user.userNameToTry) {
+		if (!userService.user.userNameToTry) {
 			errors.push('User ID is missing.');
 		}
 		
-		if (!UserService.user.password) {
+		if (!userService.user.password) {
 			errors.push('Password is missing.');
 		}
 		$scope.errors = errors;
@@ -25,10 +25,10 @@ dashboardApp.controller("loginController", function($scope, $http, UserService, 
 			+ "<label>Namespace:</label><value><actualValue>" + CognosNamespace
 			+ "</actualValue></value></credentialElements>"
 			+ "<credentialElements><name>CAMUsername</name>"
-			+ "<label>User ID:</label><value><actualValue>" + UserService.user.userNameToTry
+			+ "<label>User ID:</label><value><actualValue>" + userService.user.userNameToTry
 			+ "</actualValue></value></credentialElements>"
 			+ "<credentialElements><name>CAMPassword</name>"
-			+ "<label>Password:</label><value><actualValue>" + UserService.user.password
+			+ "<label>Password:</label><value><actualValue>" + userService.user.password
 			+ "</actualValue></value></credentialElements></credentials>";
 		
 		var url = CognosMashupURL + method + parameter;
@@ -39,9 +39,9 @@ dashboardApp.controller("loginController", function($scope, $http, UserService, 
 
 			if (jsonObj.accountInfo) {
 				result = "OK";
-				UserService.user.userNameToTry = null;
-				UserService.user.password = null;
-				UserService.user.loginResult = "OK";
+				userService.user.userNameToTry = null;
+				userService.user.password = null;
+				userService.user.loginResult = "OK";
 				$scope.$parent.closeThisDialog();
 			}
 			else {

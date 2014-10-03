@@ -33,11 +33,14 @@ dashboardApp.config(function($stateProvider, $urlRouterProvider) {
 		url : "/default",
 		templateUrl : "./views/default.html",
 		resolve : {
-			UserService : function(UserService) {
-				return UserService.initialize();
+			userService : function(userService) {
+				return userService.initialize();
 			},
-			ReportingPeriodService : function(ReportingPeriodService) {
-				return ReportingPeriodService.initialize();
+			reportingPeriodService : function(reportingPeriodService) {
+				return reportingPeriodService.initialize();
+			},
+			networkHierarchyService : function(userService, networkHierarchyService) {
+				return networkHierarchyService.initialize();
 			}
 		},
 		controller : "defaultController"

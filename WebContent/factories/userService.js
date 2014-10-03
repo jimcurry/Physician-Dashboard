@@ -1,6 +1,6 @@
 var dashboardApp = angular.module("dashboardApp");
 
-dashboardApp.factory("UserService", function($http, $q, CognosMashupURL, CognosNamespace, ngDialog) {
+dashboardApp.factory("userService", function($http, $q, CognosMashupURL, CognosNamespace, DropwizardURL, ngDialog) {
 
 	var user = {
 		userName : null,
@@ -9,6 +9,9 @@ dashboardApp.factory("UserService", function($http, $q, CognosMashupURL, CognosN
 		userLastName : null,
 		password : null,
 		loginResult : null,
+		healthNetworkName : null,
+		applicationRoleCode : null,
+		settings : null,
 		isInitialized : false
 		};
 
@@ -53,46 +56,54 @@ function initialize() {
 		deferred.resolve('Already Initialized');
 	}
 
-	else {
-		getUserInfoFromCognos().then(function(message) {
-			console.log('Got user information, first try');
-			user.isInitialized = true;
-			deferred.resolve('Got user information, first try');
-
-		}, function(message) {
-			if (message == 'Unknow failure') {
-				console.log('Unknow failure getting user info');
-				deferred.resolve('Unknow failure getting user info');
-			}
-			else { // Not Logged On
-				console.log('Not Logged On');
-
-				login().then(function(message) {
-					if (message == 'OK') {
-						console.log('Login worked, try and get user info again.');
-						getUserInfoFromCognos().then(function(message) {
-							console.log('Second try in getting user info woked, we are done.');
-							user.isInitialized = true;
-							deferred.resolve('Second try in getting user info woked, we are done.');
-						}, function(message) {
-							console.log('Second try in getting user info failed, we are done.');
-							deferred.resolve('Second try in getting user info failed, we are done');
-						});
-
-					}
-					else {
-						console.log('Login errored, but in a nice way, we are done.');
-						deferred.resolve('Login errored, but in a nice way, we are done.');
-					}
+		else {
+			getUserInfoFromCognos().then(function(message) {
+				console.log('Got user information, first try');
+				getUserInfoFromDropWizard().then(function(message) {
+					user.isInitialized = true;
+					deferred.resolve('Got user information');
 				}, function(message) {
-					console.log('Login errored, we are done.');
-					deferred.resolve('Login errored, we are done.');
+					deferred.resolve('Could not get user info from dropwizard, we are done.');
 				});
-			}
-		});
+
+			}, function(message) {
+				if (message == 'Unknow failure') {
+					console.log('Unknow failure getting user info');
+					deferred.resolve('Unknow failure getting user info');
+				}
+				else { // Not Logged On
+					console.log('Not Logged On');
+
+					login().then(function(message) {
+						if (message == 'OK') {
+							console.log('Login worked, try and get user info again.');
+							getUserInfoFromCognos().then(function(message) {
+								console.log('Second try in getting user info woked, we are done.');
+								getUserInfoFromDropWizard().then(function(message) {
+									user.isInitialized = true;
+									deferred.resolve('Got user information');
+								}, function(message) {
+									deferred.resolve('Could not get user info from dropwizard, we are done.');
+								});
+							}, function(message) {
+								console.log('Second try in getting user info failed, we are done.');
+								deferred.resolve('Second try in getting user info failed, we are done');
+							});
+
+						}
+						else {
+							console.log('Login errored, but in a nice way, we are done.');
+							deferred.resolve('Login errored, but in a nice way, we are done.');
+						}
+					}, function(message) {
+						console.log('Login errored, we are done.');
+						deferred.resolve('Login errored, we are done.');
+					});
+				}
+			});
+		}
+		return deferred.promise;
 	}
-	return deferred.promise;
-}
 
 function getUserInfoFromCognos() {
 	var deferred = $q.defer();
@@ -123,6 +134,24 @@ function getUserInfoFromCognos() {
 		}
 	});
 	
+	return deferred.promise;
+}
+
+function getUserInfoFromDropWizard() {
+	var deferred = $q.defer();
+	if (user.healthNetworkName) {
+		deferred.resolve('Already Initialized');
+	}
+	else {
+		$http.get(DropwizardURL + "/user?userName=" + user.userName).success(function(data) {
+			user.healthNetworkName = data.healthNetworkName;
+			user.applicationRoleCode = data.applicationRoleCode;
+			user.settings = data.settings;
+			deferred.resolve('Initialized');
+		}).error(function(data, status) {
+			deferred.reject('failed -' + status);
+		});
+	}
 	return deferred.promise;
 }
 

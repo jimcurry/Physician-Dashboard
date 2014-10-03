@@ -1,16 +1,16 @@
 var dashboardApp = angular.module("dashboardApp");
 
-dashboardApp.factory("ReportingPeriodService", function($http, $q, DropwizardURL) {
+dashboardApp.factory("reportingPeriodService", function($http, $q, DropwizardURL) {
 	var reportingPeriod = {
 		data : null,
 		selectedItem : null
 	};
 
 	function initialize() {
-		console.log('Initialize ReportingPeriodService');
+		console.log('Initialize reportingPeriodService');
 		var deferred = $q.defer();
 		if (reportingPeriod.data) {
-			console.log('ReportingPeriodService Already Initialized');
+			console.log('reportingPeriodService Already Initialized');
 			deferred.resolve('Already Initialized');
 		}
 		else {
