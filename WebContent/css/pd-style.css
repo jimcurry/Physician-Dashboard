@@ -1,0 +1,188 @@
+@CHARSET "ISO-8859-1";
+
+body {
+  padding-top: 0px; /* 40px to make the container go all the way to the bottom of the topbar */
+}
+
+.container-fluid.fixed-230 {
+	height:           230px;
+	overflow:         auto;
+}
+
+.container-fluid.fixed-313 {
+	height:           313px;
+}
+
+.container-fluid.bg-black {
+	background-color: Black;
+	margin:           5px;
+	padding:          5px;
+}
+
+.container-fluid.bg-blue {
+	background-color: rgb(16,107,189);
+	padding:          5px;
+	height:           100%;
+}
+
+.container-fluid.bg-gray-gradient {
+	background:       linear-gradient(LightGray, White);
+	padding:          5px;
+}
+
+.container-fluid.bg-white {
+	background-color: White;
+	margin:           5px;
+	padding:          5px;
+}
+
+.container-fluid.no-margin {
+	margin:           0px;
+}
+
+.container-fluid.gray-border {
+	border: 1px solid #ddd;
+	border-top: 0px;
+}
+
+.container-fluid.bg-lightgray {
+	background-color:   LightGray;
+	margin:             5px;
+	padding:            5px;
+	height:             100%;
+}
+
+.container-fluid.no-padding {
+	padding:           0px;
+}
+
+.container-fluid.bg-darkgray {
+	color:            white;
+	background-color: rgb(99,99,99);
+	margin:           5px;
+	padding:          5px;
+	height:           100%;
+}
+
+.container-fluid.bg-midnightblue {
+	background-color: MidnightBlue;
+	margin:           5px;
+	padding:          5px;
+}
+
+.container-fluid.blackshadow{
+    -moz-box-shadow: 0 0 2px black;
+    -webkit-box-shadow: 0 0 2px black;
+    box-shadow: 0 0 2px black;
+}
+
+.container-fluid.blueshadow{
+    -moz-box-shadow: 0 0 2px black;
+    -webkit-box-shadow: 0 0 2px black;
+    box-shadow: 0 0 2px black;
+    -moz-box-shadow:    0 0 2px rgb(16,107,189);
+    -webkit-box-shadow: 0 0 2px rgb(16,107,189);
+    box-shadow:         0 0 2px rgb(16,107,189);
+}
+
+.col-md-1.no-padding {
+	padding: 0;
+}
+
+.col-md-2.no-padding {
+	padding: 0;
+}
+
+.col-md-3.no-padding {
+	padding: 0;
+}
+
+.col-md-4.no-padding {
+	padding: 0;
+}
+
+.col-md-5.no-padding {
+	padding: 0;
+}
+
+.col-md-6.no-padding {
+	padding: 0;
+}
+
+.col-md-7.no-padding {
+	padding: 0;
+}
+
+.col-md-8.no-padding {
+	padding: 0;
+}
+
+.col-md-9.no-padding {
+	padding: 0;
+}
+
+.col-md-10.no-padding {
+	padding: 0;
+}
+
+.col-md-11.no-padding {
+	padding: 0;
+}
+
+.col-md-12.no-padding {
+	padding: 0;
+}
+
+.vcenter {
+	display: inline-block;
+	vertical-align: middle;
+	float:  none;
+}
+
+.btn-custom-darkgray-borderless {
+  color:        White;
+  background:   rgb(99,99,99);
+  border-color: rgb(99,99,99);
+}
+
+
+
+
+
+
+/* The white background content wrapper */
+.content {
+  background-color: #fff;
+  padding: 20px;
+  margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
+  -webkit-border-radius: 0 0 6px 6px;
+     -moz-border-radius: 0 0 6px 6px;
+          border-radius: 0 0 6px 6px;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+     -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+          box-shadow: 0 1px 2px rgba(0,0,0,.15);
+}
+
+/* Page header tweaks */
+.page-header {
+  background-color: #f5f5f5;
+  padding: 20px 20px 10px;
+  margin: -20px -20px 20px;
+}
+
+/* Styles you shouldn't keep as they are for displaying this base example only */
+.content .span10,
+.content .span4 {
+  min-height: 500px;
+}
+
+/* Give a quick and non-cross-browser friendly divider */
+.content .span4 {
+  margin-left: 0;
+  padding-left: 19px;
+  border-left: 1px solid #eee;
+}
+
+.topbar .btn {
+  border: 0;
+}

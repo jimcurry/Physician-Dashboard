@@ -71,6 +71,9 @@
 		<link href="./css/ngDialog-theme-default.css" rel="stylesheet">
 		<link href="./css/ngDialog-theme-plain.css" rel="stylesheet"> 
 
+		<!-- Custom / overridden styles for this template -->
+		<link href="./css/pd-style.css" rel="stylesheet">
+
     	<!--[if lt IE 9]>
  			<script src="./lib/respond.min.js"></script>
 		<![endif]-->
@@ -81,15 +84,44 @@
 	</head>
 
 	<body ng-controller="dashboardController">
-	<p>Index Page
+		<div class="row-fluid">
+			<div class="container-fluid no-margin bg-gray-gradient blueshadow">
+				<div class="col-md-4 no-padding">
+					<div style="padding-left:5px;"><img src="./images/premier_connect_logo.png" /></div>
+				</div>
+				<div class="col-md-4">
+					<h4>ACO Performance: <small>PIONEER PROGRAM</small></h4>
+				</div>
+				<div class="col-md-4">
+					<h5 align="right">{{user.userFirstName}} {{user.userLastName}}</h5>
+				</div>
+			</div>
+		</div>
+		<div class="row-fluid">
+			<div class="container-fluid bg-blue">
+				<span style="padding-left:5px; color:white;"><a><font color="#FFFFFF">Home</font></a> > <a><font color="#FFFFFF">ACO Performance: Pioneer Program</font></a> > <a><font color="#FFFFFF">{{network.selectedHierarchyNode.label}}</font></a></span>
+				<div class="container-fluid bg-lightgray">
 	
-	
-	<P>{{user.userFirstName}} {{user.userLastName}}
-	<P>{{user.healthNetworkName}} 
 	
 	<div class="row-fluid">
 		<div class="col-md-12">
 			<hr>
+					<div class="row-fluid">
+						<div class="col-md-12">
+							<hr>
+						</div>
+					</div>
+					<div ui-view>
+						<i>Place holder</i>
+					</div>
+					<div class="row-fluid">
+						<div class="col-md-12">
+							<hr>
+						</div>
+					</div>
+				</div>
+
+			</div>
 		</div>
 	</div>
 	<div ui-view>
@@ -101,5 +133,5 @@
 		</div>
 	</div>
 
-</body>
+	</body>
 </html>
