@@ -1,16 +1,21 @@
-var tree;
 
-var dashboardApp = angular.module("dashboardApp");
-
-dashboardApp.controller('networkHierarchyController', function($scope, $timeout, networkHierarchy) {
-	$scope.selectedLabel = networkHierarchy.network.selectedHierarchyNode.label;
+(function() {
+	var tree;
+	var app = angular.module('dashboardApp');
 	
-	
-	$scope.my_tree_handler = function(branch) {
-		networkHierarchy.network.tempSelectedHierarchyNode = branch;
-	};
+	app.controller('networkHierarchyController', function($scope, $timeout, networkHierarchyService, userService) {
+		$scope.user = userService.user;
+		$scope.selectedLabel = networkHierarchyService.network.selectedHierarchyNode.label;
+		
+		
+		$scope.my_tree_handler = function(branch) {
+			networkHierarchyService.network.tempSelectedHierarchyNode = branch;
+		};
 
-	$scope.my_data = networkHierarchy.network.hierarchy;
+		$scope.my_data = networkHierarchyService.network.hierarchy;
 
-	$scope.my_tree = tree = {};
-});
+		$scope.my_tree = tree = {};
+
+	});
+
+}).call(this);

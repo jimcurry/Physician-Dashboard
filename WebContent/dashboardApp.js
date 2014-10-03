@@ -1,4 +1,4 @@
-var dashboardApp = angular.module("dashboardApp", ['ngDialog', 'ui.router', 'ui.bootstrap','angularBootstrapNavTree']);
+var dashboardApp = angular.module("dashboardApp", ['ngDialog', 'ui.router', 'ui.bootstrap', 'angularBootstrapNavTree']);
 
 dashboardApp.constant("CognosMashupURL", "https://c3duhcogapp1.premierinc.com:9444/ServletGateway/servlet/Gateway/rds");
 dashboardApp.constant("CognosNamespace", "Tivoli_LDAP");
@@ -29,6 +29,10 @@ dashboardApp.config(function($stateProvider, $urlRouterProvider) {
 		url : "/snippets/:reportingPeriod",
 		templateUrl : "./views/snippets.html",
 		controller : "snippetsController"
+	}).state('measureComparativeView', {
+		url : "/measureComparativeView",
+		templateUrl : "./views/measureComparativeView.html",
+		controller : "measureComparativeViewController"
 	}).state('default', {
 		url : "/default",
 		templateUrl : "./views/default.html",
