@@ -43,8 +43,12 @@
 <script src="./lib/ngDialog.js"></script>
 <!--  ui-router -->
 <script src="./lib/angular-ui-router.js"></script>
-<!--  ui-bootstrapr -->
+<!--  ui-bootstrap -->
 <script src="./lib/ui-bootstrap-tpls-0.11.2.min.js"></script>
+<!--  abn treeview -->
+<script src="./lib/abn_tree_directive.js"></script>
+<!--  angular-animate -->
+<script src="./lib/angular-animate.js"></script>
 
 <script src="./dashboardApp.js"></script>
 
@@ -60,12 +64,16 @@
 <script src="./controllers/view2Controller.js"></script>
 <script src="./controllers/defaultController.js"></script>
 <script src="./controllers/snippetsController.js"></script>
+<script src="./controllers/measureComparativeViewController.js"></script>
+<script src="./controllers/networkHierarchyController.js"></script>
 
 
 <!--  Style Sheets -->
 <!-- Bootstrap core CSS -->
 <link href="./css/bootstrap.css" rel="stylesheet">
 <link href="./css/bootstrap-theme.css" rel="stylesheet">
+<!-- Angular Bootstrap Nav Tree Style Sheets -->
+<link href="./css/abn_tree.css" rel="stylesheet">
 
 <!-- ngDialog Style Sheets -->
 <link href="./css/ngDialog.css" rel="stylesheet">
@@ -94,7 +102,7 @@
 			</div>
 			<div class="col-md-4">
 				<h4>
-					ACO Performance: <small>PIONEER PROGRAM</small>
+					Physician Dashboard: <small>{{user.healthNetworkName}}</small>
 				</h4>
 			</div>
 			<div class="col-md-4">
