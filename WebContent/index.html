@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:ng="http://angularjs.org" id="ng-app" ng-app="dashboardApp" lang="en">
-	<head>
-		<meta charset="ISO-8859-1">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="description" content="">
-		<meta name="author" content="">
-		<link rel="icon" href="../../favicon.ico">
+<html xmlns:ng="http://angularjs.org" id="ng-app" ng-app="dashboardApp"
+	lang="en">
+<head>
+<meta charset="ISO-8859-1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="icon" href="../../favicon.ico">
 
-		<title>Premier Dashboard</title>
+<title>Premier Dashboard</title>
 
-		<!--[if lt IE 9]>
+<!--[if lt IE 9]>
 			<script>
 				document.createElement('abn-tree');
 				document.createElement('ng-include');
@@ -24,114 +25,108 @@
 			</script>
 		<![endif]-->
 
-		<!-- xdomain -->
-  		<script src="./lib/xdomain.js"></script>
-  		<script>
-    		xdomain.slaves({
-      			"http://C3dupceapr1.premierinc.com:9010": "/assets/proxy.html",
-      			"https://c3duhcogapp1.premierinc.com:9444": "/ServletGateway/proxy.html"
-    		});
-  		</script>
+<!-- xdomain -->
+<script src="./lib/xdomain.js"></script>
+<script>
+	xdomain.slaves({
+		"http://C3dupceapr1.premierinc.com:9010" : "/assets/proxy.html",
+		"https://c3duhcogapp1.premierinc.com:9444" : "/ServletGateway/proxy.html"
+	});
+</script>
 
-		<!--  JS Libraries -->
-		<!-- AngularJS -->
-	   <script src="./lib/angular.js"></script>
-		<!-- x2js XML to JSON and vice versa conversion -->
-	   <script src="./lib/xml2json.min.js"></script>
-		<!--  ngDialog -->
-    	<script src="./lib/ngDialog.js"></script>
-		<!--  ui-router -->
-    	<script src="./lib/angular-ui-router.js"></script>
-		<!--  ui-bootstrapr -->
-    	<script src="./lib/ui-bootstrap-tpls-0.11.2.min.js"></script>
+<!--  JS Libraries -->
+<!-- AngularJS -->
+<script src="./lib/angular.js"></script>
+<!-- x2js XML to JSON and vice versa conversion -->
+<script src="./lib/xml2json.min.js"></script>
+<!--  ngDialog -->
+<script src="./lib/ngDialog.js"></script>
+<!--  ui-router -->
+<script src="./lib/angular-ui-router.js"></script>
+<!--  ui-bootstrapr -->
+<script src="./lib/ui-bootstrap-tpls-0.11.2.min.js"></script>
 
-    	<script src="./dashboardApp.js"></script>
-    	
-    	<!--  Factories -->
-    	<script src="./factories/userService.js"></script>
-    	<script src="./factories/reportingPeriodService.js"></script>
-    	<script src="./factories/networkHierarchyService.js"></script>
+<script src="./dashboardApp.js"></script>
 
-    	<!--  Controllers -->
-    	<script src="./controllers/dashboardController.js"></script>
-    	<script src="./controllers/loginController.js"></script>
-    	<script src="./controllers/view1Controller.js"></script>
-    	<script src="./controllers/view2Controller.js"></script>
-     	<script src="./controllers/defaultController.js"></script>
-     	<script src="./controllers/snippetsController.js"></script>
-    	
-    	
-		<!--  Style Sheets -->
-		<!-- Bootstrap core CSS -->
-		<link href="./css/bootstrap.css" rel="stylesheet">
-		<link href="./css/bootstrap-theme.css" rel="stylesheet">
+<!--  Factories -->
+<script src="./factories/userService.js"></script>
+<script src="./factories/reportingPeriodService.js"></script>
+<script src="./factories/networkHierarchyService.js"></script>
 
-		<!-- ngDialog Style Sheets -->
-		<link href="./css/ngDialog.css" rel="stylesheet">
-		<link href="./css/ngDialog-theme-default.css" rel="stylesheet">
-		<link href="./css/ngDialog-theme-plain.css" rel="stylesheet"> 
+<!--  Controllers -->
+<script src="./controllers/dashboardController.js"></script>
+<script src="./controllers/loginController.js"></script>
+<script src="./controllers/view1Controller.js"></script>
+<script src="./controllers/view2Controller.js"></script>
+<script src="./controllers/defaultController.js"></script>
+<script src="./controllers/snippetsController.js"></script>
 
-		<!-- Custom / overridden styles for this template -->
-		<link href="./css/pd-style.css" rel="stylesheet">
 
-    	<!--[if lt IE 9]>
+<!--  Style Sheets -->
+<!-- Bootstrap core CSS -->
+<link href="./css/bootstrap.css" rel="stylesheet">
+<link href="./css/bootstrap-theme.css" rel="stylesheet">
+
+<!-- ngDialog Style Sheets -->
+<link href="./css/ngDialog.css" rel="stylesheet">
+<link href="./css/ngDialog-theme-default.css" rel="stylesheet">
+<link href="./css/ngDialog-theme-plain.css" rel="stylesheet">
+
+<!-- Custom / overridden styles for this template -->
+<link href="./css/pd-style.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
  			<script src="./lib/respond.min.js"></script>
 		<![endif]-->
-		<!--[if lt IE 8]>
+<!--[if lt IE 8]>
  			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
-		
-	</head>
 
-	<body ng-controller="dashboardController">
-		<div class="row-fluid">
-			<div class="container-fluid no-margin bg-gray-gradient blueshadow">
-				<div class="col-md-4 no-padding">
-					<div style="padding-left:5px;"><img src="./images/premier_connect_logo.png" /></div>
-				</div>
-				<div class="col-md-4">
-					<h4>ACO Performance: <small>PIONEER PROGRAM</small></h4>
-				</div>
-				<div class="col-md-4">
-					<h5 align="right">{{user.userFirstName}} {{user.userLastName}}</h5>
+</head>
+
+<body ng-controller="dashboardController">
+	<div class="row-fluid">
+		<div class="container-fluid no-margin bg-gray-gradient blueshadow">
+			<div class="col-md-4 no-padding">
+				<div style="padding-left: 5px;">
+					<img src="./images/premier_connect_logo.png" />
 				</div>
 			</div>
-		</div>
-		<div class="row-fluid">
-			<div class="container-fluid bg-blue">
-				<span style="padding-left:5px; color:white;"><a><font color="#FFFFFF">Home</font></a> > <a><font color="#FFFFFF">ACO Performance: Pioneer Program</font></a> > <a><font color="#FFFFFF">{{network.selectedHierarchyNode.label}}</font></a></span>
-				<div class="container-fluid bg-lightgray">
-	
-	
-	<div class="row-fluid">
-		<div class="col-md-12">
-			<hr>
-					<div class="row-fluid">
-						<div class="col-md-12">
-							<hr>
-						</div>
-					</div>
-					<div ui-view>
-						<i>Place holder</i>
-					</div>
-					<div class="row-fluid">
-						<div class="col-md-12">
-							<hr>
-						</div>
-					</div>
-				</div>
-
+			<div class="col-md-4">
+				<h4>
+					ACO Performance: <small>PIONEER PROGRAM</small>
+				</h4>
+			</div>
+			<div class="col-md-4">
+				<h5 align="right">{{user.userFirstName}} {{user.userLastName}}</h5>
 			</div>
 		</div>
 	</div>
-	<div ui-view>
-		<i>Place holder</i>
-	</div>
 	<div class="row-fluid">
-		<div class="col-md-12">
-			<hr>
+		<div class="container-fluid bg-blue">
+			<span style="padding-left: 5px; color: white;"><a><font
+					color="#FFFFFF">Home</font></a> <a><font color="#FFFFFF">ACO
+						Performance: Pioneer Program</font></a> <a><font color="#FFFFFF">{{network.selectedHierarchyNode.label}}</font></a></span>
+			<div class="container-fluid bg-lightgray">
+
+
+				<div class="row-fluid">
+					<div class="col-md-12">
+						<hr>
+					</div>
+				</div>
+				<div ui-view>
+					<i>Place holder</i>
+				</div>
+				<div class="row-fluid">
+					<div class="col-md-12">
+						<hr>
+					</div>
+				</div>
+			</div>
+
 		</div>
 	</div>
 
-	</body>
+</body>
 </html>
