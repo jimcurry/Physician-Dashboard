@@ -1,0 +1,12 @@
+<div class="ngdialog-message" ng-controller="networkHierarchyController">
+	<div class="row-fluid">
+		<div style="width:400px;margin-left:10px;background:whitesmoke;border:1px solid lightgray;border-radius:5px;">
+			<h4>Premier Health Systems</h4>
+			<abn-tree tree-data="my_data" tree-control="my_tree" on-select="my_tree_handler(branch)" expand-level="2" initial-selection="{{selectedLabel}}"></abn-tree>
+		</div>
+	</div>
+</div>
+<div class="ngdialog-buttons">
+	<button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog()">Cancel</button>
+	<button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm(confirmValue)">Confirm</button>
+</div>

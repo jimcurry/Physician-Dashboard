@@ -1,4 +1,4 @@
-var dashboardApp = angular.module("dashboardApp", ['ngDialog', 'ui.router', 'ui.bootstrap']);
+var dashboardApp = angular.module("dashboardApp", ['ngDialog', 'ui.router', 'ui.bootstrap','angularBootstrapNavTree']);
 
 dashboardApp.constant("CognosMashupURL", "https://c3duhcogapp1.premierinc.com:9444/ServletGateway/servlet/Gateway/rds");
 dashboardApp.constant("CognosNamespace", "Tivoli_LDAP");
