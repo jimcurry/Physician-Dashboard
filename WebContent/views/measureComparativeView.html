@@ -22,8 +22,8 @@
 			</div>
 			<div class="col-md-4 no-padding">
 				<div class="controls form-inline pull-right">
-					<span>Benchmark: </span>
-					<select class="form-control" ng-model="selectedBenchmark" ng-options="benchmark.name for benchmark in benchmarkList" ng-change="refreshSummaryPane()">
+					<!-- <span>View: </span>  -->
+					<select class="form-control" ng-model="selectedView" ng-options="view.name for view in viewList" ng-change="refreshSummaryPane()">
 					</select>
 				</div>
 				<!-- 
@@ -32,45 +32,57 @@
 			</div>
 		</div>
 	</div>
-	<div id="topPanel" ng-bind-html="renderHtml(summaryPaneContent)" class="container-fluid fixed-313 bg-white">
-		<!-- <p style="padding-left:5px; color:white;">Summary Pane</p> -->
-	</div>
-	<div class="container-fluid bg-darkgray">
-		<!-- Display the toolbar used by the ACO and Practice Group views -->
-		<div ng-show="displayACOToolbar" class="row-fluid">
-			<div class="col-md-4">
-				<div class="controls form-inline">
-					<span>Sort By: </span>
-					<select class="form-control" ng-model="selectedACOSort" ng-options="sort.name for sort in sortList_ACO" ng-change="refreshContentPane()">
-					</select>
+	<div class="container-fluid bg-lightgray no-margin no-padding">
+		<div class="row-fluid">
+    
+		    <ul class="nav nav-tabs" role="tablist" ng-init="tab = 1">
+		        <li ng-repeat="domain in domainData.data" ng-class="{active: isSelected(domain)}">
+		        	<a href="" role="tab" data-toggle="tab" ng-click="loadTab(domain)">{{domain.name}}</a> 
+		        </li>
+		    </ul>
+			<div id="tabPanel" class="container-fluid no-margin gray-border bg-white">
+				<div id="topPanel" ng-bind-html="renderHtml(summaryPaneContent)" class="container-fluid fixed-100 bg-white">
+					<!-- <p style="padding-left:5px; color:white;">Summary Pane</p> -->
 				</div>
-			</div>
-			<div class="col-md-8">
+				<div class="container-fluid bg-darkgray">
+					<!-- Display the toolbar used by the ACO and Practice Group views -->
+					<div ng-show="displayACOToolbar" class="row-fluid">
+						<div class="col-md-4">
+							<div class="controls form-inline">
+								<span>Sort By: </span>
+								<select class="form-control" ng-model="selectedACOSort" ng-options="sort.name for sort in sortList_ACO" ng-change="refreshContentPane()">
+								</select>
+							</div>
+						</div>
+						<div class="col-md-8">
+						</div>
+					</div>
+			
+					<!-- Display the toolbar used by the Practitioner view -->
+					<div ng-hide="displayACOToolbar" class="row-fluid">
+						<div class="col-md-4">
+							<div class="controls form-inline">
+								<span>Sort: </span>
+								<select class="form-control" ng-model="selectedPractitionerSort" ng-options="sort.name for sort in sortList_Practitioner" ng-change="refreshContentPane()">
+								</select>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="controls form-inline">
+								<span>Filter: </span>
+								<select class="form-control" ng-model="selectedPractitionerFilter" ng-options="filter.name for filter in filterList_Practitioner" ng-change="refreshContentPane()">
+								</select>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<button type="button" class="btn btn-default pull-right">Export Full Patient List</button>
+						</div>
+					</div>
+				</div>
+				<div id="bottomPanel" ng-bind-html="renderHtml(contentPaneContent)" class="container-fluid fixed-313 bg-white">
+					<!-- <p style="padding-left:5px;">Report Content Pane</p>  -->
+				</div>
 			</div>
 		</div>
-
-		<!-- Display the toolbar used by the Practitioner view -->
-		<div ng-hide="displayACOToolbar" class="row-fluid">
-			<div class="col-md-4">
-				<div class="controls form-inline">
-					<span>Sort: </span>
-					<select class="form-control" ng-model="selectedPractitionerSort" ng-options="sort.name for sort in sortList_Practitioner" ng-change="refreshContentPane()">
-					</select>
-				</div>
-			</div>
-			<div class="col-md-4">
-				<div class="controls form-inline">
-					<span>Filter: </span>
-					<select class="form-control" ng-model="selectedPractitionerFilter" ng-options="filter.name for filter in filterList_Practitioner" ng-change="refreshContentPane()">
-					</select>
-				</div>
-			</div>
-			<div class="col-md-4">
-				<button type="button" class="btn btn-default pull-right">Export Full Patient List</button>
-			</div>
-		</div>
-	</div>
-	<div id="bottomPanel" ng-bind-html="renderHtml(contentPaneContent)" class="container-fluid fixed-230 bg-white">
-		<!-- <p style="padding-left:5px;">Report Content Pane</p>  -->
 	</div>
 </div>

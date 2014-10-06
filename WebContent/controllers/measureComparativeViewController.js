@@ -1,6 +1,6 @@
 var dashboardApp = angular.module("dashboardApp");
 
-dashboardApp.controller("measureComparativeViewController", function($scope, $http, $state, $stateParams, $location, ngDialog, userService, reportingPeriodService, networkHierarchyService, CognosMashupURL, CognosNamespace) {
+dashboardApp.controller("measureComparativeViewController", function($scope, $sce, $http, $state, $stateParams, $location, ngDialog, userService, reportingPeriodService, networkHierarchyService, domainService, CognosMashupURL, CognosNamespace) {
 
 	if (!userService.user.isInitialized) {
 		userService.redirectSpec.view = "view1";
@@ -9,14 +9,38 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $ht
 	}
 	
 	$scope.user = userService.user;
-	
 	$scope.network = networkHierarchyService.network;
 	$scope.reportingPeriod = reportingPeriodService.reportingPeriod;
+	$scope.domainData = domainService.domainData;
 	
 	$scope.selectReportingPeriod = function(selectedValue) {
 		 reportingPeriodService.setSelectedItemByUseValue(selectedValue);
 		 $scope.reportingPeriod = reportingPeriodService.reportingPeriod;
 		 //$state.go('measureComparativeView', {'reportingPeriod' : selectedValue});
+	};
+
+    $scope.viewList = [
+                            {name:"Measure Comparative View", id: "MCV"},
+                            {name:"Domain Comparative View", id: "DCV"}
+                           ];
+    $scope.selectedView = $scope.viewList[0];	
+
+	$scope.isSelected = function(domain) {
+		if ($scope.domainData.selectedDomain.id == domain.id) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+
+    $scope.loadTab = function(domain) {
+		$scope.domainData.selectedDomain = domain;
+			
+		$scope.summaryPaneContent = "<p>" + domain.name + "</p>";
+	};
+
+	$scope.renderHtml = function(html_code){
+		return $sce.trustAsHtml(html_code);
 	};
 
 	$scope.parm1 = $stateParams.parm1;
