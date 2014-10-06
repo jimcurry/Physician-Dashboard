@@ -12,8 +12,13 @@ dashboardApp.factory("userService", function($http, $q, CognosMashupURL, CognosN
 		healthNetworkName : null,
 		applicationRoleCode : null,
 		settings : null,
-		isInitialized : false
+		isInitialized : false,
 		};
+	
+	var redirectSpec = {
+		view : null,
+		params : {}
+	};
 
 function login() {
 	var deferred = $q.defer();
@@ -187,6 +192,7 @@ return {
 	login : login,
 	initialize : initialize,
 	getUserInfoFromCognos : getUserInfoFromCognos,
+	redirectSpec : redirectSpec,
 	logoff : logoff
 }; 
 

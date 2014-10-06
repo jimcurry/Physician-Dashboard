@@ -2,6 +2,12 @@ var dashboardApp = angular.module("dashboardApp");
 
 dashboardApp.controller("measureComparativeViewController", function($scope, $http, $state, $stateParams, $location, ngDialog, userService, reportingPeriodService, networkHierarchyService, CognosMashupURL, CognosNamespace) {
 
+	if (!userService.user.isInitialized) {
+		userService.redirectSpec.view = "view1";
+		userService.redirectSpec.params = {"parm1" : "abc"};
+		$state.go('default', {});
+	}
+	
 	$scope.user = userService.user;
 	
 	$scope.network = networkHierarchyService.network;
