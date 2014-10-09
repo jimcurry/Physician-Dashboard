@@ -45,8 +45,10 @@ dashboardApp.config(function($stateProvider, $urlRouterProvider) {
 			},
 			networkHierarchyServiceInitialize : function(userServiceInitialize, networkHierarchyService) {
 				return networkHierarchyService.initialize();
-			}
-		},
+			},
+			domainServiceInitialize : function(userServiceInitialize, domainService) {
+				return domainService.initialize();
+			}		},
 		controller : "defaultController"
 	});
 });
