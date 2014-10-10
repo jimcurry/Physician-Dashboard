@@ -1,13 +1,11 @@
 <div ng-controller="measureComparativeViewController">
 	<div class="container-fluid bg-darkgray no-margin">
 		<div class="row-fluid">
-			<div class="col-md-5 no-padding">
-				<div class="btn-group">
-					<button class="btn btn-default">{{network.selectedHierarchyNode.label || 'Loading...'}}</button>
-					<button ng-click="openNetworkHierarchy()" class="btn btn-default">
-						<span class="caret"></span>
-					</button>
-				</div>
+			<div class="col-md-5" dropdown is-open="status.isopen1">
+				<button type="button" class="btn btn-default dropdown-toggle"
+					ng-disabled="disabled" ng-click="openNetworkHierarchy()">
+					{{network.selectedHierarchyNode.label || 'Loading...'}}<span class="caret"></span>
+				</button>
 			</div>
 			<div class="col-md-3" dropdown is-open="status.isopen2">
 				<button type="button" class="btn btn-default dropdown-toggle"
@@ -20,15 +18,16 @@
 					</li>
 				</ul>
 			</div>
-			<div class="col-md-4 no-padding">
-				<div class="controls form-inline pull-right">
-					<!-- <span>View: </span>  -->
-					<select class="form-control" ng-model="selectedView" ng-options="view.name for view in viewList" ng-change="refreshSummaryPane()">
-					</select>
-				</div>
-				<!-- 
-				<button type="button" ng-click="loadSummaryPane();loadContentPaneList()" class="btn btn-default pull-right">View Measures by Domain</button>
-				 -->
+			<div class="col-md-4" dropdown is-open="status.isopen3">
+				<button type="button" class="btn btn-default dropdown-toggle pull-right"
+					ng-disabled="disabled">
+					{{selectedView.name}} <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu pull-right" role="menu">
+					<li ng-repeat="item in viewList"><a
+						ng-click="selectView(item.id)">{{item.name}}</a>
+					</li>
+				</ul>
 			</div>
 		</div>
 	</div>
@@ -45,39 +44,6 @@
 					<!-- <p style="padding-left:5px; color:white;">Summary Pane</p> -->
 				</div>
 				<div class="container-fluid bg-darkgray">
-					<!-- Display the toolbar used by the ACO and Practice Group views -->
-					<div ng-show="displayACOToolbar" class="row-fluid">
-						<div class="col-md-4">
-							<div class="controls form-inline">
-								<span>Sort By: </span>
-								<select class="form-control" ng-model="selectedACOSort" ng-options="sort.name for sort in sortList_ACO" ng-change="refreshContentPane()">
-								</select>
-							</div>
-						</div>
-						<div class="col-md-8">
-						</div>
-					</div>
-			
-					<!-- Display the toolbar used by the Practitioner view -->
-					<div ng-hide="displayACOToolbar" class="row-fluid">
-						<div class="col-md-4">
-							<div class="controls form-inline">
-								<span>Sort: </span>
-								<select class="form-control" ng-model="selectedPractitionerSort" ng-options="sort.name for sort in sortList_Practitioner" ng-change="refreshContentPane()">
-								</select>
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="controls form-inline">
-								<span>Filter: </span>
-								<select class="form-control" ng-model="selectedPractitionerFilter" ng-options="filter.name for filter in filterList_Practitioner" ng-change="refreshContentPane()">
-								</select>
-							</div>
-						</div>
-						<div class="col-md-4">
-							<button type="button" class="btn btn-default pull-right">Export Full Patient List</button>
-						</div>
-					</div>
 				</div>
 				<div id="bottomPanel" ng-bind-html="renderHtml(contentPaneContent)" class="container-fluid fixed-313 bg-white">
 					<!-- <p style="padding-left:5px;">Report Content Pane</p>  -->

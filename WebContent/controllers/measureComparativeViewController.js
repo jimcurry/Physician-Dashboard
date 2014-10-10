@@ -33,6 +33,10 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 		}
 	};
 
+	$scope.selectView = function(view) {
+		$scope.selectedView = view;
+	};
+
     $scope.loadTab = function(domain) {
 		$scope.domainData.selectedDomain = domain;
 			
