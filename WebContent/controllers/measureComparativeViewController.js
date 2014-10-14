@@ -10,7 +10,7 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 	$scope.selectReportingPeriod = function(selectedValue) {
 		 reportingPeriodService.setSelectedItemByUseValue(selectedValue);
 		 $scope.reportingPeriod = reportingPeriodService.reportingPeriod;
-		 //$state.go('measureComparativeView', {'reportingPeriod' : selectedValue});
+		 $scope.refreshScreen();
 	};
 
     $scope.viewList = [
@@ -34,10 +34,16 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
     $scope.loadTab = function(domain) {
 		$scope.domainData.selectedDomain = domain;
 			
-		$scope.summaryPaneContent = "<p>" + domain.name + "</p>";
+		//$scope.summaryPaneContent = "<p>" + domain.name + "</p>";
+		$scope.refreshScreen();
 	};
 
-	$scope.renderHtml = function(html_code){
+	$scope.refreshScreen = function() {
+    	$scope.loadSummaryPane();
+    	$scope.loadContentPane();
+    };
+
+    $scope.renderHtml = function(html_code){
 		return $sce.trustAsHtml(html_code);
 	};
 
@@ -47,13 +53,39 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 		$state.go('view1', {'parm1' : $scope.parm1});
 	};
 
+	$scope.loadSummaryPane = function(){
+
+		$scope.summaryPaneContent = '<div><table width="100%"><tr><td width="100%" align="center"><img style="width:110px;height:110px" src="./images/loading.gif"/></td></tr></div>';
+		
+		var url = "https://c3duhcogapp1.premierinc.com:9444/ServletGateway/servlet/Gateway/rds/reportData/report/i695EA1FFD93A4774BA260E7294CC0EFF?fmt=htmlFragment&async=off&includeLayout=true&p_pLevelType=" + $scope.network.selectedHierarchyNode.data.type + "&p_pLevelId=" + $scope.network.selectedHierarchyNode.data.id + "&p_pReportingPeriod=" + $scope.reportingPeriod.selectedItem.useValue + "&p_pDomainName=" + $scope.domainData.selectedDomain.id;
+		var request = $http.get(url);
+		request.then(function(report_response){
+			$scope.summaryPaneContent = report_response.data;
+		}, function(report_response){
+			$scope.summaryPaneContent = "Error";
+		});
+	};
+	
+	$scope.loadContentPane = function(){
+
+		$scope.contentPaneContent = '<div><table width="100%"><tr><td width="100%" align="center"><img style="width:110px;height:110px" src="./images/loading.gif"/></td></tr></div>';
+		
+		var url = "https://c3duhcogapp1.premierinc.com:9444/ServletGateway/servlet/Gateway/rds/reportData/report/i4132A77180884F17B401B9D45D816FE9?fmt=htmlFragment&async=off&includeLayout=true&p_p_level=" + $scope.network.selectedHierarchyNode.data.type + "&p_p_level_id=" + $scope.network.selectedHierarchyNode.data.id + "&p_p_selected_date=" + $scope.reportingPeriod.selectedItem.useValue + "&p_p_domain_num=" + $scope.domainData.selectedDomain.id;
+		var request = $http.get(url);
+		request.then(function(report_response){
+			$scope.contentPaneContent = report_response.data;
+		}, function(report_response){
+			$scope.contentPaneContent = "Error";
+		});
+	};
+
 	$scope.openNetworkHierarchy = function () {
 		ngDialog.openConfirm({
 			template: './views/networkHierarchyDialog.html',
 			className: 'ngdialog-theme-default'
 		}).then(function (value) {
 			$scope.network.selectedHierarchyNode = $scope.network.tempSelectedHierarchyNode;
-			//$scope.refreshScreen();
+			$scope.refreshScreen();
 		}, function() {
 			$scope.network.tempSelectedHierarchyNode.selected = false;
 			console.log('Modal promise rejected.');

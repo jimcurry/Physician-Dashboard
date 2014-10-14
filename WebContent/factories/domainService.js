@@ -9,10 +9,10 @@ dashboardApp.factory("domainService", function($http, $q, serverURL) {
 	};
 	
 	domainData.data = [
-                       {name:"Preventative Health", id: "D1"},
-                       {name:"At-Risk Population", id: "D2"},
-                       {name:"Patient Safety", id: "D3"},
-                       {name:"Patient Experience", id: "D4"}
+                       {name:"Preventative Health", id: "1"},
+                       {name:"At-Risk Population", id: "2"},
+                       {name:"Care Coordination / Patient Safety", id: "3"},
+                       {name:"Patient / Caregiver Experience", id: "4"}
                       ];
 	
 	domainData.selectedDomain = domainData.data[0];
