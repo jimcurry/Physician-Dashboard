@@ -1,12 +1,22 @@
 var dashboardApp = angular.module("dashboardApp");
 
 dashboardApp.factory("programService", function($http, $q, userService, DropwizardURL) {
+
+//format of "data"
+//	0:{
+//		programName: "Medicare Shared Savings Program"
+//		programId: "1"
+//		domains: [4]
+//			0:	{
+//					id: "1"
+//					name: "Preventative Health"
+//				}
+//		
 	var programData = {
 		data : null,
 		selectedProgram : null,
 		selectedDomain : null
 	};
-	
 
 	function initialize() {
 		console.log('Initialize programService');
@@ -25,7 +35,7 @@ dashboardApp.factory("programService", function($http, $q, userService, Dropwiza
 		}
 		return deferred.promise;
 	}
-	
+
 	function selectProgram(programId) {
 		programData.selectedProgram = null;
 		programData.selectedDomain = null;
@@ -38,7 +48,7 @@ dashboardApp.factory("programService", function($http, $q, userService, Dropwiza
 			}
 		}
 	}
-	
+
 	return {
 		programData : programData,
 		selectProgram : selectProgram,
