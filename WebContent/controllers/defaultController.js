@@ -1,6 +1,6 @@
 var dashboardApp = angular.module("dashboardApp");
 
-dashboardApp.controller("defaultController", function($scope, $http, $state, userService) {
+dashboardApp.controller("defaultController", function($scope, $http, $state, userService, programService) {
 
 	console.log('got into defaultController');
 
