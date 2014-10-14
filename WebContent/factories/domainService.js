@@ -1,31 +1,37 @@
 var dashboardApp = angular.module("dashboardApp");
 
-dashboardApp.factory("domainService", function($http, $q, userService, DropwizardURL) {
+dashboardApp.constant("serverURL", "http://C3dupceapr1.premierinc.com:9010");
+
+dashboardApp.factory("domainService", function($http, $q, serverURL) {
 	var domainData = {
 		data : null,
 		selectedDomain : null
 	};
 	
+	domainData.data = [
+                       {name:"Preventative Health", id: "1"},
+                       {name:"At-Risk Population", id: "2"},
+                       {name:"Care Coordination / Patient Safety", id: "3"},
+                       {name:"Patient / Caregiver Experience", id: "4"}
+                      ];
+	
+	domainData.selectedDomain = domainData.data[0];
 
 	function initialize() {
-		console.log('Initialize domainService');
-		var deferred = $q.defer();
-		if (domainData.data) {
-			console.log('domainService Already Initialized');
-			deferred.resolve('Already Initialized');
-		}
-		else {
-			$http.get(DropwizardURL + "/domain?userName=" + userService.user.userName).success(function(data) {
-				domainData.data = data;
-				domainData.selectedDomain = domainData.data[0];
-				deferred.resolve('Initialized');
-			}).error(function(data, status) {
-				deferred.reject('failed -' + status);
-			});
-		}
-		return deferred.promise;
-	}
-	;
+		//var deferred = $q.defer();
+		//if (dropdownData.data) {
+		//	deferred.resolve(domainData.data);
+		//} else {
+			//$http.get(serverURL + "/date/monthRange?startMonth=201407&numberMonths=12")
+			//	.success(function(data) {
+			//		dropdownData.data = data;
+			//		dropdownData.selectedDate = dropdownData.data[0];
+			//		deferred.resolve(dropdownData.data);})
+			//	.error(function(data, status) {
+			//		deferred.reject(status);});
+		//}
+		//return deferred.promise;
+	};
 	
 	return {
 		domainData : domainData,
