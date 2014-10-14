@@ -3,6 +3,7 @@ var dashboardApp = angular.module("dashboardApp");
 dashboardApp.factory("programService", function($http, $q, userService, DropwizardURL) {
 
 //format of "data"
+//[2]
 //	0:{
 //		programName: "Medicare Shared Savings Program"
 //		programId: "1"
@@ -11,7 +12,7 @@ dashboardApp.factory("programService", function($http, $q, userService, Dropwiza
 //					id: "1"
 //					name: "Preventative Health"
 //				}
-//		
+//		...
 	var programData = {
 		data : null,
 		selectedProgram : null,
