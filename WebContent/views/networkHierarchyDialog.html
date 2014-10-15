@@ -1,8 +1,8 @@
 <div class="ngdialog-message" ng-controller="networkHierarchyController">
 	<div class="row-fluid">
-		<div style="width:400px;margin-left:10px;background:whitesmoke;border:1px solid lightgray;border-radius:5px;">
+		<div style="width:400px;margin-left:10px;background:whitesmoke;border:1px solid lightgray;border-radius:5px;height:400px;overflow:auto">
 			<h4>{{user.healthNetworkName}}</h4>
-			<abn-tree tree-data="my_data" tree-control="my_tree" on-select="my_tree_handler(branch)" expand-level="2" initial-selection="{{selectedLabel}}"></abn-tree>
+			<abn-tree tree-data="my_data" tree-control="my_tree" on-select="my_tree_handler(branch)" expand-level="2" initial-selection="{{selectedHierarchyId}}"></abn-tree>
 		</div>
 	</div>
 </div>

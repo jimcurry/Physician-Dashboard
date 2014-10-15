@@ -1,4 +1,4 @@
-var dashboardApp = angular.module("dashboardApp", ['ngDialog', 'ui.router', 'ui.bootstrap', 'angularBootstrapNavTree', 'ngAnimate']);
+var dashboardApp = angular.module("dashboardApp", ['ngDialog', 'ui.router', 'ui.bootstrap', 'angularBootstrapNavTree']);
 
 dashboardApp.constant("CognosMashupURL", "https://c3duhcogapp1.premierinc.com:9444/ServletGateway/servlet/Gateway/rds");
 dashboardApp.constant("CognosNamespace", "Tivoli_LDAP");
@@ -41,14 +41,20 @@ dashboardApp.config(function($stateProvider, $urlRouterProvider) {
 		url : "/default",
 		templateUrl : "./views/default.html",
 		resolve : {
-			userService : function(userService) {
+			userServiceInitialize : function(userService) {
 				return userService.initialize();
 			},
-			reportingPeriodService : function(reportingPeriodService) {
+			reportingPeriodServiceInitialize : function(reportingPeriodService) {
 				return reportingPeriodService.initialize();
 			},
-			networkHierarchyService : function(userService, networkHierarchyService) {
+			networkHierarchyServiceInitialize : function(userServiceInitialize, networkHierarchyService) {
 				return networkHierarchyService.initialize();
+			},
+			programServiceInitialize : function(userServiceInitialize, programService) {
+				return programService.initialize();
+			},
+			selectInitialProgram : function(programService, networkHierarchyServiceInitialize, programServiceInitialize, networkHierarchyService) {
+				programService.selectProgram(networkHierarchyService.network.selectedHierarchyNode.programId);
 			}
 		},
 		controller : "defaultController"

@@ -1,9 +1,17 @@
 var dashboardApp = angular.module("dashboardApp");
 
-dashboardApp.controller("defaultController", function($scope, $http, $state, $location, CognosMashupURL, CognosNamespace) {
+dashboardApp.controller("defaultController", function($scope, $http, $state, userService, programService) {
 
 	console.log('got into defaultController');
 
-	$state.go('measureComparativeView', {});
-	
+	if (userService.redirectSpec.view) {
+		console.log("Overriden redirect");
+		$state.go(userService.redirectSpec.view, userService.redirectSpec.params);
+		userService.redirectSpec.view = null;
+	}
+	else {
+		console.log("standard redirect");
+		$state.go('measureComparativeView', {});
+	}
+
 });

@@ -40,9 +40,9 @@
 	</div>
 	<div class="container-fluid bg-lightgray no-margin no-padding">
 		<div class="row-fluid">
-    
+
 		    <ul class="nav nav-tabs" role="tablist" ng-init="tab = 1">
-		        <li ng-repeat="domain in domainData.data" ng-class="{active: isSelected(domain)}">
+		        <li ng-repeat="domain in domainData" ng-class="{active: isSelected(domain)}">
 		        	<a href="" role="tab" data-toggle="tab" ng-click="loadTab(domain)">{{domain.name}}</a> 
 		        </li>
 		    </ul>

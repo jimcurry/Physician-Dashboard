@@ -1,12 +1,12 @@
+
 (function() {
 	var tree;
 	var app = angular.module('dashboardApp');
 	
 	app.controller('networkHierarchyController', function($scope, $timeout, networkHierarchyService, userService) {
 		$scope.user = userService.user;
-		$scope.selectedLabel = networkHierarchyService.network.selectedHierarchyNode.label;
-		
-		
+		$scope.selectedHierarchyId = networkHierarchyService.network.selectedHierarchyNode.hierarchyId;
+
 		$scope.my_tree_handler = function(branch) {
 			networkHierarchyService.network.tempSelectedHierarchyNode = branch;
 		};
