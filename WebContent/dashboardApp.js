@@ -33,6 +33,10 @@ dashboardApp.config(function($stateProvider, $urlRouterProvider) {
 		url : "/measureComparativeView",
 		templateUrl : "./views/measureComparativeView.html",
 		controller : "measureComparativeViewController"
+	}).state('domainComparativeView', {
+		url : "/domainComparativeView",
+		templateUrl : "./views/domainComparativeView.html",
+		controller : "domainComparativeViewController"
 	}).state('default', {
 		url : "/default",
 		templateUrl : "./views/default.html",
