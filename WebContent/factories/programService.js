@@ -16,6 +16,7 @@ dashboardApp.factory("programService", function($http, $q, userService, Dropwiza
 	var programData = {
 		data : null,
 		selectedProgram : null,
+		selectedProgramDomains : null,
 		selectedDomain : null
 	};
 
@@ -39,20 +40,33 @@ dashboardApp.factory("programService", function($http, $q, userService, Dropwiza
 
 	function selectProgram(programId) {
 		programData.selectedProgram = null;
+		programData.selectedProgramDomains = null;
 		programData.selectedDomain = null;
 
 		for (var i = 0; i < programData.data.length; i++) {
 			if (programData.data[i].programId == programId) {
 				this.programData.selectedProgram = programData.data[i];
-				this.programData.selectedDomain = programData.data[i].domains;
+				this.programData.selectedProgramDomains = programData.data[i].domains;
+				this.programData.selectedDomain = programData.data[i].domains[0];
 				break;
 			}
 		}
 	}
+	
+	function selectDomain(domainId) {
+		programData.selectedDomain = null;
 
+		for (var i = 0; i < programData.selectedProgramDomains.length; i++) {
+			if (programData.selectedProgramDomains[i].id == domainId) {
+				programData.selectedDomain = programData.selectedProgramDomains[i];
+				break;
+			}
+		}
+	}
 	return {
 		programData : programData,
 		selectProgram : selectProgram,
+		selectDomain : selectDomain,
 		initialize : initialize
 	};
 });

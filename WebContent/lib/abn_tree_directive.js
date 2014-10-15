@@ -225,7 +225,7 @@
           scope.$watch('treeData', on_treeData_change, true);
           if (attrs.initialSelection != null) {
             for_each_branch(function(b) {
-              if (b.label === attrs.initialSelection) {
+              if (b.hierarchyId == attrs.initialSelection) {
                 return $timeout(function() {
                   return select_branch(b);
                 });
