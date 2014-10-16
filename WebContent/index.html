@@ -116,11 +116,11 @@
 			<span style="padding-left: 5px; color: white;">
 				<span ng-repeat="item in network.selectedPath">
 					<a ng-if="!$last" href="javascript:void(0)" ng-click="resetSelectedEntity(item.hierarchyId)" style="text-decoration: underline;">
-						<font color="#FFFFFF">{{item.label}}
+						<font color="#FFFFFF">{{item.name}}
 						</font>
 					</a>
 					<span ng-if="!$last"> &nbsp;/&nbsp;</span>
-					<span ng-if="$last"><font color="#FFFFFF">{{item.label}}</font></span>
+					<span ng-if="$last"><font color="#FFFFFF">{{item.name}}</font></span>
 				</span>
 			</span>
 			<div class="container-fluid bg-lightgray">
