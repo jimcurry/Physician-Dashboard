@@ -87,7 +87,7 @@ dashboardApp.factory("networkHierarchyService", function($http, $q, DropwizardUR
 	function searchChildren(hierarchyIdToFind, childrenToSearch) {
 		for (var j = 0; j < childrenToSearch.length; j++) {
 			if (childrenToSearch[j].children.length > 0) {
-				var node = searchChildren(childrenToSearch.children, hierarchyIdToFind);
+				var node = searchChildren(hierarchyIdToFind, childrenToSearch[j].children);
 
 				if (node != null) {
 					return node;

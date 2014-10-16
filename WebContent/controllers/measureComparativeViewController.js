@@ -71,7 +71,7 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 			$scope.summaryPaneContent = "Error";
 		});
 	};
-	
+
 	$scope.loadContentPane = function(){
 
 		$scope.contentPaneContent = '<div><table width="100%"><tr><td width="100%" align="center"><img style="width:110px;height:110px" src="./images/loading.gif"/></td></tr></div>';

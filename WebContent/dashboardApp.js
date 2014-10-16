@@ -49,6 +49,9 @@ dashboardApp.config(function($stateProvider, $urlRouterProvider) {
 			programServiceInitialize : function(userServiceInitialize, programService) {
 				return programService.initialize();
 			},
+			reportInfoServiceInitialize : function(userServiceInitialize, reportInfoService) {
+				return reportInfoService.initialize();
+			},
 			selectInitialProgram : function(programService, networkHierarchyServiceInitialize, programServiceInitialize, networkHierarchyService) {
 				programService.selectProgram(networkHierarchyService.network.selectedHierarchyNode.programId);
 			}
