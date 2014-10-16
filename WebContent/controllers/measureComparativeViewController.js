@@ -102,8 +102,10 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 			$scope.network.tempSelectedHierarchyNode.selected = false;
 		});
 	};
-	
 
+	$scope.$on('BREADCRUMB_ENTITY_SELECTION', function () {
+		console.log("breadcrumb changed.");
+	});
 //		$scope.$watch('parm1', function(newValue, oldValue) {
 //		if (newValue != oldValue) {
 //			$state.go('view1', {'parm1' : newValue});

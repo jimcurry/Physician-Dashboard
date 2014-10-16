@@ -8,6 +8,7 @@ dashboardApp.factory("networkHierarchyService", function($http, $q, DropwizardUR
 //			parentHierarchyId: 0
 //			programId: 1
 //			label: "Medicare Shared Savings Program / Premier Health ACO"
+//			name: "Premier Health ACO"
 //			data: {
 //				id: "150000"
 //				parentId: null
@@ -19,6 +20,7 @@ dashboardApp.factory("networkHierarchyService", function($http, $q, DropwizardUR
 //					parentHierarchyId: 0
 //					programId: 1
 //					label: "Premier Family Medical Associates"
+//					name: "Premier Health ACO"
 //					data: {
 //						id: "158000"
 //						parentId: "150000"
@@ -53,7 +55,16 @@ dashboardApp.factory("networkHierarchyService", function($http, $q, DropwizardUR
 	}
 	
 	function setSelectedNode(hierarchyId) {
+		if (network.selectedHierarchyNode.selected) {
+			network.selectedHierarchyNode.selected = false;
+		}
+		
 		network.selectedHierarchyNode = findNode(hierarchyId);
+		
+		if (network.selectedHierarchyNode.selected) {
+			network.selectedHierarchyNode.selected = true;
+		}
+		
 		setSelectedPath(hierarchyId);
 	}
 	
