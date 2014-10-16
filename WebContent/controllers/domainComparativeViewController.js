@@ -11,6 +11,7 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 	$scope.user = userService.user;
 	$scope.network = networkHierarchyService.network;
 	$scope.reportingPeriod = reportingPeriodService.reportingPeriod;
+	$scope.program = programService.programData;
 	
 	$scope.selectReportingPeriod = function(selectedValue) {
 		 reportingPeriodService.setSelectedItemByUseValue(selectedValue);
