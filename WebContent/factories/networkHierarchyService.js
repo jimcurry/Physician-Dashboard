@@ -53,7 +53,16 @@ dashboardApp.factory("networkHierarchyService", function($http, $q, DropwizardUR
 	}
 	
 	function setSelectedNode(hierarchyId) {
+		if (network.selectedHierarchyNode.selected) {
+			network.selectedHierarchyNode.selected = false;
+		}
+		
 		network.selectedHierarchyNode = findNode(hierarchyId);
+		
+		if (network.selectedHierarchyNode.selected) {
+			network.selectedHierarchyNode.selected = true;
+		}
+		
 		setSelectedPath(hierarchyId);
 	}
 	
