@@ -1,6 +1,6 @@
 var dashboardApp = angular.module("dashboardApp");
 
-dashboardApp.factory("reportInfoService", function($http, $q, userService, DropwizardURL) {
+dashboardApp.factory("reportInfoService", function($http, $q, userService, DropwizardURL, CognosMashupURL) {
 
 //	format of reportData
 //	[2]
@@ -20,7 +20,7 @@ dashboardApp.factory("reportInfoService", function($http, $q, userService, Dropw
 		}
 		else {
 			$http.get(DropwizardURL + "/reportInfo?userName=" + userService.user.userName).success(function(data) {
-				reportData.data = data;
+				reportData = data;
 				deferred.resolve('Initialized');
 			}).error(function(data, status) {
 				deferred.reject('failed -' + status);
@@ -29,9 +29,20 @@ dashboardApp.factory("reportInfoService", function($http, $q, userService, Dropw
 		return deferred.promise;
 	}
 
-	
+	function getHtmlFragmentReportString(reportCode) {
+		var reportId = null;
+		for (var i = 0; i < reportData.length; i++) {
+			if (reportData[i].reportCode == reportCode) {
+				reportId = reportData[i].reportId;
+			}
+		}
+		
+		return CognosMashupURL + "/reportData/report/" + reportId + "?fmt=htmlFragment&async=off&includeLayout=true";
+	}
+
 	return {
 		reportData : reportData,
+		getHtmlFragmentReportString : getHtmlFragmentReportString,
 		initialize : initialize
 	};
 });

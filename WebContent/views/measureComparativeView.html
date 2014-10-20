@@ -5,14 +5,14 @@
 				<span>Selected Entity: </span>
 				<button type="button" class="btn btn-default dropdown-toggle"
 					ng-disabled="disabled" ng-click="openNetworkHierarchy()">
-					{{network.selectedHierarchyNode.name || 'Loading...'}}&nbsp<span class="caret"></span>
+					{{network.selectedHierarchyNode.name || 'Selected Entity'}}&nbsp<span class="caret"></span>
 				</button>
 			</div>
 			<div class="col-md-3" dropdown is-open="status.isopen2">
 				<span>Reporting Period: </span>
 				<button type="button" class="btn btn-default dropdown-toggle"
 					ng-disabled="disabled">
-					{{reportingPeriod.selectedItem.displayValue}} <span class="caret"></span>
+					{{reportingPeriod.selectedItem.displayValue || 'Reporting Period'}}&nbsp<span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu" role="menu">
 					<li ng-repeat="item in reportingPeriod.data"><a
@@ -29,7 +29,7 @@
 			<div class="col-md-4" dropdown is-open="status.isopen3">
 				<button type="button" class="btn btn-default dropdown-toggle pull-right"
 					ng-disabled="disabled">
-					{{selectedView.name}} <span class="caret"></span>
+					{{selectedView.name || 'View Selection'}}&nbsp<span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu pull-right" role="menu">
 					<li ng-repeat="item in viewList"><a

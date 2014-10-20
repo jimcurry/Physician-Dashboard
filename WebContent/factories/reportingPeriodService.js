@@ -1,6 +1,12 @@
 var dashboardApp = angular.module("dashboardApp");
 
 dashboardApp.factory("reportingPeriodService", function($http, $q, DropwizardURL) {
+	//format of data
+	//[12]
+	//		0:	{
+	//			useValue: "20140701"
+	//			displayValue: "2014 July"
+	//			}
 	var reportingPeriod = {
 		data : null,
 		selectedItem : null
@@ -25,12 +31,10 @@ dashboardApp.factory("reportingPeriodService", function($http, $q, DropwizardURL
 		return deferred.promise;
 	}
 	;
-	
-
-
 
 	function setSelectedItemByUseValue(useValue) {
 		reportingPeriod.selectedItem = reportingPeriod.data[0];
+		
 		for (var i = 0; i < reportingPeriod.data.length; i++) {
 			if (reportingPeriod.data[i].useValue === useValue) {
 				reportingPeriod.selectedItem = reportingPeriod.data[i];

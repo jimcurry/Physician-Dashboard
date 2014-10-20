@@ -54,7 +54,7 @@ dashboardApp.factory("programService", function($http, $q, userService, Dropwiza
 	}
 	
 	function selectDomain(domainId) {
-		programData.selectedDomain = null;
+		programData.selectedDomain = programData.selectedProgramDomains[0];
 
 		for (var i = 0; i < programData.selectedProgramDomains.length; i++) {
 			if (programData.selectedProgramDomains[i].id == domainId) {
