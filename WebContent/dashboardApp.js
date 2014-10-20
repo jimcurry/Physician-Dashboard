@@ -34,7 +34,7 @@ dashboardApp.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl : "./views/measureComparativeView.html",
 		controller : "measureComparativeViewController"
 	}).state('domainComparativeView', {
-		url : "/domainComparativeView",
+		url : "/domainComparativeView/:hierarchyId/:reportingPeriod",
 		templateUrl : "./views/domainComparativeView.html",
 		controller : "domainComparativeViewController"
 	}).state('default', {

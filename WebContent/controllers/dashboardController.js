@@ -20,6 +20,13 @@ dashboardApp.controller("dashboardController", function($scope, $http, $state, u
 		});
 	};
 
+	$scope.switchToDefaultDomainComparativeView = function() {
+		$state.go("domainComparativeView", {
+			"hierarchyId" : networkHierarchyService.network.selectedHierarchyNode.hierarchyId,
+			"reportingPeriod" : reportingPeriodService.reportingPeriod.selectedItem.useValue
+		});
+	};
+
 	$scope.switchToDefaultView = function() {
 		$state.go("default", {});
 	};
