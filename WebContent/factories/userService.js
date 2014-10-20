@@ -17,7 +17,7 @@ dashboardApp.factory("userService", function($http, $q, CognosMashupURL, CognosN
 	
 	var redirectSpec = {
 		view : null,
-		params : {}
+		params : null
 	};
 
 function login() {
