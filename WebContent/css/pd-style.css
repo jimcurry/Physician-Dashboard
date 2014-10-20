@@ -8,6 +8,10 @@ li {
 	cursor: pointer;
 }
 
+a {
+	cursor: pointer;
+}
+
 .container-fluid.fixed-100 {
 	height:           110px;
 	overflow:         auto;

@@ -63,8 +63,10 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 							];
 	$scope.selectedView = $scope.viewList[0];
 
- 	$scope.selectView = function(view) {
-		$scope.selectedView = view;
+ 	$scope.selectView = function(viewName) {
+		if (viewName == "Domain Comparative View") {
+			$scope.switchToDefaultDomainComparativeView();
+		}
 	};
 
 	// Allows the selected tab to be highlighted
