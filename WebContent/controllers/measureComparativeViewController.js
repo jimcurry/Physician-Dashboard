@@ -1,6 +1,6 @@
 var dashboardApp = angular.module("dashboardApp");
 
-dashboardApp.controller("measureComparativeViewController", function($scope, $sce, $http, $state, $stateParams, $location, ngDialog, userService, reportingPeriodService, networkHierarchyService, programService, reportInfoService) {
+dashboardApp.controller("measureComparativeViewController", function($scope, $sce, $http, $stateParams, ngDialog, userService, reportingPeriodService, networkHierarchyService, programService, reportInfoService) {
 
 	// Make sure services are initialized 
 	if (!userService.user.isInitialized) {
@@ -49,6 +49,7 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 	$scope.network = networkHierarchyService.network;
 	$scope.reportingPeriod = reportingPeriodService.reportingPeriod;
 	$scope.domainData = programService.programData.selectedProgramDomains;
+	$scope.program = programService.programData;
 	
 	//Handles when the reporting period is changed
 	$scope.selectReportingPeriod = function(selectedValue) {
@@ -58,13 +59,12 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 
 	//Set up the view switcher
 	$scope.viewList = [
-							{name:"Measure Comparative View", id: "MCV"},
-							{name:"Domain Comparative View", id: "DCV"}
+							"Domain Comparative View"
 							];
-	$scope.selectedView = $scope.viewList[0];
+	$scope.selectedView = "Measure Comparative View";
 
- 	$scope.selectView = function(viewName) {
-		if (viewName == "Domain Comparative View") {
+ 	$scope.selectView = function(view) {
+		if (view == "Domain Comparative View") {
 			$scope.switchToDefaultDomainComparativeView();
 		}
 	};

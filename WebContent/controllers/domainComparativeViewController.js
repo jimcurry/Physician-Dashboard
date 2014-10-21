@@ -1,6 +1,6 @@
 var dashboardApp = angular.module("dashboardApp");
 
-dashboardApp.controller("domainComparativeViewController", function($scope, $sce, $http, $state, $stateParams, $location, ngDialog, userService, reportingPeriodService, networkHierarchyService, programService, CognosMashupURL, CognosNamespace, reportInfoService) {
+dashboardApp.controller("domainComparativeViewController", function($scope, $sce, $http, $stateParams, ngDialog, userService, reportingPeriodService, networkHierarchyService, programService, reportInfoService) {
 
 	// Make sure services are initialized 
 	if (!userService.user.isInitialized) {
@@ -48,20 +48,24 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 		 $scope.switchToDefaultDomainComparativeView();
 	};
 
-    $scope.viewList = [
-                            {name:"Measure Comparative View", id: "MCV"},
-                            {name:"Domain Comparative View", id: "DCV"}
-                           ];
-    $scope.selectedView = $scope.viewList[1];	
+	//Set up the view switcher
+	$scope.viewList = [
+							"Measure Comparative View"
+							];
+	$scope.selectedView = "Domain Comparative View";
 
-	$scope.selectView = function(view) {
-		$scope.selectedView = view;
+ 	$scope.selectView = function(view) {
+		if (view == "Measure Comparative View") {
+			$scope.switchToDefaultMeasureComparativeView();
+		}
 	};
 
-    $scope.renderHtml = function(html_code){
+	// fix up html so it doesn't report security errors
+	$scope.renderHtml = function(html_code){
 		return $sce.trustAsHtml(html_code);
 	};
 
+	// Handles tree view for level selection
 	$scope.openNetworkHierarchy = function () {
 		ngDialog.openConfirm({
 			template: './views/networkHierarchyDialog.html',
@@ -73,7 +77,7 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 				programService.selectProgram(networkHierarchyService.network.selectedHierarchyNode.programId);
 			}
 			
-			$scope.refreshScreen();
+			$scope.switchToDefaultDomainComparativeView();
 		}, function() {
 			$scope.network.tempSelectedHierarchyNode.selected = false;
 		});
