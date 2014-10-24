@@ -1,6 +1,6 @@
 var dashboardApp = angular.module("dashboardApp");
 
-dashboardApp.controller("domainComparativeViewController", function($scope, $sce, $http, $stateParams, ngDialog, userService, reportingPeriodService, networkHierarchyService, programService, reportInfoService) {
+dashboardApp.controller("domainComparativeViewController", function($scope, $sce, $http, $stateParams, ngDialog, userService, reportingPeriodService, networkHierarchyService, programService, reportInfoService, cacheService) {
 
 	// Make sure services are initialized 
 	if (!userService.user.isInitialized) {
@@ -36,6 +36,7 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 		return;
 	}
 
+	
 	//bind data that view uses
 	$scope.user = userService.user;
 	$scope.network = networkHierarchyService.network;
@@ -88,16 +89,44 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 		$scope.switchToDefaultDomainComparativeView();
 	});
 	
+	// handles level change made clicking on the row in the detail report
+	levelClicked = function(levelId) {
+		levelId = levelId.replace(/^\s*([\S\s]*)\b\s*$/, '$1'); //IE8 doesn't have trim
+		
+		//see if we are running a patient report
+		var targetLevel = networkHierarchyService.getChildsLevel(networkHierarchyService.network.selectedHierarchyNode.hierarchyId);
+		if (targetLevel == "PRACTITIONER") {
+				//stuff to run patient level
+				alert('patient level ' + levelId);
+		}
+		else {
+			var newSelectedNode = networkHierarchyService.findChildNodeById(levelId);
+			networkHierarchyService.setSelectedNode(newSelectedNode.hierarchyId);
+			$scope.switchToDefaultDomainComparativeView();
+		}
+	};
+	
 	// Make RESTful call to run summary report.
 	$scope.loadSummaryPane = function(){
+		var parmString =	"&p_pLevelType=" + $scope.network.selectedHierarchyNode.data.type + 
+								"&p_pLevelId=" + $scope.network.selectedHierarchyNode.data.id + 
+								"&p_pReportingPeriod=" + $scope.reportingPeriod.selectedItem.useValue +
+								"&p_pProgramId="+ programService.programData.selectedProgram.programId;
+
+		var cacheData = cacheService.get("DomainComparativeSummary" + parmString);
+		if (cacheData != null) {
+			$scope.summaryPaneContent = cacheData.data;
+			return;
+		}
+
 		$scope.summaryPaneContent = '<div><table width="100%"><tr><td width="100%" align="center"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
 
-		var url = reportInfoService.getHtmlFragmentReportString("DomainComparativeSummary") + 
-			"&p_pLevelType=" + $scope.network.selectedHierarchyNode.data.type + 
-			"&p_pLevelId=" + $scope.network.selectedHierarchyNode.data.id + 
-			"&p_pReportingPeriod=" + $scope.reportingPeriod.selectedItem.useValue;
+		var url = reportInfoService.getHtmlFragmentReportString("DomainComparativeSummary") + parmString;
+
 		var request = $http.get(url);
 		request.then(function(report_response){
+			cacheService.push("DomainComparativeSummary" + parmString, report_response.data);
+
 			$scope.summaryPaneContent = report_response.data;
 		}, function(report_response){
 			if (report_response.status == "403") {
@@ -121,14 +150,24 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 
 	// Make RESTful call to run detail report.
 	$scope.loadContentPane = function(){
+		var parmString =	"&p_p_level=" + $scope.network.selectedHierarchyNode.data.type + 
+								"&p_p_level_id=" + $scope.network.selectedHierarchyNode.data.id + 
+								"&p_p_selected_date=" + $scope.reportingPeriod.selectedItem.useValue;
+
+		var cacheData = cacheService.get("DomainComparativeDetail" + parmString);
+		if (cacheData != null) {
+			$scope.contentPaneContent = cacheData.data;
+			return;
+		}
+
 		$scope.contentPaneContent = '<div><table width="100%"><tr><td width="100%" align="center"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
 		
-		var url = reportInfoService.getHtmlFragmentReportString("DomainComparativeDetail") + 
-			"&p_p_level=" + $scope.network.selectedHierarchyNode.data.type + 
-			"&p_p_level_id=" + $scope.network.selectedHierarchyNode.data.id + 
-			"&p_p_selected_date=" + $scope.reportingPeriod.selectedItem.useValue;
+		var url = reportInfoService.getHtmlFragmentReportString("DomainComparativeDetail") + parmString;
+
 		var request = $http.get(url);
 		request.then(function(report_response){
+			cacheService.push("DomainComparativeDetail" + parmString, report_response.data);
+			
 			$scope.contentPaneContent = report_response.data;
 		}, function(report_response){
 			if (report_response.status == "403") {
@@ -145,11 +184,12 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 				}
 			}
 			else {
-				$scope.summaryPaneContent = 'Error encountered, status message returned was "' + report_response.statusText + '"';
+				$scope.contentPaneContent = 'Error encountered, status message returned was "' + report_response.statusText + '"';
 			}
 		});
 	};
 
-	$scope.loadSummaryPane();
 	$scope.loadContentPane();
+	$scope.loadSummaryPane();
+
 });

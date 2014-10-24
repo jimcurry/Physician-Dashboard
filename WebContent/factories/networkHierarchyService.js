@@ -115,10 +115,36 @@ dashboardApp.factory("networkHierarchyService", function($http, $q, DropwizardUR
 		}
 	}
 	
+	// return the the node that is directly under the selected node that 
+	// has the passed in id.  If not found return the currently selected node 
+	function findChildNodeById(id) {
+		var hierarchyIdToReturn = network.selectedHierarchyNode;
+		for (var i = 0; i < network.selectedHierarchyNode.children.length; i++) {
+			if (network.selectedHierarchyNode.children[i].data.id == id) {
+				hierarchyIdToReturn = network.selectedHierarchyNode.children[i];
+				break;
+			}
+		}
+		return hierarchyIdToReturn;
+	}
+	
+	// Return the level of the nodes under the one passed in.  If there
+	// isn't one 
+	function getChildsLevel(id) {
+		if (network.selectedHierarchyNode.children.length == 0) {
+			return "PRACTITIONER";
+		}
+		else {
+			return network.selectedHierarchyNode.children[0].data.type;
+		}
+	}
+	
 	return {
 		network : network,
 		setSelectedNode : setSelectedNode,
 		findNode : findNode,
+		findChildNodeById : findChildNodeById,
+		getChildsLevel : getChildsLevel,
 		initialize : initialize
 	};
 

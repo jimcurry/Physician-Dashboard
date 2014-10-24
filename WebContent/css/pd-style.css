@@ -200,3 +200,25 @@ a {
 .topbar .btn {
   border: 0;
 }
+
+#myTab li a {
+	background-color: #EEEEEE;
+
+}
+
+#myTab li.active a {
+	background-color: white;
+	font-weight: bold;
+}
+
+#myTab li a:hover {
+	background-color: white;
+}
+
+#myTab li {
+	margin-left: 1px;
+}
+
+#myTab li.active {
+	margin-left: 0px;
+}

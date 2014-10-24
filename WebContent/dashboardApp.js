@@ -17,15 +17,7 @@ dashboardApp.config(function($stateProvider, $urlRouterProvider) {
 	$urlRouterProvider.otherwise("/default");
 	//
 	// Now set up the states
-	$stateProvider.state('view1', {
-		url : "/view1/:parm1",
-		templateUrl : "./views/view1.html",
-		controller : "view1Controller"
-	}).state('view2', {
-		url : "/view2/:parm1/:parm2",
-		templateUrl : "./views/view2.html",
-		controller : "view2Controller"
-	}).state('snippets', {
+	$stateProvider.state('snippets', {
 		url : "/snippets/:reportingPeriod",
 		templateUrl : "./views/snippets.html",
 		controller : "snippetsController"
@@ -37,6 +29,9 @@ dashboardApp.config(function($stateProvider, $urlRouterProvider) {
 		url : "/domainComparativeView/:hierarchyId/:reportingPeriod",
 		templateUrl : "./views/domainComparativeView.html",
 		controller : "domainComparativeViewController"
+	}).state('cache', {
+		url : "/cache",
+		controller : "cacheController"
 	}).state('default', {
 		url : "/default",
 		templateUrl : "./views/default.html",
