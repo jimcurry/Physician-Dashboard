@@ -66,6 +66,13 @@ a {
 	height:             100%;
 }
 
+.container-fluid.bg-lightblue {
+	background-color:   #CFD8E6;
+	margin:             5px;
+	padding:            5px;
+	height:             100%;
+}
+
 .container-fluid.no-padding {
 	padding:           0px;
 }

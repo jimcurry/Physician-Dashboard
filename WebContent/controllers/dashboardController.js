@@ -1,7 +1,7 @@
 var dashboardApp = angular.module("dashboardApp");
 
 dashboardApp.controller("dashboardController", function($scope, $http, $state, userService, networkHierarchyService, programService,
-		reportingPeriodService) {
+		reportingPeriodService, measureService) {
 	$scope.user = userService.user;
 	$scope.network = networkHierarchyService.network;
 
@@ -24,6 +24,15 @@ dashboardApp.controller("dashboardController", function($scope, $http, $state, u
 		$state.go("domainComparativeView", {
 			"hierarchyId" : networkHierarchyService.network.selectedHierarchyNode.hierarchyId,
 			"reportingPeriod" : reportingPeriodService.reportingPeriod.selectedItem.useValue
+		});
+	};
+
+	$scope.switchToDefaultMeasureDetailView = function() {
+		$state.go("measureDetailView", {
+			"hierarchyId" : networkHierarchyService.network.selectedHierarchyNode.hierarchyId,
+			"reportingPeriod" : reportingPeriodService.reportingPeriod.selectedItem.useValue,
+			"measureType" : measureService.measureData.selectedType,
+			"measureCode" : measureService.measureData.selectedCode
 		});
 	};
 
