@@ -12,10 +12,10 @@ dashboardApp.factory("reportInfoService", function($http, $q, userService, Dropw
 	var reportData = [];
 
 	function initialize() {
-		console.log('Initialize reportInfoService');
+		//console.log('Initialize reportInfoService');
 		var deferred = $q.defer();
 		if (reportData.length > 0) {
-			console.log('reportInfoService Already Initialized');
+			//console.log('reportInfoService Already Initialized');
 			deferred.resolve('Already Initialized');
 		}
 		else {

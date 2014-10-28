@@ -49,7 +49,7 @@ dashboardApp.controller("loginController", function($scope, $http, userService, 
 					errors.push('Credentials are invalid.');
 				}
 			}
-			
+
 		}).error(function(data, status) {
 			$scope.$parent.closeThisDialog();
 		});

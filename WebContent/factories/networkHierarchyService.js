@@ -35,10 +35,10 @@ dashboardApp.factory("networkHierarchyService", function($http, $q, DropwizardUR
 	};
 
 	function initialize() {
-		console.log('Initialize NetworkHierarchyService');
+		//console.log('Initialize NetworkHierarchyService');
 		var deferred = $q.defer();
 		if (network.hierarchy) {
-			console.log('NetworkHierarchyService Already Initialized');
+			//console.log('NetworkHierarchyService Already Initialized');
 			deferred.resolve(network.hierarchy);
 		}
 		else {
