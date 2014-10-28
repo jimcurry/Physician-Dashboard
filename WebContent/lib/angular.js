@@ -2,6 +2,10 @@
  * @license AngularJS v1.2.17
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
+ * 
+ * Added A try catch bock around a statment that was failing in IE 8. Code
+ * is around line 2186
+ * 
  */
 (function(window, document, undefined) {'use strict';
 
@@ -2183,7 +2187,14 @@ var jqCache = JQLite.cache = {},
       : function(element, type, fn) {element.attachEvent('on' + type, fn);}),
     removeEventListenerFn = (window.document.removeEventListener
       ? function(element, type, fn) {element.removeEventListener(type, fn, false); }
-      : function(element, type, fn) {element.detachEvent('on' + type, fn); });
+      : function(element, type, fn) {
+      	try {
+      		element.detachEvent('on' + type, fn); 
+      	}
+      	catch(e) {
+      		
+      	}
+      	});
 
 /*
  * !!! This is an undocumented "private" function !!!

@@ -13,10 +13,10 @@ dashboardApp.factory("reportingPeriodService", function($http, $q, DropwizardURL
 	};
 
 	function initialize() {
-		console.log('Initialize reportingPeriodService');
+		//console.log('Initialize reportingPeriodService');
 		var deferred = $q.defer();
 		if (reportingPeriod.data) {
-			console.log('reportingPeriodService Already Initialized');
+			//console.log('reportingPeriodService Already Initialized');
 			deferred.resolve('Already Initialized');
 		}
 		else {

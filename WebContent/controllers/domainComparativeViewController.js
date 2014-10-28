@@ -91,8 +91,6 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 	
 	// handles level change made clicking on the row in the detail report
 	levelClicked = function(levelId) {
-		levelId = levelId.replace(/^\s*([\S\s]*)\b\s*$/, '$1'); //IE8 doesn't have trim
-		
 		//see if we are running a patient report
 		var targetLevel = networkHierarchyService.getChildsLevel(networkHierarchyService.network.selectedHierarchyNode.hierarchyId);
 		if (targetLevel == "PRACTITIONER") {
@@ -106,6 +104,35 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 		}
 	};
 	
+	// handles level change made clicking on the row in the detail report
+	levelClicked = function(levelId) {
+		//see if we are running a patient report
+		var targetLevel = networkHierarchyService.getChildsLevel(networkHierarchyService.network.selectedHierarchyNode.hierarchyId);
+		if (targetLevel == "PRACTITIONER") {
+				//stuff to run patient level
+				alert('patient level ' + levelId);
+		}
+		else {
+			var newSelectedNode = networkHierarchyService.findChildNodeById(levelId);
+			networkHierarchyService.setSelectedNode(newSelectedNode.hierarchyId);
+			$scope.switchToDefaultDomainComparativeView();
+		}
+	};
+
+	
+	// handles sort change to detail report made by clicking on the column in the detail report
+	sortColumnClicked = function(measureId) {
+		programService.programData.selectedDomain.measureIdToSortBy = measureId;
+		$scope.$apply(function() {
+			$scope.loadContentPane();
+		});
+	};
+	
+	// handles level change made clicking on the row in the detail report
+	domainClicked = function() {
+		alert("domain clicked");
+	};
+
 	// Make RESTful call to run summary report.
 	$scope.loadSummaryPane = function(){
 		var parmString =	"&p_pLevelType=" + $scope.network.selectedHierarchyNode.data.type + 
@@ -119,7 +146,7 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 			return;
 		}
 
-		$scope.summaryPaneContent = '<div><table width="100%"><tr><td width="100%" align="center"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
+		$scope.summaryPaneContent = '<div style="height : 115px"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
 
 		var url = reportInfoService.getHtmlFragmentReportString("DomainComparativeSummary") + parmString;
 
@@ -150,9 +177,26 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 
 	// Make RESTful call to run detail report.
 	$scope.loadContentPane = function(){
+		//figure out target level for report
+		var targetLevel = networkHierarchyService.getChildsLevel(networkHierarchyService.network.selectedHierarchyNode.hierarchyId);
+		if (targetLevel == "PRACTITIONER") {
+				targetLevel = "99";
+		}
+		
+		var drillDownInd = "Y";
+		if (targetLevel == "99") {
+			drillDownInd = "N";
+		}
+
+		if(!programService.programData.selectedDomain.measureIdToSortBy) {
+			programService.programData.selectedDomain.measureIdToSortBy = 0;
+		}
+
 		var parmString =	"&p_p_level=" + $scope.network.selectedHierarchyNode.data.type + 
 								"&p_p_level_id=" + $scope.network.selectedHierarchyNode.data.id + 
-								"&p_p_selected_date=" + $scope.reportingPeriod.selectedItem.useValue;
+								"&p_p_selected_date=" + $scope.reportingPeriod.selectedItem.useValue +
+								"&p_p_target_level=" + targetLevel +
+								"&p_p_sort=" + programService.programData.selectedDomain.measureIdToSortBy;
 
 		var cacheData = cacheService.get("DomainComparativeDetail" + parmString);
 		if (cacheData != null) {
@@ -160,14 +204,14 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 			return;
 		}
 
-		$scope.contentPaneContent = '<div><table width="100%"><tr><td width="100%" align="center"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
+		$scope.contentPaneContent = '<div style="height : 200px"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
 		
 		var url = reportInfoService.getHtmlFragmentReportString("DomainComparativeDetail") + parmString;
 
 		var request = $http.get(url);
 		request.then(function(report_response){
 			cacheService.push("DomainComparativeDetail" + parmString, report_response.data);
-			
+
 			$scope.contentPaneContent = report_response.data;
 		}, function(report_response){
 			if (report_response.status == "403") {

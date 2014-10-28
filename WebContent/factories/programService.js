@@ -21,10 +21,10 @@ dashboardApp.factory("programService", function($http, $q, userService, Dropwiza
 	};
 
 	function initialize() {
-		console.log('Initialize programService');
+		//console.log('Initialize programService');
 		var deferred = $q.defer();
 		if (programData.data) {
-			console.log('programService Already Initialized');
+			//console.log('programService Already Initialized');
 			deferred.resolve('Already Initialized');
 		}
 		else {

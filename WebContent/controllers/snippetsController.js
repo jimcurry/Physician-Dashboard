@@ -2,7 +2,7 @@ var dashboardApp = angular.module("dashboardApp");
 
 dashboardApp.controller("snippetsController", function($scope, $state, reportingPeriodService) {
 	
-console.log('got into snippetsController');
+//console.log('got into snippetsController');
 
 
 	$scope.reportingPeriod = reportingPeriodService.reportingPeriod;

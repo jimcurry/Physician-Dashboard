@@ -133,7 +133,14 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 	measureClicked = function(measureType, measureCode) {
 		alert("measure code '" + measureCode + "' measure type '" + measureType + "'");
 	};
-
+	
+	// handles sort change to detail report made by clicking on the column in the detail report
+	sortColumnClicked = function(measureId) {
+		programService.programData.selectedDomain.measureIdToSortBy = measureId;
+		$scope.$apply(function() {
+			$scope.loadContentPane();
+		});
+	};
 	
 	// Make RESTful call to run summary report.
 	$scope.loadSummaryPane = function(){
@@ -141,14 +148,14 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 								"&p_pLevelId=" + $scope.network.selectedHierarchyNode.data.id + 
 								"&p_pReportingPeriod=" + $scope.reportingPeriod.selectedItem.useValue + 
 								"&p_pDomainId=" + programService.programData.selectedDomain.id;
-		
+
 		var cacheData = cacheService.get("MeasureComparativeSummary" + parmString);
 		if (cacheData != null) {
 			$scope.summaryPaneContent = cacheData.data;
 			return;
 		}
 
-		$scope.summaryPaneContent = '<div><table width="100%"><tr><td width="100%" align="center"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
+		$scope.summaryPaneContent = '<div style="height : 110px;"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
 
 		var url = reportInfoService.getHtmlFragmentReportString("MeasureComparativeSummary") + parmString;
 
@@ -178,7 +185,7 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 	};
 
 	// Make RESTful call to run detail report.
-	$scope.loadContentPane = function(){
+	$scope.loadContentPane = function() {
 		//figure out target level for report
 		var targetLevel = networkHierarchyService.getChildsLevel(networkHierarchyService.network.selectedHierarchyNode.hierarchyId);
 		if (targetLevel == "PRACTITIONER") {
@@ -190,19 +197,25 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 			drillDownInd = "N";
 		}
 		
+		if(!programService.programData.selectedDomain.measureIdToSortBy) {
+			programService.programData.selectedDomain.measureIdToSortBy = 0;
+		}
+		
 		var parmString = 	"&p_p_level=" + $scope.network.selectedHierarchyNode.data.type + 
 								"&p_p_level_id=" + $scope.network.selectedHierarchyNode.data.id + 
 								"&p_p_selected_date=" + $scope.reportingPeriod.selectedItem.useValue + 
 								"&p_p_domain_num=" + programService.programData.selectedDomain.id +
 								"&p_p_target_level=" + targetLevel +
-								"&p_p_drill_down=" + drillDownInd;		
+								"&p_p_drill_down=" + drillDownInd +
+								"&p_p_sort=" + programService.programData.selectedDomain.measureIdToSortBy;
+		
 		var cacheData = cacheService.get("MeasureComparativeDetail" + parmString);
 		if (cacheData != null) {
 			$scope.contentPaneContent = cacheData.data;
 			return;
 		}
 
-		$scope.contentPaneContent = '<div><table width="100%"><tr><td width="100%" align="center"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
+		$scope.contentPaneContent = '<div style="height : 200px;"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
 
 		var url = reportInfoService.getHtmlFragmentReportString("MeasureComparativeDetail") + parmString;
 

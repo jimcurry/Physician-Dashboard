@@ -1,6 +1,6 @@
 var dashboardApp = angular.module("dashboardApp");
 
-dashboardApp.factory("userService", function($http, $q, CognosMashupURL, CognosNamespace, DropwizardURL, ngDialog) {
+dashboardApp.factory("userService", function($http, $q, $window, CognosMashupURL, CognosNamespace, DropwizardURL, ngDialog) {
 
 	var user = {
 		userName : null,
@@ -24,7 +24,7 @@ function login() {
 	var deferred = $q.defer();
 	
 
-	console.log('open dialog');
+	//console.log('open dialog');
 	
 	loginResult = null;
 	
@@ -36,15 +36,16 @@ function login() {
 	});
 
 	dialog.closePromise.then(function (data) {
-		console.log(user.loginResult );
+		//console.log(user.loginResult );
 		if (user.loginResult == 'OK') {
 			deferred.resolve('OK');
 		}
 		else {
+			$window.location.href = "goodbye.html";
 			deferred.reject("The provided credentials could not be validated.");
 		}
 	},function() {
-		console.log(user.loginResult );
+		//console.log(user.loginResult );
 		deferred.reject("The provided credentials could not be validated.");
 	});
 	
@@ -54,16 +55,16 @@ function login() {
 function initialize() {
 	var deferred = $q.defer();
 
-	console.log('initialize userService');
+	//console.log('initialize userService');
 
 	if (user.isInitialized) {
-		console.log('Already Initialized');
+		//console.log('Already Initialized');
 		deferred.resolve('Already Initialized');
 	}
 
 		else {
 			getUserInfoFromCognos().then(function(message) {
-				console.log('Got user information, first try');
+				//console.log('Got user information, first try');
 				getUserInfoFromDropWizard().then(function(message) {
 					user.isInitialized = true;
 					deferred.resolve('Got user information');
@@ -73,17 +74,17 @@ function initialize() {
 
 			}, function(message) {
 				if (message == 'Unknow failure') {
-					console.log('Unknow failure getting user info');
+					//console.log('Unknow failure getting user info');
 					deferred.resolve('Unknow failure getting user info');
 				}
 				else { // Not Logged On
-					console.log('Not Logged On');
+					//console.log('Not Logged On');
 
 					login().then(function(message) {
 						if (message == 'OK') {
-							console.log('Login worked, try and get user info again.');
+							//console.log('Login worked, try and get user info again.');
 							getUserInfoFromCognos().then(function(message) {
-								console.log('Second try in getting user info woked, we are done.');
+								//console.log('Second try in getting user info woked, we are done.');
 								getUserInfoFromDropWizard().then(function(message) {
 									user.isInitialized = true;
 									deferred.resolve('Got user information');
@@ -91,17 +92,17 @@ function initialize() {
 									deferred.resolve('Could not get user info from dropwizard, we are done.');
 								});
 							}, function(message) {
-								console.log('Second try in getting user info failed, we are done.');
+								//console.log('Second try in getting user info failed, we are done.');
 								deferred.resolve('Second try in getting user info failed, we are done');
 							});
 
 						}
 						else {
-							console.log('Login errored, but in a nice way, we are done.');
+							//console.log('Login errored, but in a nice way, we are done.');
 							deferred.resolve('Login errored, but in a nice way, we are done.');
 						}
 					}, function(message) {
-						console.log('Login errored, we are done.');
+						//console.log('Login errored, we are done.');
 						deferred.resolve('Login errored, we are done.');
 					});
 				}
