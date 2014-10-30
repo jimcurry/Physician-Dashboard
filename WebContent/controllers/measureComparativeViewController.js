@@ -59,12 +59,12 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 
 	//Set up the view switcher
 	$scope.viewList = [
-							"Domain Comparative View"
+							"Domain Summary"
 							];
 	$scope.selectedView = "Measure Comparative View";
 
  	$scope.selectView = function(view) {
-		if (view == "Domain Comparative View") {
+		if (view == "Domain Summary") {
 			$scope.switchToDefaultDomainComparativeView();
 		}
 	};

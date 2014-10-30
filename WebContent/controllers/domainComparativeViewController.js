@@ -53,7 +53,7 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 	$scope.viewList = [
 							"Measure Comparative View"
 							];
-	$scope.selectedView = "Domain Comparative View";
+	$scope.selectedView = "Domain Summary";
 
  	$scope.selectView = function(view) {
 		if (view == "Measure Comparative View") {
@@ -121,16 +121,17 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 
 	
 	// handles sort change to detail report made by clicking on the column in the detail report
-	sortColumnClicked = function(measureId) {
-		programService.programData.selectedDomain.measureIdToSortBy = measureId;
+	sortColumnClicked = function(domainId) {
+		programService.programData.selectedProgram.domainIdToSortBy = domainId;
 		$scope.$apply(function() {
 			$scope.loadContentPane();
 		});
 	};
-	
+
 	// handles level change made clicking on the row in the detail report
-	domainClicked = function() {
-		alert("domain clicked");
+	domainClicked = function(domainId) {
+		programService.selectDomain(domainId);
+		$scope.switchToDefaultMeasureComparativeView();
 	};
 
 	// Make RESTful call to run summary report.
@@ -187,16 +188,17 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 		if (targetLevel == "99") {
 			drillDownInd = "N";
 		}
-
-		if(!programService.programData.selectedDomain.measureIdToSortBy) {
-			programService.programData.selectedDomain.measureIdToSortBy = 0;
+		
+		if(!programService.programData.selectedProgram.domainIdToSortBy) {
+			programService.programData.selectedProgram.domainIdToSortBy = -1;
 		}
-
 		var parmString =	"&p_p_level=" + $scope.network.selectedHierarchyNode.data.type + 
 								"&p_p_level_id=" + $scope.network.selectedHierarchyNode.data.id + 
 								"&p_p_selected_date=" + $scope.reportingPeriod.selectedItem.useValue +
 								"&p_p_target_level=" + targetLevel +
-								"&p_p_sort=" + programService.programData.selectedDomain.measureIdToSortBy;
+								"&p_p_sort=" + programService.programData.selectedProgram.domainIdToSortBy +
+								"&p_program_id=" + programService.programData.selectedProgram.programId +
+								"&p_p_drill_down=" + drillDownInd;
 
 		var cacheData = cacheService.get("DomainComparativeDetail" + parmString);
 		if (cacheData != null) {
