@@ -168,7 +168,7 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 						 "&p_p_level_id=" + $scope.network.selectedHierarchyNode.data.id + 
 						 "&p_p_selected_date=" + $scope.reportingPeriod.selectedItem.useValue +
 						 "&p_p_target_level="+ targetLevelNumber +
-						 //&p_p_measure_type=" + measureService.measureData.selectedType
+						 "&p_p_measure_grp_cd=" + measureService.measureData.selectedType +
 						 "&p_p_measure_code=" + measureService.measureData.selectedCode +
 						 "&p_pBenchmark=" + $scope.selectedBenchmark.id;
 
@@ -218,16 +218,21 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 				// Build parameter list for the Practitioner list report.
 				parmString = "&p_pPractitionerId =" + $scope.selectedPractitionerId +
 				             "&&p_pMonth=" + $scope.reportingPeriod.selectedItem.useValue +
+							 "&p_pMeasureType=" + measureService.measureData.selectedType +
+							 "&p_pMeasureCode=" + measureService.measureData.selectedCode +
 				             "&p_pSort=" + $scope.selectedPractitionerSort.id +
 				             "&p_pFilter=" + $scope.selectedPractitionerFilter.id;
 				cacheData = cacheService.get("MeasureDetailPractitionerDetail" + parmString);
 		}
 		else {
 			    // Build parameter list for level based list report.
-				parmString = "&p_pLevel=" + $scope.network.selectedHierarchyNode.data.type + 
-							 "&p_pLevelName=" + $scope.network.selectedHierarchyNode.name + 
-							 "&p_pMonth=" + $scope.reportingPeriod.selectedItem.useValue +
-							 "&p_pSort=" + $scope.selectedACOSort.id;
+				parmString = "&p_p_level=" + $scope.network.selectedHierarchyNode.data.type + 
+							 "&p_p_level_id=" + $scope.network.selectedHierarchyNode.data.id + 
+							 "&p_p_selected_date=" + $scope.reportingPeriod.selectedItem.useValue +
+							 "&p_p_target_level=" + targetLevelNumber +
+							 "&p_p_measure_grp_cd=" + measureService.measureData.selectedType +
+							 "&p_p_measure_code=" + measureService.measureData.selectedCode +
+							 "&p_p_sort=" + $scope.selectedACOSort.id;
 				cacheData = cacheService.get("MeasureDetailLevelBasedDetail" + parmString);
 		}
 			
