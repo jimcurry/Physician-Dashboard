@@ -1,6 +1,6 @@
 var dashboardApp = angular.module("dashboardApp");
 
-dashboardApp.controller("measureComparativeViewController", function($scope, $sce, $http, $stateParams, ngDialog, userService, reportingPeriodService, networkHierarchyService, programService, reportInfoService, cacheService) {
+dashboardApp.controller("measureComparativeViewController", function($scope, $sce, $http, $stateParams, ngDialog, userService, reportingPeriodService, networkHierarchyService, programService, reportInfoService, cacheService, measureService) {
 
 	// Make sure services are initialized 
 	if (!userService.user.isInitialized) {
@@ -131,7 +131,9 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 
 	// handles level change made clicking on the column in the detail report
 	measureClicked = function(measureType, measureCode) {
-		alert("measure code '" + measureCode + "' measure type '" + measureType + "'");
+		measureService.measureData.selectedCode = measureCode;
+		measureService.measureData.selectedType = measureType;
+		$scope.switchToDefaultMeasureDetailView();
 	};
 	
 	// handles sort change to detail report made by clicking on the column in the detail report
