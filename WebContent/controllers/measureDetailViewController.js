@@ -73,9 +73,9 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 	
     // Population of Benchmark list (may become table driven eventually)
 	$scope.benchmarkList = [
-                            {name:"None", id: "0"},
-                            {name:"CMS 90th Percentile", id: "90"},
-                            {name:"CMS 30th Percentile", id: "30"}
+                            {name:"None", id: "0.00"},
+                            {name:"CMS 90th Percentile", id: "90.00"},
+                            {name:"CMS 30th Percentile", id: "30.00"}
                          ];
     $scope.selectedBenchmark = $scope.benchmarkList[0];	
     
@@ -167,10 +167,10 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 		var parmString = "&p_p_level=" + $scope.network.selectedHierarchyNode.data.type + 
 						 "&p_p_level_id=" + $scope.network.selectedHierarchyNode.data.id + 
 						 "&p_p_selected_date=" + $scope.reportingPeriod.selectedItem.useValue +
-						 "&p_p_target_level="+ targetLevelNumber +
+						 "&p_p_target_level="+ $scope.network.selectedHierarchyNode.data.type + 
 						 "&p_p_measure_grp_cd=" + measureService.measureData.selectedType +
 						 "&p_p_measure_code=" + measureService.measureData.selectedCode +
-						 "&p_pBenchmark=" + $scope.selectedBenchmark.id;
+						 "&p_p_benchmark=" + $scope.selectedBenchmark.id;
 
 		var cacheData = cacheService.get("MeasureDetailSummary" + parmString);
 		if (cacheData != null) {
@@ -213,18 +213,19 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 		var cacheData = null;
 
 		//see if we are running a patient report
-		var targetLevel = networkHierarchyService.getChildsLevel(networkHierarchyService.network.selectedHierarchyNode.hierarchyId);
-		if (targetLevel == "PRACTITIONER") {
-				// Build parameter list for the Practitioner list report.
-				parmString = "&p_pPractitionerId =" + $scope.selectedPractitionerId +
-				             "&&p_pMonth=" + $scope.reportingPeriod.selectedItem.useValue +
-							 "&p_pMeasureType=" + measureService.measureData.selectedType +
-							 "&p_pMeasureCode=" + measureService.measureData.selectedCode +
-				             "&p_pSort=" + $scope.selectedPractitionerSort.id +
-				             "&p_pFilter=" + $scope.selectedPractitionerFilter.id;
-				cacheData = cacheService.get("MeasureDetailPractitionerDetail" + parmString);
-		}
-		else {
+		//var targetLevel = networkHierarchyService.getChildsLevel(networkHierarchyService.network.selectedHierarchyNode.hierarchyId);
+		// ** The following comment
+		//if (targetLevel == "PRACTITIONER") {
+		//		// Build parameter list for the Practitioner list report.
+		//		parmString = "&p_pPractitionerId =" + $scope.selectedPractitionerId +
+		//		             "&&p_pMonth=" + $scope.reportingPeriod.selectedItem.useValue +
+		//					 "&p_pMeasureType=" + measureService.measureData.selectedType +
+		//					 "&p_pMeasureCode=" + measureService.measureData.selectedCode +
+		//		             //"&p_pSort=" + $scope.selectedPractitionerSort.id +
+		//		             "&p_pFilter=" + $scope.selectedPractitionerFilter.id;
+		//		cacheData = cacheService.get("MeasureDetailPractitionerDetail" + parmString);
+		//}
+		//else {
 			    // Build parameter list for level based list report.
 				parmString = "&p_p_level=" + $scope.network.selectedHierarchyNode.data.type + 
 							 "&p_p_level_id=" + $scope.network.selectedHierarchyNode.data.id + 
@@ -234,7 +235,7 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 							 "&p_p_measure_code=" + measureService.measureData.selectedCode +
 							 "&p_p_sort=" + $scope.selectedACOSort.id;
 				cacheData = cacheService.get("MeasureDetailLevelBasedDetail" + parmString);
-		}
+		//}
 			
 		if (cacheData != null) {
 			$scope.contentPaneContent = cacheData.data;
@@ -244,19 +245,19 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 		$scope.contentPaneContent = '<div><table width="100%"><tr><td width="100%" align="center"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
 		
 		var url = null;
-		if (targetLevel == "PRACTITIONER") {
-			url = reportInfoService.getHtmlFragmentReportString("MeasureDetailPractitionerDetail") + parmString;
-		} else {
+		//if (targetLevel == "PRACTITIONER") {
+		//	url = reportInfoService.getHtmlFragmentReportString("MeasureDetailPractitionerDetail") + parmString;
+		//} else {
 			url = reportInfoService.getHtmlFragmentReportString("MeasureDetailLevelBasedDetail") + parmString;
-		}
+		//}
 
 		var request = $http.get(url);
 		request.then(function(report_response){
-			if (targetLevel == "PRACTITIONER") {
-				cacheService.push("MeasureDetailPractitionerDetail" + parmString, report_response.data);
-			} else {
+			//if (targetLevel == "PRACTITIONER") {
+			//	cacheService.push("MeasureDetailPractitionerDetail" + parmString, report_response.data);
+			//} else {
 				cacheService.push("MeasureDetailLevelBasedDetail" + parmString, report_response.data);
-			};
+			//};
 			
 			$scope.contentPaneContent = report_response.data;
 		}, function(report_response){
@@ -279,7 +280,6 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 		});
 	};
 
-	$scope.loadContentPane();
 	$scope.loadSummaryPane();
-
+	$scope.loadContentPane();
 });
