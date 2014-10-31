@@ -41,7 +41,7 @@ function login() {
 			deferred.resolve('OK');
 		}
 		else {
-			$window.location.href = "goodbye.html";
+			$window.location.href = "goodbye.html?msg=1";
 			deferred.reject("The provided credentials could not be validated.");
 		}
 	},function() {
@@ -69,6 +69,7 @@ function initialize() {
 					user.isInitialized = true;
 					deferred.resolve('Got user information');
 				}, function(message) {
+					$window.location.href = "goodbye.html?msg=2";
 					deferred.resolve('Could not get user info from dropwizard, we are done.');
 				});
 
@@ -136,6 +137,7 @@ function getUserInfoFromCognos() {
 			deferred.reject("Not Logged On");
 		}
 		else {
+			$window.location.href = "goodbye.html?msg=3";
 			deferred.reject("Unknow failure");
 		}
 	});

@@ -11,7 +11,31 @@
 
 <title>Not logged in</title>
 
-<!-- Bootstrap core CSS -->
+<script type="text/javascript" src="./lib/jquery-1.11.1.min.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		var msg = '1';
+		var url = window.location.href;
+		try {
+			msg = url.match(/msg=(.*)/)[1];
+		}
+		catch (e) {
+		}
+		if (msg =='1' || msg =='2' || msg == '3') {
+			showDiv(msg);
+		}
+		else {
+			showDiv('1');
+		}
+
+	});
+	function showDiv(option) {
+		$('.msg').hide();
+		$('#' + option).show();
+	}
+</script>
+
 <!-- Bootstrap core CSS -->
 <link href="./css/bootstrap.css" rel="stylesheet">
 <link href="./css/bootstrap-theme.css" rel="stylesheet">
@@ -20,12 +44,18 @@
 
 <body>
 
-
-	<!-- Main jumbotron for a primary marketing message or call to action -->
 	<div class="jumbotron">
 		<div class="container">
 			<h1>Not logged in...</h1>
-			<p>You are not logged in to the Physician Dashboard System.</p>
+			<div class="msg" id="1">
+				<p>You are not logged in to the Physician Dashboard System.</p>
+			</div>
+			<div class="msg" id="2">
+				<p>Looks like we could not connect to the application server.</p>
+			</div>
+			<div class="msg" id="3">
+				<p>Looks like we could not connect to the reporting server.</p>
+			</div>
 			<p>
 				<a href="index.html" class="btn btn-primary btn-lg" role="button">Log in &raquo;</a>
 			</p>
