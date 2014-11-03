@@ -206,7 +206,7 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 		var parmString = 	"&p_p_level=" + $scope.network.selectedHierarchyNode.data.type + 
 								"&p_p_level_id=" + $scope.network.selectedHierarchyNode.data.id + 
 								"&p_p_selected_date=" + $scope.reportingPeriod.selectedItem.useValue + 
-								"&p_p_domain_num=" + programService.programData.selectedDomain.id +
+								"&p_p_domain_id=" + programService.programData.selectedDomain.id +
 								"&p_p_target_level=" + targetLevel +
 								"&p_p_drill_down=" + drillDownInd +
 								"&p_p_sort=" + programService.programData.selectedDomain.measureIdToSortBy;
