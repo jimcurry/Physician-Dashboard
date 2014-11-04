@@ -200,7 +200,7 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 		}
 		
 		if(!programService.programData.selectedDomain.measureIdToSortBy) {
-			programService.programData.selectedDomain.measureIdToSortBy = 0;
+			programService.programData.selectedDomain.measureIdToSortBy = -1;
 		}
 		
 		var parmString = 	"&p_p_level=" + $scope.network.selectedHierarchyNode.data.type + 
