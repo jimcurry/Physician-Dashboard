@@ -1,6 +1,6 @@
 var dashboardApp = angular.module("dashboardApp");
 
-dashboardApp.factory("userService", function($http, $q, $window, CognosMashupURL, CognosNamespace, DropwizardURL, ngDialog) {
+dashboardApp.factory("userService", function($http, $q, $window, CognosMashupURL, CognosNamespace, DropwizardURL, ngDialog, progressBarService) {
 
 	var user = {
 		userName : null,
@@ -41,6 +41,7 @@ function login() {
 			deferred.resolve('OK');
 		}
 		else {
+			progressBarService.progressBarData.visable = false;
 			$window.location.href = "goodbye.html?msg=1";
 			deferred.reject("The provided credentials could not be validated.");
 		}
@@ -53,6 +54,11 @@ function login() {
  }
 
 function initialize() {
+	
+	progressBarService.progressBarData.max = 5;
+	progressBarService.progressBarData.value = 1;
+	progressBarService.progressBarData.visable = true;
+	
 	var deferred = $q.defer();
 
 	//console.log('initialize userService');
@@ -69,6 +75,7 @@ function initialize() {
 					user.isInitialized = true;
 					deferred.resolve('Got user information');
 				}, function(message) {
+					progressBarService.progressBarData.visable = false;
 					$window.location.href = "goodbye.html?msg=2";
 					deferred.resolve('Could not get user info from dropwizard, we are done.');
 				});
@@ -137,6 +144,7 @@ function getUserInfoFromCognos() {
 			deferred.reject("Not Logged On");
 		}
 		else {
+			progressBarService.progressBarData.visable = false;
 			$window.location.href = "goodbye.html?msg=3";
 			deferred.reject("Unknow failure");
 		}

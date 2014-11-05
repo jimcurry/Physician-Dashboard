@@ -1,6 +1,6 @@
 var dashboardApp = angular.module("dashboardApp");
 
-dashboardApp.factory("reportingPeriodService", function($http, $q, DropwizardURL) {
+dashboardApp.factory("reportingPeriodService", function($http, $q, DropwizardURL, progressBarService) {
 	//format of data
 	//[12]
 	//		0:	{
@@ -17,10 +17,12 @@ dashboardApp.factory("reportingPeriodService", function($http, $q, DropwizardURL
 		var deferred = $q.defer();
 		if (reportingPeriod.data) {
 			//console.log('reportingPeriodService Already Initialized');
+			progressBarService.progressBarData.value++;
 			deferred.resolve('Already Initialized');
 		}
 		else {
 			$http.get(DropwizardURL + "/reportingPeriod?numberMonths=12").success(function(data) {
+				progressBarService.progressBarData.value++;
 				reportingPeriod.data = data;
 				reportingPeriod.selectedItem = reportingPeriod.data[0];
 				deferred.resolve('Initialized');
@@ -28,6 +30,7 @@ dashboardApp.factory("reportingPeriodService", function($http, $q, DropwizardURL
 				deferred.reject('failed -' + status);
 			});
 		}
+
 		return deferred.promise;
 	}
 	;

@@ -1,6 +1,6 @@
 var dashboardApp = angular.module("dashboardApp");
 
-dashboardApp.factory("reportInfoService", function($http, $q, userService, DropwizardURL, CognosMashupURL) {
+dashboardApp.factory("reportInfoService", function($http, $q, userService, DropwizardURL, CognosMashupURL, progressBarService) {
 
 //	format of reportData
 //	[2]
@@ -16,16 +16,19 @@ dashboardApp.factory("reportInfoService", function($http, $q, userService, Dropw
 		var deferred = $q.defer();
 		if (reportData.length > 0) {
 			//console.log('reportInfoService Already Initialized');
+			progressBarService.progressBarData.value++;
 			deferred.resolve('Already Initialized');
 		}
 		else {
 			$http.get(DropwizardURL + "/reportInfo?userName=" + userService.user.userName).success(function(data) {
+				progressBarService.progressBarData.value++;
 				reportData = data;
 				deferred.resolve('Initialized');
 			}).error(function(data, status) {
 				deferred.reject('failed -' + status);
 			});
 		}
+		
 		return deferred.promise;
 	}
 

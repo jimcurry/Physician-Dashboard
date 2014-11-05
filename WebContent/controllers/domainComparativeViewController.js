@@ -91,11 +91,20 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 	
 	// handles level change made clicking on the row in the detail report
 	levelClicked = function(levelId) {
+		
 		//see if we are running a patient report
 		var targetLevel = networkHierarchyService.getChildsLevel(networkHierarchyService.network.selectedHierarchyNode.hierarchyId);
 		if (targetLevel == "PRACTITIONER") {
-				//stuff to run patient level
-				alert('patient level ' + levelId);
+			var practitionerName;
+			var a = document.getElementsByTagName('a');
+			for (var i= 0; i < a.length; ++i) {
+				if (a[i].onclick != null && a[i].onclick.toString().indexOf("levelClicked('" + levelId + "')") >= 0) {
+					var theSpan = a[i].getElementsByTagName('span');
+					practitionerName = theSpan[0].innerHTML;
+					break;
+				}
+			}
+			networkHierarchyService.addPractitioner(levelId, practitionerName, networkHierarchyService.network.selectedHierarchyNode.hierarchyId);
 		}
 		else {
 			var newSelectedNode = networkHierarchyService.findChildNodeById(levelId);
@@ -104,22 +113,7 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 		}
 	};
 	
-	// handles level change made clicking on the row in the detail report
-	levelClicked = function(levelId) {
-		//see if we are running a patient report
-		var targetLevel = networkHierarchyService.getChildsLevel(networkHierarchyService.network.selectedHierarchyNode.hierarchyId);
-		if (targetLevel == "PRACTITIONER") {
-				//stuff to run patient level
-				alert('patient level ' + levelId);
-		}
-		else {
-			var newSelectedNode = networkHierarchyService.findChildNodeById(levelId);
-			networkHierarchyService.setSelectedNode(newSelectedNode.hierarchyId);
-			$scope.switchToDefaultDomainComparativeView();
-		}
-	};
 
-	
 	// handles sort change to detail report made by clicking on the column in the detail report
 	sortColumnClicked = function(domainId) {
 		programService.programData.selectedProgram.domainIdToSortBy = domainId;
@@ -186,7 +180,7 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 		
 		var drillDownInd = "Y";
 		if (targetLevel == "99") {
-			drillDownInd = "N";
+			drillDownInd = "Y";
 		}
 		
 		if(!programService.programData.selectedProgram.domainIdToSortBy) {

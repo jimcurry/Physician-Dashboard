@@ -1,6 +1,6 @@
 var dashboardApp = angular.module("dashboardApp");
 
-dashboardApp.factory("programService", function($http, $q, userService, DropwizardURL) {
+dashboardApp.factory("programService", function($http, $q, userService, DropwizardURL, progressBarService) {
 
 //format of "data"
 //[2]
@@ -25,16 +25,19 @@ dashboardApp.factory("programService", function($http, $q, userService, Dropwiza
 		var deferred = $q.defer();
 		if (programData.data) {
 			//console.log('programService Already Initialized');
+			progressBarService.progressBarData.value++;
 			deferred.resolve('Already Initialized');
 		}
 		else {
 			$http.get(DropwizardURL + "/program?userName=" + userService.user.userName).success(function(data) {
+				progressBarService.progressBarData.value++;
 				programData.data = data;
 				deferred.resolve('Initialized');
 			}).error(function(data, status) {
 				deferred.reject('failed -' + status);
 			});
 		}
+		
 		return deferred.promise;
 	}
 

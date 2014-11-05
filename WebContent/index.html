@@ -59,6 +59,7 @@
 <script src="./factories/reportInfoService.js"></script>
 <script src="./factories/measureService.js"></script>
 <script src="./factories/cacheService.js"></script>
+<script src="./factories/progressBarService.js"></script>
 
 <!--  Controllers -->
 <script src="./controllers/dashboardController.js"></script>
@@ -126,13 +127,18 @@
 					<div class="col-md-12"></div>
 				</div>
 				<div ui-view>
-					<div style="height: 600px; background-image: url(./images/splash.jpg); background-size: cover;" ></div>
-					<div class="row-fluid">
-						<div class="col-md-12"></div>
+					<div style="height: 600px; background-image: url(./images/splash.jpg); background-size: cover;">
+					<div class="row-fluid" style="height:300px;"></div>
+					<div class="row-fluid" >
+						<div class="col-md-4"></div>
+						<div class="col-md-4">
+							<progressbar class="progress-striped active" ng-show="progressBarData.visable" value="(progressBarData.value * 100) / progressBarData.max"></progressbar>
+						</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		</div>
+	</div>
 </body>
 </html>

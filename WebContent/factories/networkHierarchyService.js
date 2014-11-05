@@ -1,6 +1,6 @@
 var dashboardApp = angular.module("dashboardApp");
 
-dashboardApp.factory("networkHierarchyService", function($http, $q, DropwizardURL, userService) {
+dashboardApp.factory("networkHierarchyService", function($http, $q, DropwizardURL, userService, progressBarService) {
 //format of "hierarchy"
 //	[2]
 //		0:	{
@@ -26,12 +26,21 @@ dashboardApp.factory("networkHierarchyService", function($http, $q, DropwizardUR
 //						parentId: "150000"
 //						type: "20"
 //					}
+//			practitioners: [1]
+//			0:	{
+//				hierarchyId: 2
+//				name: "Practitioner guy 1"
+//				data: {
+//					id: "158000"
+//					type: "PRACTITIONER"
+//				}
 
 	var network = {
 		hierarchy : null,
 		selectedHierarchyNode : null,
 		selectedPath : null,
-		tempSelectedHierarchyNode : null
+		tempSelectedHierarchyNode : null,
+		nextPractitionerId : -1
 	};
 
 	function initialize() {
@@ -39,10 +48,12 @@ dashboardApp.factory("networkHierarchyService", function($http, $q, DropwizardUR
 		var deferred = $q.defer();
 		if (network.hierarchy) {
 			//console.log('NetworkHierarchyService Already Initialized');
+			progressBarService.progressBarData.value++;
 			deferred.resolve(network.hierarchy);
 		}
 		else {
 			$http.get(DropwizardURL + "/organization/hierarchy?userName=" + userService.user.userName).success(function(data) {
+				progressBarService.progressBarData.value++;
 				network.hierarchy = data;
 				network.selectedHierarchyNode = network.hierarchy[0];
 				network.selectedPath = [network.hierarchy[0]];
@@ -51,6 +62,7 @@ dashboardApp.factory("networkHierarchyService", function($http, $q, DropwizardUR
 				deferred.reject(status);
 			});
 		}
+
 		return deferred.promise;
 	}
 	
@@ -139,12 +151,65 @@ dashboardApp.factory("networkHierarchyService", function($http, $q, DropwizardUR
 		}
 	}
 	
+	function addPractitioner(id, practitionerName, parentId) {
+		//find the parent, good chance that is is the current selected one so try that first
+		
+		var parentNode;
+		var practitionerNode;
+		
+		if (network.selectedHierarchyNode.hierarchyId == parentId) {
+			parentNode = network.selectedHierarchyNode;
+		}
+		else {
+			parentNode = findNode(parentId);
+		}
+		
+		var addNew = true;
+		
+		if (parentNode.practitioners) {
+			//see if the practitioner is already in the object
+			for (var i = 0; i < parentNode.practitioners.length; i++) {
+				if (parentNode.practitioners[i].data.id == id) {
+					practitionerNode = parentNode.practitioners[i];
+					addNew = false;
+					break;
+				}
+			}
+		}
+		
+		if (addNew) {
+			var newId = network.nextPractitionerId--;
+			
+			if (parentNode.practitioners == undefined) {
+				parentNode.practitioners = [{
+					hierarchyId : newId,
+					name : practitionerName,
+					data : {
+						id : id,
+						type : "PRACTITIONER"
+					}
+				}];
+			}
+			else {
+				parentNode.practitioners.push({
+					hierarchyId : newId,
+					name : practitionerName,
+					data : {
+						id : id,
+						type : "PRACTITIONER"
+					}
+				});
+			}
+		}
+	}
+	
 	return {
 		network : network,
 		setSelectedNode : setSelectedNode,
 		findNode : findNode,
 		findChildNodeById : findChildNodeById,
 		getChildsLevel : getChildsLevel,
+		addPractitioner : addPractitioner,
 		initialize : initialize
 	};
 

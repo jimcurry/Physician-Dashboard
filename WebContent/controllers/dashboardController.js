@@ -1,15 +1,11 @@
 var dashboardApp = angular.module("dashboardApp");
 
 dashboardApp.controller("dashboardController", function($scope, $http, $state, userService, networkHierarchyService, programService,
-		reportingPeriodService, measureService) {
-	
-	  $scope.alerts = [
-	                   { type: 'danger', msg: 'Oh snap! Change a few things up and try submitting again.' },
-	                   { type: 'success', msg: 'Well done! You successfully read this important alert message.' }
-	                 ];
+		reportingPeriodService, measureService, progressBarService) {
 	
 	$scope.user = userService.user;
 	$scope.network = networkHierarchyService.network;
+	$scope.progressBarData = progressBarService.progressBarData;
 
 	$scope.resetSelectedEntity = function(hierarchyId) {
 		networkHierarchyService.setSelectedNode(hierarchyId);
