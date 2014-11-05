@@ -29,6 +29,7 @@ dashboardApp.factory("networkHierarchyService", function($http, $q, DropwizardUR
 //			practitioners: [1]
 //			0:	{
 //				hierarchyId: 2
+//				parentHierarchyId: 0
 //				name: "Practitioner guy 1"
 //				data: {
 //					id: "158000"
@@ -83,15 +84,24 @@ dashboardApp.factory("networkHierarchyService", function($http, $q, DropwizardUR
 		setSelectedPath(hierarchyId);
 	}
 	
-	function findNode(hierarchyId) {
+
+		function findNode(hierarchyId) {
 		for (var i = 0; i < network.hierarchy.length; i++) {
 			if (network.hierarchy[i].hierarchyId == hierarchyId) {
 				return network.hierarchy[i];
 			}
-			else if (network.hierarchy[i].children.length > 0) {
-				var node = searchChildren(hierarchyId, network.hierarchy[i].children);
-				if (node != null) {
-					return node;
+			else {
+				if (network.hierarchy[i].children.length > 0) {
+					var node = searchChildren(hierarchyId, network.hierarchy[i].children);
+					if (node != null) {
+						return node;
+					}
+				}
+				if (network.hierarchy[i].practitioners && network.hierarchy[i].practitioners.length > 0) {
+					var node = searchPractitioners(hierarchyId, network.hierarchy[i].practitioners);
+					if (node != null) {
+						return node;
+					}
 				}
 			}
 		}
@@ -108,9 +118,26 @@ dashboardApp.factory("networkHierarchyService", function($http, $q, DropwizardUR
 					return node;
 				}
 			}
+			else {
+				if (childrenToSearch[j].practitioners && childrenToSearch[j].practitioners.length > 0) {
+					var node = searchPractitioners(hierarchyIdToFind, childrenToSearch[j].practitioners);
+					if (node != null) {
+						return node;
+					}
+				}
+			}
 
 			if (childrenToSearch[j].hierarchyId == hierarchyIdToFind) {
 				return childrenToSearch[j];
+			}
+		}
+		return null;
+	}
+	
+	function searchPractitioners(hierarchyIdToFind, practitionersToSearch) {
+		for (var j = 0; j < practitionersToSearch.length; j++) {
+			if (practitionersToSearch[j].hierarchyId == hierarchyIdToFind) {
+				return practitionersToSearch[j];
 			}
 		}
 		return null;
@@ -137,14 +164,26 @@ dashboardApp.factory("networkHierarchyService", function($http, $q, DropwizardUR
 				break;
 			}
 		}
+		
+		if (network.selectedHierarchyNode.practitioners) {
+			for (var i = 0; i < network.selectedHierarchyNode.practitioners.length; i++) {
+				if (network.selectedHierarchyNode.practitioners[i].data.id == id) {
+					hierarchyIdToReturn = network.selectedHierarchyNode.practitioners[i];
+					break;
+				}
+			}
+		}
 		return hierarchyIdToReturn;
 	}
 	
 	// Return the level of the nodes under the one passed in.  If there
 	// isn't one 
 	function getChildsLevel(id) {
-		if (network.selectedHierarchyNode.children.length == 0) {
+		if (network.selectedHierarchyNode.children && network.selectedHierarchyNode.children.length == 0) {
 			return "PRACTITIONER";
+		}
+		else if (network.selectedHierarchyNode.data.type == "PRACTITIONER") {
+			return "PATIENT";
 		}
 		else {
 			return network.selectedHierarchyNode.children[0].data.type;
@@ -180,27 +219,25 @@ dashboardApp.factory("networkHierarchyService", function($http, $q, DropwizardUR
 		if (addNew) {
 			var newId = network.nextPractitionerId--;
 			
+
+			practitionerNode = {
+				hierarchyId : newId,
+				parentHierarchyId : parentId,
+				name : practitionerName,
+				data : {
+					id : id,
+					type : "PRACTITIONER"
+				}
+			};
+			
 			if (parentNode.practitioners == undefined) {
-				parentNode.practitioners = [{
-					hierarchyId : newId,
-					name : practitionerName,
-					data : {
-						id : id,
-						type : "PRACTITIONER"
-					}
-				}];
+				parentNode.practitioners = [practitionerNode];
 			}
 			else {
-				parentNode.practitioners.push({
-					hierarchyId : newId,
-					name : practitionerName,
-					data : {
-						id : id,
-						type : "PRACTITIONER"
-					}
-				});
+				parentNode.practitioners.push(practitionerNode);
 			}
 		}
+		setSelectedNode(practitionerNode.hierarchyId);
 	}
 	
 	return {

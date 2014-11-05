@@ -105,6 +105,7 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 				}
 			}
 			networkHierarchyService.addPractitioner(levelId, practitionerName, networkHierarchyService.network.selectedHierarchyNode.hierarchyId);
+			$scope.switchToDefaultDomainComparativeView();
 		}
 		else {
 			var newSelectedNode = networkHierarchyService.findChildNodeById(levelId);
@@ -180,7 +181,7 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 		
 		var drillDownInd = "Y";
 		if (targetLevel == "99") {
-			drillDownInd = "Y";
+			drillDownInd = "N";
 		}
 		
 		if(!programService.programData.selectedProgram.domainIdToSortBy) {
