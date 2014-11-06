@@ -105,7 +105,9 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 			
 			$scope.switchToDefaultMeasureComparativeView();
 		}, function() {
-			$scope.network.tempSelectedHierarchyNode.selected = false;
+			if ($scope.network.tempSelectedHierarchyNode.selected) {
+				$scope.network.tempSelectedHierarchyNode.selected = false;
+			}
 		});
 	};
 
@@ -119,8 +121,17 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 		//see if we are running a patient report
 		var targetLevel = networkHierarchyService.getChildsLevel(networkHierarchyService.network.selectedHierarchyNode.hierarchyId);
 		if (targetLevel == "PRACTITIONER") {
-				//stuff to run patient level
-				alert('patient level ' + levelId);
+			var practitionerName;
+			var a = document.getElementsByTagName('a');
+			for (var i= 0; i < a.length; ++i) {
+				if (a[i].onclick != null && a[i].onclick.toString().indexOf("levelClicked('" + levelId + "')") >= 0) {
+					var theSpan = a[i].getElementsByTagName('span');
+					practitionerName = theSpan[0].innerHTML;
+					break;
+				}
+			}
+			networkHierarchyService.addPractitioner(levelId, practitionerName, networkHierarchyService.network.selectedHierarchyNode.hierarchyId);
+			$scope.switchToDefaultMeasureComparativeView();
 		}
 		else {
 			var newSelectedNode = networkHierarchyService.findChildNodeById(levelId);
@@ -145,9 +156,14 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 	};
 	
 	// Make RESTful call to run summary report.
+	var targetLevel = $scope.network.selectedHierarchyNode.data.type;
+	if (targetLevel == "PRACTITIONER") {
+			targetLevel = "99";
+	}
+	
 	$scope.loadSummaryPane = function(){
-		var parmString = 	"&p_pLevelType=" + $scope.network.selectedHierarchyNode.data.type + 
-								"&p_pLevelId=" + $scope.network.selectedHierarchyNode.data.id + 
+		var parmString = 	"&p_pLevelType=" + targetLevel + 
+								"&p_pLevelId=" + $scope.network.selectedHierarchyNode.data.id +
 								"&p_pReportingPeriod=" + $scope.reportingPeriod.selectedItem.useValue + 
 								"&p_pDomainId=" + programService.programData.selectedDomain.id;
 
@@ -196,22 +212,37 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 		
 		var drillDownInd = "Y";
 		if (targetLevel == "99") {
-			drillDownInd = "N";
+			drillDownInd = "Y";
 		}
 		
 		if(!programService.programData.selectedDomain.measureIdToSortBy) {
 			programService.programData.selectedDomain.measureIdToSortBy = -1;
 		}
 		
-		var parmString = 	"&p_p_level=" + $scope.network.selectedHierarchyNode.data.type + 
+		var parmString;
+		var reportName;
+		
+		if (targetLevel == "PATIENT") {
+			reportName = "MeasureComparativePatientDetails";
+			parmString = 	"&p_pPractitionerId=" + $scope.network.selectedHierarchyNode.data.id + 
+								"&p_pMonth=" + $scope.reportingPeriod.selectedItem.useValue + 
+								"&p_p_domain_id=" + programService.programData.selectedDomain.id;		}
+		else {
+			reportName = "MeasureComparativeDetail";
+			parmString = 	"&p_p_level=" + $scope.network.selectedHierarchyNode.data.type + 
 								"&p_p_level_id=" + $scope.network.selectedHierarchyNode.data.id + 
 								"&p_p_selected_date=" + $scope.reportingPeriod.selectedItem.useValue + 
 								"&p_p_domain_id=" + programService.programData.selectedDomain.id +
 								"&p_p_target_level=" + targetLevel +
 								"&p_p_drill_down=" + drillDownInd +
-								"&p_p_sort=" + programService.programData.selectedDomain.measureIdToSortBy;
+								"&p_p_sort=" + programService.programData.selectedDomain.measureIdToSortBy;			
+		}
 		
-		var cacheData = cacheService.get("MeasureComparativeDetail" + parmString);
+
+		
+
+		
+		var cacheData = cacheService.get(reportName + parmString);
 		if (cacheData != null) {
 			$scope.contentPaneContent = cacheData.data;
 			return;
@@ -219,11 +250,11 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 
 		$scope.contentPaneContent = '<div style="height : 200px;"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
 
-		var url = reportInfoService.getHtmlFragmentReportString("MeasureComparativeDetail") + parmString;
+		var url = reportInfoService.getHtmlFragmentReportString(reportName) + parmString;
 
 		var request = $http.get(url);
 		request.then(function(report_response){
-			cacheService.push("MeasureComparativeDetail" + parmString, report_response.data);
+			cacheService.push(reportName + parmString, report_response.data);
 
 			$scope.contentPaneContent = report_response.data;
 		}, function(report_response){

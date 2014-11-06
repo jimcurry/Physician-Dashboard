@@ -35,6 +35,13 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 		$scope.switchToDefaultDomainComparativeView();
 		return;
 	}
+	
+	// This page doesn't support practitioner level if move up a level if that is where we are.
+	if (networkHierarchyService.network.selectedHierarchyNode.data.type == "PRACTITIONER") {
+		networkHierarchyService.setSelectedNode(networkHierarchyService.network.selectedHierarchyNode.parentHierarchyId);
+		$scope.switchToDefaultDomainComparativeView();
+		return;
+	}
 
 	
 	//bind data that view uses
