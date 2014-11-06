@@ -61,13 +61,17 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 
 	//Set up the view switcher
 	$scope.viewList = [
-							"Measure Comparative View"
+							"Measure Comparative View",
+							"Domain Summary"
 							];
-	$scope.selectedView = "Domain Comparative View";
+	$scope.selectedView = "Measure Detail View";
 
  	$scope.selectView = function(view) {
 		if (view == "Measure Comparative View") {
 			$scope.switchToDefaultMeasureComparativeView();
+		}
+		else if (view == "Domain Summary") {
+			$scope.switchToDefaultDomainComparativeView();
 		}
 	};
 	
@@ -84,28 +88,6 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
     	$scope.loadSummaryPane();
     };
     
-    // Population of the "Priorize By:" dropdown data set 
-    $scope.sortList_ACO = [
-                            {name: "Performance (low to high)", id: "ASC"},
-                            {name: "Performance (high to low)", id: "DESC"}
-                         ];
-    $scope.selectedACOSort = $scope.sortList_ACO[0];
-       
-    // Population of the sort list for the Practitioner detail list
-    $scope.sortList_Practitioner = [
-                            {name: "Met Critera (Not Met, Met, N/A)", id: "Met"},
-                            {name: "Patient Name", id: "Name"}
-                         ];
-       
-    $scope.selectedPractitionerSort = $scope.sortList_Practitioner[0];	
-       
-    // Population of the filter list for the Pracitioner detail list
-    $scope.filterList_Practitioner = [
-                             {name: "Did not meet criteria", id: "Not Met"},
-                             {name: "Met critera", id: "Met"}
-                         ];
-    $scope.selectedPractitionerFilter = $scope.filterList_Practitioner[0];
-
 
 	var targetLevel = networkHierarchyService.getChildsLevel(networkHierarchyService.network.selectedHierarchyNode.hierarchyId);
 	var targetLevelNumber = targetLevel;
@@ -133,7 +115,9 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 			
 			$scope.switchToDefaultMeasureDetailView();
 		}, function() {
-			$scope.network.tempSelectedHierarchyNode.selected = false;
+			if ($scope.network.tempSelectedHierarchyNode.selected) {
+				$scope.network.tempSelectedHierarchyNode.selected = false;
+			}
 		});
 	};
 
@@ -144,16 +128,21 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 	
 	// handles level change made clicking on the row in the detail report
 	levelClicked = function(levelId) {
-		levelId = levelId.replace(/^\s*([\S\s]*)\b\s*$/, '$1'); //IE8 doesn't have trim
-		
 		//see if we are running a patient report
 		targetLevel = networkHierarchyService.getChildsLevel(networkHierarchyService.network.selectedHierarchyNode.hierarchyId);
 		targetLevelNumber = targetLevel;
 		if (targetLevel == "PRACTITIONER") {
-				//stuff to run patient level
-				//alert('patient level ' + levelId);
-			    targetLevelNumber = "99";
-				$scope.selectedPractitionerId = levelId;
+			var practitionerName;
+			var a = document.getElementsByTagName('a');
+			for (var i= 0; i < a.length; ++i) {
+				if (a[i].onclick != null && a[i].onclick.toString().indexOf("levelClicked('" + levelId + "')") >= 0) {
+					var theSpan = a[i].getElementsByTagName('span');
+					practitionerName = theSpan[0].innerHTML;
+					break;
+				}
+			}
+			networkHierarchyService.addPractitioner(levelId, practitionerName, networkHierarchyService.network.selectedHierarchyNode.hierarchyId);
+			$scope.switchToDefaultMeasureDetailView();
 		}
 		else {
 			var newSelectedNode = networkHierarchyService.findChildNodeById(levelId);
@@ -164,13 +153,18 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 	
 	// Make RESTful call to run summary report.
 	$scope.loadSummaryPane = function(){
-		var parmString = "&p_p_level=" + $scope.network.selectedHierarchyNode.data.type + 
-						 "&p_p_level_id=" + $scope.network.selectedHierarchyNode.data.id + 
-						 "&p_p_selected_date=" + $scope.reportingPeriod.selectedItem.useValue +
-						 "&p_p_target_level="+ $scope.network.selectedHierarchyNode.data.type + 
-						 "&p_p_measure_grp_cd=" + measureService.measureData.selectedType +
-						 "&p_p_measure_code=" + measureService.measureData.selectedCode +
-						 "&p_p_benchmark=" + $scope.selectedBenchmark.id;
+		var targetLevel = $scope.network.selectedHierarchyNode.data.type;
+		if (targetLevel == "PRACTITIONER") {
+				targetLevel = "99";
+		}
+
+		var parmString =	"&p_p_level=" + targetLevel + 
+								"&p_p_level_id=" + $scope.network.selectedHierarchyNode.data.id + 
+								"&p_p_selected_date=" + $scope.reportingPeriod.selectedItem.useValue +
+								"&p_p_target_level="+ targetLevel + 
+								"&p_p_measure_grp_cd=" + measureService.measureData.selectedType +
+								"&p_p_measure_code=" + measureService.measureData.selectedCode +
+								"&p_p_benchmark=" + $scope.selectedBenchmark.id;
 
 		var cacheData = cacheService.get("MeasureDetailSummary" + parmString);
 		if (cacheData != null) {
@@ -178,7 +172,7 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 			return;
 		}
 
-		$scope.summaryPaneContent = '<div><table width="100%"><tr><td width="100%" align="center"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
+		$scope.summaryPaneContent = '<div style="height : 210px;"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
 
 		var url = reportInfoService.getHtmlFragmentReportString("MeasureDetailSummary") + parmString;
 
@@ -209,55 +203,53 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 
 	// Make RESTful call to run detail report.
 	$scope.loadContentPane = function(){
-		var parmString = null;
-		var cacheData = null;
+		
+		var targetLevel = networkHierarchyService.getChildsLevel(networkHierarchyService.network.selectedHierarchyNode.hierarchyId);
+		if (targetLevel == "PRACTITIONER") {
+				targetLevel = "99";
+		}
+		
+		var drillDownInd = "Y";
+		if (targetLevel == "99") {
+			drillDownInd = "Y";
+		}
+		var parmString;
+		var reportName;
+		
+		if (targetLevel == "PATIENT") {
+			reportName = "MeasureDetailPractitionerDetail";
+			parmString =	"&p_pPractitionerId=" + $scope.network.selectedHierarchyNode.data.id + 
+								"&&p_pMonth=" + $scope.reportingPeriod.selectedItem.useValue +
+								"&p_pMeasureCode=" + measureService.measureData.selectedCode +
+								"&p_pMeasureType=" + measureService.measureData.selectedType +
+								"&p_pSort=Met" +
+								"&p_pFilter=All";
+		}
+		else {
+			reportName = "MeasureDetailLevelBasedDetail";
+			parmString =	"&p_p_level=" + $scope.network.selectedHierarchyNode.data.type + 
+								"&p_p_level_id=" + $scope.network.selectedHierarchyNode.data.id + 
+								"&p_p_selected_date=" + $scope.reportingPeriod.selectedItem.useValue +
+								"&p_p_target_level=" + targetLevelNumber +
+								"&p_p_measure_grp_cd=" + measureService.measureData.selectedType +
+								"&p_p_measure_code=" + measureService.measureData.selectedCode +
+								"&p_p_drill_down=" + drillDownInd +
+								"&p_p_sort=-1";
+		}
 
-		//see if we are running a patient report
-		//var targetLevel = networkHierarchyService.getChildsLevel(networkHierarchyService.network.selectedHierarchyNode.hierarchyId);
-		// ** The following comment
-		//if (targetLevel == "PRACTITIONER") {
-		//		// Build parameter list for the Practitioner list report.
-		//		parmString = "&p_pPractitionerId =" + $scope.selectedPractitionerId +
-		//		             "&&p_pMonth=" + $scope.reportingPeriod.selectedItem.useValue +
-		//					 "&p_pMeasureType=" + measureService.measureData.selectedType +
-		//					 "&p_pMeasureCode=" + measureService.measureData.selectedCode +
-		//		             //"&p_pSort=" + $scope.selectedPractitionerSort.id +
-		//		             "&p_pFilter=" + $scope.selectedPractitionerFilter.id;
-		//		cacheData = cacheService.get("MeasureDetailPractitionerDetail" + parmString);
-		//}
-		//else {
-			    // Build parameter list for level based list report.
-				parmString = "&p_p_level=" + $scope.network.selectedHierarchyNode.data.type + 
-							 "&p_p_level_id=" + $scope.network.selectedHierarchyNode.data.id + 
-							 "&p_p_selected_date=" + $scope.reportingPeriod.selectedItem.useValue +
-							 "&p_p_target_level=" + targetLevelNumber +
-							 "&p_p_measure_grp_cd=" + measureService.measureData.selectedType +
-							 "&p_p_measure_code=" + measureService.measureData.selectedCode +
-							 "&p_p_sort=" + $scope.selectedACOSort.id;
-				cacheData = cacheService.get("MeasureDetailLevelBasedDetail" + parmString);
-		//}
-			
+		var cacheData = cacheService.get(reportName + parmString);
 		if (cacheData != null) {
 			$scope.contentPaneContent = cacheData.data;
 			return;
 		}
 
-		$scope.contentPaneContent = '<div><table width="100%"><tr><td width="100%" align="center"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
-		
-		var url = null;
-		//if (targetLevel == "PRACTITIONER") {
-		//	url = reportInfoService.getHtmlFragmentReportString("MeasureDetailPractitionerDetail") + parmString;
-		//} else {
-			url = reportInfoService.getHtmlFragmentReportString("MeasureDetailLevelBasedDetail") + parmString;
-		//}
+		$scope.contentPaneContent = '<div style="height : 200px"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
+
+		var url = reportInfoService.getHtmlFragmentReportString(reportName) + parmString;
 
 		var request = $http.get(url);
 		request.then(function(report_response){
-			//if (targetLevel == "PRACTITIONER") {
-			//	cacheService.push("MeasureDetailPractitionerDetail" + parmString, report_response.data);
-			//} else {
-				cacheService.push("MeasureDetailLevelBasedDetail" + parmString, report_response.data);
-			//};
+			cacheService.push(reportName + parmString, report_response.data);
 			
 			$scope.contentPaneContent = report_response.data;
 		}, function(report_response){

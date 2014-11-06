@@ -19,9 +19,11 @@
 				</ul>
 			</div>
 			<div class="col-md-3" dropdown is-open="status.isopen3">
-				<button type="button" class="btn btn-default dropdown-toggle pull-right" ng-disabled="disabled">
-					{{selectedBenchmark.name || 'Selected Benchmark'}} <span class="caret"></span>
+				<span>Benchmark:</span>
+				<button type="button" class="btn btn-default dropdown-toggle "ng-disabled="disabled">
+					{{selectedBenchmark.name || 'Benchmark'}} <span class="caret"></span>
 				</button>
+				
 				<ul class="dropdown-menu" role="menu" style="right: 15px; left: auto;">
 					<li ng-repeat="item in benchmarkList"><a ng-click="selectBenchmark(item)">{{item.name}}</a></li>
 				</ul>
@@ -40,8 +42,10 @@
 						{{program.selectedProgram.programName}}</span>
 				</div>
 			</div>
-			<div class="col-md-4" dropdown is-open="status.isopen4">
-				<button type="button" class="btn btn-default dropdown-toggle pull-right" ng-disabled="disabled">
+			<div  class="col-md-1"></div>
+			<div class="col-md-3" dropdown is-open="status.isopen4">
+			<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+				<button type="button" class="btn btn-default dropdown-toggle text-center" ng-disabled="disabled">
 					{{selectedView || 'View'}} <span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu" role="menu" style="right: 15px; left: auto;">

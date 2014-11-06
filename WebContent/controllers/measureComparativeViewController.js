@@ -214,7 +214,7 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 		if (targetLevel == "99") {
 			drillDownInd = "Y";
 		}
-		
+
 		if(!programService.programData.selectedDomain.measureIdToSortBy) {
 			programService.programData.selectedDomain.measureIdToSortBy = -1;
 		}
