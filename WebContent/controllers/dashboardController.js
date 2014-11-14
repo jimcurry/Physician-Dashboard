@@ -33,8 +33,8 @@ dashboardApp.controller("dashboardController", function($scope, $http, $state, u
 		$state.go("measureDetailView", {
 			"hierarchyId" : networkHierarchyService.network.selectedHierarchyNode.hierarchyId,
 			"reportingPeriod" : reportingPeriodService.reportingPeriod.selectedItem.useValue,
-			"measureType" : measureService.measureData.selectedType,
-			"measureCode" : measureService.measureData.selectedCode
+			"measureGroupCode" : measureService.measureData.data.measureGroupCode,
+			"measureCode" : measureService.measureData.data.measureCode
 		});
 	};
 

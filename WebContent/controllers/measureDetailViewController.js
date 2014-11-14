@@ -30,21 +30,25 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 		}
 	}
 	
-	var measureTypeParm = $stateParams.measureType;
-	if (measureService.measureData.selectedType !== measureTypeParm) {
-		measureService.measureData.selectedType = measureTypeParm;
+	var measureCodeParm = $stateParams.measureCode;
+	var measureGroupCodeParm = $stateParams.measureGroupCode;
+	if ( measureService.measureData.data == null
+			|| measureService.measureData.data.measureCode != measureCodeParm 
+			|| measureService.measureData.data.measureGroupCode != measureGroupCodeParm) {
+		measureService.measureData.data = {measureCode : measureCodeParm,	measureGroupCode : measureGroupCodeParm};
+		measureService.measureData.selectedRange = {rangeStartMeasureValue : 0, rangePercentileName: "None"};
+		measureService.measureData.fromDbInd = "N";
+		
+		measureService.getMeasure(measureCodeParm, measureGroupCodeParm);
 	}
 
-	var measureCodeParm = $stateParams.measureCode;
-	if (measureService.measureData.selectedCode !== measureCodeParm) {
-		measureService.measureData.selectedCode = measureCodeParm;
-	}
-	
 	// If url had bad values repaint the view so it will pick up the new values.
 	if (invalidUrlParm) {
 		$scope.switchToDefaultMeasureDetailView();
 		return;
 	}
+	
+
 
 	
 	//bind data that view uses
@@ -52,6 +56,10 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 	$scope.network = networkHierarchyService.network;
 	$scope.reportingPeriod = reportingPeriodService.reportingPeriod;
 	$scope.program = programService.programData;
+	$scope.measure = measureService.measureData;
+	
+	var detailSortField = 1;
+	var detailFilterField = "Not Met";
 	
 	//Handles when the reporting period is changed
 	$scope.selectReportingPeriod = function(selectedValue) {
@@ -75,19 +83,11 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 		}
 	};
 	
-    // Population of Benchmark list (may become table driven eventually)
-	$scope.benchmarkList = [
-                            {name:"None", id: "0.00"},
-                            {name:"CMS 90th Percentile", id: "90.00"},
-                            {name:"CMS 30th Percentile", id: "30.00"}
-                         ];
-    $scope.selectedBenchmark = $scope.benchmarkList[0];	
-    
-    $scope.selectBenchmark = function(benchmark) {
-    	$scope.selectedBenchmark = benchmark;
-    	$scope.loadSummaryPane();
-    };
-    
+
+	$scope.selectBenchmark = function(benchmark) {
+		measureService.measureData.selectedRange = benchmark;
+		$scope.loadSummaryPane();
+	};
 
 	var targetLevel = networkHierarchyService.getChildsLevel(networkHierarchyService.network.selectedHierarchyNode.hierarchyId);
 	var targetLevelNumber = targetLevel;
@@ -115,7 +115,7 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 			
 			$scope.switchToDefaultMeasureDetailView();
 		}, function() {
-			if ($scope.network.tempSelectedHierarchyNode.selected) {
+			if ($scope.network.tempSelectedHierarchyNode != null) {
 				$scope.network.tempSelectedHierarchyNode.selected = false;
 			}
 		});
@@ -151,6 +151,22 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 		}
 	};
 	
+	// handles sort change to detail report made by clicking on the column in the detail report
+	sortColumnClicked = function(sortSpec) {
+		detailSortField = sortSpec;
+		$scope.$apply(function() {
+			$scope.loadContentPane();
+		});
+	};
+	
+	// handles filter change to detail report made by clicking on the dropdown in the detail report
+	filterClicked = function(filterSpec) {
+		detailFilterField = filterSpec.value;
+		$scope.$apply(function() {
+			$scope.loadContentPane();
+		});
+	};
+	
 	// Make RESTful call to run summary report.
 	$scope.loadSummaryPane = function(){
 		var targetLevel = $scope.network.selectedHierarchyNode.data.type;
@@ -162,9 +178,9 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 								"&p_p_level_id=" + $scope.network.selectedHierarchyNode.data.id + 
 								"&p_p_selected_date=" + $scope.reportingPeriod.selectedItem.useValue +
 								"&p_p_target_level="+ targetLevel + 
-								"&p_p_measure_grp_cd=" + measureService.measureData.selectedType +
-								"&p_p_measure_code=" + measureService.measureData.selectedCode +
-								"&p_p_benchmark=" + $scope.selectedBenchmark.id;
+								"&p_p_measure_grp_cd=" + measureService.measureData.data.measureGroupCode +
+								"&p_p_measure_code=" + measureService.measureData.data.measureCode +
+								"&p_p_benchmark=" + measureService.measureData.selectedRange.rangeStartMeasureValue;
 
 		var cacheData = cacheService.get("MeasureDetailSummary" + parmString);
 		if (cacheData != null) {
@@ -217,24 +233,30 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 		var reportName;
 		
 		if (targetLevel == "PATIENT") {
+			if (detailSortField != "Met" && detailSortField != "Name") {
+				detailSortField = "Met";
+			}
 			reportName = "MeasureDetailPractitionerDetail";
 			parmString =	"&p_pPractitionerId=" + $scope.network.selectedHierarchyNode.data.id + 
 								"&&p_pMonth=" + $scope.reportingPeriod.selectedItem.useValue +
-								"&p_pMeasureCode=" + measureService.measureData.selectedCode +
-								"&p_pMeasureType=" + measureService.measureData.selectedType +
-								"&p_pSort=Met" +
-								"&p_pFilter=All";
+								"&p_pMeasureCode=" + measureService.measureData.data.measureCode +
+								"&p_pMeasureGroupCode=" + measureService.measureData.data.measureGroupCode +
+								"&p_pSort=" + detailSortField +
+								"&p_pFilter=" + detailFilterField;
 		}
 		else {
+			if (detailSortField == "Met" || detailSortField == "Name") {
+				detailSortField = "1";
+			}
 			reportName = "MeasureDetailLevelBasedDetail";
 			parmString =	"&p_p_level=" + $scope.network.selectedHierarchyNode.data.type + 
 								"&p_p_level_id=" + $scope.network.selectedHierarchyNode.data.id + 
 								"&p_p_selected_date=" + $scope.reportingPeriod.selectedItem.useValue +
 								"&p_p_target_level=" + targetLevelNumber +
-								"&p_p_measure_grp_cd=" + measureService.measureData.selectedType +
-								"&p_p_measure_code=" + measureService.measureData.selectedCode +
+								"&p_p_measure_grp_cd=" + measureService.measureData.data.measureGroupCode +
+								"&p_p_measure_code=" + measureService.measureData.data.measureCode +
 								"&p_p_drill_down=" + drillDownInd +
-								"&p_p_sort=-1";
+								"&p_p_sort=" + detailSortField;
 		}
 
 		var cacheData = cacheService.get(reportName + parmString);

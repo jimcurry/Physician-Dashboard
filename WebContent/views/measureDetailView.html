@@ -21,11 +21,11 @@
 			<div class="col-md-3" dropdown is-open="status.isopen3">
 				<span>Benchmark:</span>
 				<button type="button" class="btn btn-default dropdown-toggle "ng-disabled="disabled">
-					{{selectedBenchmark.name || 'Benchmark'}} <span class="caret"></span>
+					{{measure.selectedRange.rangePercentileName || 'Benchmark'}} <span class="caret"></span>
 				</button>
 				
-				<ul class="dropdown-menu" role="menu" style="right: 15px; left: auto;">
-					<li ng-repeat="item in benchmarkList"><a ng-click="selectBenchmark(item)">{{item.name}}</a></li>
+				<ul class="dropdown-menu" role="menu" style="right: auto; left: 95px;">
+					<li ng-repeat="item in measure.data.ranges"><a ng-click="selectBenchmark(item)">{{item.rangePercentileName}}</a></li>
 				</ul>
 			</div>
 			

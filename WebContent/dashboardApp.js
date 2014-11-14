@@ -30,7 +30,7 @@ dashboardApp.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl : "./views/domainComparativeView.html",
 		controller : "domainComparativeViewController"
 	}).state('measureDetailView', {
-		url : "/measureDetailView/:hierarchyId/:reportingPeriod/:measureType/:measureCode",
+		url : "/measureDetailView/:hierarchyId/:reportingPeriod/:measureGroupCode/:measureCode",
 		templateUrl : "./views/measureDetailView.html",
 		controller : "measureDetailViewController"
 	}).state('cache', {

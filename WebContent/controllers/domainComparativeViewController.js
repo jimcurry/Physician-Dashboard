@@ -87,7 +87,9 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 			
 			$scope.switchToDefaultDomainComparativeView();
 		}, function() {
-			$scope.network.tempSelectedHierarchyNode.selected = false;
+			if ($scope.network.tempSelectedHierarchyNode != null) {
+				$scope.network.tempSelectedHierarchyNode.selected = false;
+			}
 		});
 	};
 

@@ -105,7 +105,7 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 			
 			$scope.switchToDefaultMeasureComparativeView();
 		}, function() {
-			if ($scope.network.tempSelectedHierarchyNode.selected) {
+			if ($scope.network.tempSelectedHierarchyNode != null) {
 				$scope.network.tempSelectedHierarchyNode.selected = false;
 			}
 		});
@@ -141,10 +141,10 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 	};
 
 	// handles level change made clicking on the column in the detail report
-	measureClicked = function(measureType, measureCode) {
-		measureService.measureData.selectedCode = measureCode;
-		measureService.measureData.selectedType = measureType;
-		$scope.switchToDefaultMeasureDetailView();
+	measureClicked = function(measureGroupCode, measureCode) {
+		measureService.getMeasure(measureCode, measureGroupCode).then(function(report_response) {
+			$scope.switchToDefaultMeasureDetailView();
+		});
 	};
 	
 	// handles sort change to detail report made by clicking on the column in the detail report
@@ -226,7 +226,8 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 			reportName = "MeasureComparativePatientDetails";
 			parmString = 	"&p_pPractitionerId=" + $scope.network.selectedHierarchyNode.data.id + 
 								"&p_pMonth=" + $scope.reportingPeriod.selectedItem.useValue + 
-								"&p_p_domain_id=" + programService.programData.selectedDomain.id;		}
+								"&p_p_domain_id=" + programService.programData.selectedDomain.id;
+			}
 		else {
 			reportName = "MeasureComparativeDetail";
 			parmString = 	"&p_p_level=" + $scope.network.selectedHierarchyNode.data.type + 
