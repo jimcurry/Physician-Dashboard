@@ -173,7 +173,7 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 			return;
 		}
 
-		$scope.summaryPaneContent = '<div style="height : 110px;"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
+		$scope.summaryPaneContent = '<div style="height : 60px;"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
 
 		var url = reportInfoService.getHtmlFragmentReportString("MeasureComparativeSummary") + parmString;
 
@@ -226,7 +226,8 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 			reportName = "MeasureComparativePatientDetails";
 			parmString = 	"&p_pPractitionerId=" + $scope.network.selectedHierarchyNode.data.id + 
 								"&p_pMonth=" + $scope.reportingPeriod.selectedItem.useValue + 
-								"&p_p_domain_id=" + programService.programData.selectedDomain.id;
+								"&p_p_domain_id=" + programService.programData.selectedDomain.id +
+								"&p_p_sort=" + programService.programData.selectedDomain.measureIdToSortBy;
 			}
 		else {
 			reportName = "MeasureComparativeDetail";
