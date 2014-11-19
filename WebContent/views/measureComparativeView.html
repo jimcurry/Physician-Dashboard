@@ -48,14 +48,20 @@
 					data-toggle="tab" ng-click="loadTab(domain)">{{domain.name}}</a></li>
 			</ul>
 			<div id="tabPanel" class="container-fluid no-margin gray-border bg-white">
-				<div id="topPanel" ng-bind-html="renderHtml(summaryPaneContent)" class="container-fluid no-padding fixed-110 bg-white">
-					<!-- <p style="padding-left:5px; color:white;">Summary Pane</p> -->
+				<div id="topPanel" ng-bind-html="renderHtml(summaryPaneContent)"
+					class="container-fluid no-padding fixed-110 bg-white">
 				</div>
 				<div class="container-fluid bg-darkgray"></div>
 				<div id="bottomPanel" ng-bind-html="renderHtml(contentPaneContent)" class="container-fluid fixed-313 bg-white">
-					<!-- <p style="padding-left:5px;">Report Content Pane</p>  -->
+				</div>
+				<div ng-show="showLegend" class="container-fluid" style="background-color: #E7E5E5; margin-left: 10px; margin-right: 5px; padding-left: 5px;">
+					<div>
+						<span style="font-weight: bold;">Legend:&nbsp;&nbsp;</span> 
+						<img style="vertical-align: middle" src="./images/red_square.png"><span style="vertical-align: middle;">&nbsp; failing to meet threshold&nbsp;&nbsp;</span>
+						<img style="vertical-align: middle" src="./images/yellow_triangle.png"><span style="vertical-align: middle;">&nbsp;at risk to fail threshold&nbsp;&nbsp;</span>
+						<img style="vertical-align: middle" src="./images/green_circle.png"><span style="vertical-align: middle;">&nbsp; meeting or exceeding threshold threshold</span>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>

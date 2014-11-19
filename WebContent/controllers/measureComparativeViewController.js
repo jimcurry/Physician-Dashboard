@@ -51,6 +51,8 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 	$scope.domainData = programService.programData.selectedProgramDomains;
 	$scope.program = programService.programData;
 	
+	$scope.showLegend = false;
+	
 	//Handles when the reporting period is changed
 	$scope.selectReportingPeriod = function(selectedValue) {
 		 reportingPeriodService.setSelectedItemByUseValue(selectedValue);
@@ -247,11 +249,13 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 		var cacheData = cacheService.get(reportName + parmString);
 		if (cacheData != null) {
 			$scope.contentPaneContent = cacheData.data;
+			$scope.showLegend = true;
 			return;
 		}
 
 		$scope.contentPaneContent = '<div style="height : 200px;"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
-
+		$scope.showLegend = false;
+		
 		var url = reportInfoService.getHtmlFragmentReportString(reportName) + parmString;
 
 		var request = $http.get(url);
@@ -259,6 +263,7 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 			cacheService.push(reportName + parmString, report_response.data);
 
 			$scope.contentPaneContent = report_response.data;
+			$scope.showLegend = true;
 		}, function(report_response){
 			if (report_response.status == "403") {
 				// use write/read/write lock to make sure only one redirect is done.

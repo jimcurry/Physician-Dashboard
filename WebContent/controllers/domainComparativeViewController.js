@@ -50,6 +50,8 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 	$scope.reportingPeriod = reportingPeriodService.reportingPeriod;
 	$scope.program = programService.programData;
 	
+	$scope.showLegend = false;
+	
 	//Handles when the reporting period is changed
 	$scope.selectReportingPeriod = function(selectedValue) {
 		 reportingPeriodService.setSelectedItemByUseValue(selectedValue);
@@ -207,10 +209,12 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 		var cacheData = cacheService.get("DomainComparativeDetail" + parmString);
 		if (cacheData != null) {
 			$scope.contentPaneContent = cacheData.data;
+			$scope.showLegend = true;
 			return;
 		}
 
 		$scope.contentPaneContent = '<div style="height : 200px"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
+		$scope.showLegend = false;
 		
 		var url = reportInfoService.getHtmlFragmentReportString("DomainComparativeDetail") + parmString;
 
@@ -219,6 +223,7 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 			cacheService.push("DomainComparativeDetail" + parmString, report_response.data);
 
 			$scope.contentPaneContent = report_response.data;
+			$scope.showLegend = true;
 		}, function(report_response){
 			if (report_response.status == "403") {
 				// use write/read/write lock to make sure only one redirect is done.
