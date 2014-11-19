@@ -10,7 +10,7 @@ dashboardApp.factory("programService", function($http, $q, userService, Dropwiza
 //		domains: [4]
 //			0:	{
 //					id: "1"
-//					name: "Preventative Health"
+//					name: "Preventive Health"
 //				}
 //		...
 	var programData = {
