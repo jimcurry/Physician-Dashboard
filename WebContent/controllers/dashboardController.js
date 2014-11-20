@@ -37,7 +37,13 @@ dashboardApp.controller("dashboardController", function($scope, $http, $state, u
 			"measureCode" : measureService.measureData.data.measureCode
 		});
 	};
-
+	
+	$scope.switchToDefaultDomainSummaryView = function() {
+		$state.go("domainSummaryView", {
+			"hierarchyId" : networkHierarchyService.network.selectedHierarchyNode.hierarchyId,
+			"reportingPeriod" : reportingPeriodService.reportingPeriod.selectedItem.useValue
+		});
+	};
 	$scope.switchToDefaultView = function() {
 		$state.go("default", {});
 	};

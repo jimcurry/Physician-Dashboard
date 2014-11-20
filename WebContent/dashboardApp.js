@@ -29,6 +29,10 @@ dashboardApp.config(function($stateProvider, $urlRouterProvider) {
 		url : "/domainComparativeView/:hierarchyId/:reportingPeriod",
 		templateUrl : "./views/domainComparativeView.html",
 		controller : "domainComparativeViewController"
+	}).state('domainSummaryView', {
+		url : "/domainSummaryView/:hierarchyId/:reportingPeriod",
+		templateUrl : "./views/domainSummaryView.html",
+		controller : "domainSummaryViewController"
 	}).state('measureDetailView', {
 		url : "/measureDetailView/:hierarchyId/:reportingPeriod/:measureGroupCode/:measureCode",
 		templateUrl : "./views/measureDetailView.html",

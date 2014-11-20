@@ -61,13 +61,17 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 
 	//Set up the view switcher
 	$scope.viewList = [
+							"Domain Comparative",
 							"Domain Summary"
 							];
-	$scope.selectedView = "Measure Comparative View";
+	$scope.selectedView = "Measure Comparative";
 
- 	$scope.selectView = function(view) {
-		if (view == "Domain Summary") {
+	$scope.selectView = function(view) {
+		if (view == "Domain Comparative") {
 			$scope.switchToDefaultDomainComparativeView();
+		}
+		else if (view == "Domain Summary") {
+			$scope.switchToDefaultDomainSummaryView();
 		}
 	};
 
@@ -175,7 +179,7 @@ dashboardApp.controller("measureComparativeViewController", function($scope, $sc
 			return;
 		}
 
-		$scope.summaryPaneContent = '<div style="height : 60px;"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
+		$scope.summaryPaneContent = '<div style="height : 75px;"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
 
 		var url = reportInfoService.getHtmlFragmentReportString("MeasureComparativeSummary") + parmString;
 

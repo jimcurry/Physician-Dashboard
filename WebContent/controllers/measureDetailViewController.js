@@ -69,17 +69,22 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 
 	//Set up the view switcher
 	$scope.viewList = [
-							"Measure Comparative View",
-							"Domain Summary"
-							];
-	$scope.selectedView = "Measure Detail View";
+							"Domain Comparative",
+							"Domain Summary",
+							"Measure Comparative"
 
- 	$scope.selectView = function(view) {
-		if (view == "Measure Comparative View") {
-			$scope.switchToDefaultMeasureComparativeView();
+							];
+	$scope.selectedView = "Measure Detail";
+
+	$scope.selectView = function(view) {
+		if (view == "Domain Comparative") {
+			$scope.switchToDefaultDomainComparativeView();
 		}
 		else if (view == "Domain Summary") {
-			$scope.switchToDefaultDomainComparativeView();
+			$scope.switchToDefaultDomainSummaryView();
+		}
+		else if (view == "Measure Comparative") {
+			$scope.switchToDefaultMeasureComparativeView();
 		}
 	};
 	
@@ -188,7 +193,7 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 			return;
 		}
 
-		$scope.summaryPaneContent = '<div style="height : 210px;"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
+		$scope.summaryPaneContent = '<div style="height : 300px;"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
 
 		var url = reportInfoService.getHtmlFragmentReportString("MeasureDetailSummary") + parmString;
 
@@ -265,7 +270,7 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 			return;
 		}
 
-		$scope.contentPaneContent = '<div style="height : 200px"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
+		$scope.contentPaneContent = '<div style="height : 100px"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
 
 		var url = reportInfoService.getHtmlFragmentReportString(reportName) + parmString;
 

@@ -48,7 +48,7 @@
 				<button type="button" class="btn btn-default dropdown-toggle text-center" ng-disabled="disabled">
 					{{selectedView || 'View'}} <span class="caret"></span>
 				</button>
-				<ul class="dropdown-menu" role="menu" style="right: 15px; left: auto;">
+				<ul class="dropdown-menu" role="menu" style="right: 70px; left: auto;">
 					<li ng-repeat="item in viewList"><a ng-click="selectView(item)">{{item}}</a></li>
 				</ul>
 			</div>
@@ -56,11 +56,11 @@
 	</div>
 	<div class="container-fluid bg-white no-margin no-padding">
 		<div class="row-fluid">
-			<div id="topPanel" ng-bind-html="renderHtml(summaryPaneContent)" class="container-fluid fixed-313 bg-white">
+			<div id="topPanel" ng-bind-html="renderHtml(summaryPaneContent)" class="container-fluid bg-white">
 				<!-- <p style="padding-left:5px; color:white;">Summary Pane</p> -->
 			</div>
 			<div class="container-fluid bg-darkgray"></div>
-			<div id="bottomPanel" ng-bind-html="renderHtml(contentPaneContent)" class="container-fluid fixed-230 bg-white">
+			<div id="bottomPanel" ng-bind-html="renderHtml(contentPaneContent)" class="container-fluid fixed-160 bg-white">
 				<!-- <p style="padding-left:5px;">Report Content Pane</p>  -->
 			</div>
 		</div>
