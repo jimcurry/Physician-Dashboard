@@ -1,6 +1,6 @@
 var dashboardApp = angular.module("dashboardApp");
 
-dashboardApp.controller("domainSummaryViewController", function($scope, $sce, $http, $stateParams, ngDialog, userService, reportingPeriodService, networkHierarchyService, programService, reportInfoService, cacheService) {
+dashboardApp.controller("domainSummaryViewController", function($scope, $sce, $http, $stateParams, ngDialog, userService, reportingPeriodService, networkHierarchyService, programService, measureService, reportInfoService, cacheService) {
 
 	// Make sure services are initialized 
 	if (!userService.user.isInitialized) {
@@ -104,11 +104,9 @@ dashboardApp.controller("domainSummaryViewController", function($scope, $sce, $h
 	
 	// handles level change made clicking on the column in the detail report
 	measuresummaryClicked = function( measureCode, measureGroupCode) {
-		alert('click measureCode=' + measureCode + ' measureGroupCode=' + measureGroupCode);
-		alert('Switch to Measure Detail Page commented out');
-//		measureService.getMeasure(measureCode, measureGroupCode).then(function(report_response) {
-//			$scope.switchToDefaultMeasureDetailView();
-//		});
+		measureService.getMeasure(measureCode, measureGroupCode).then(function(report_response) {
+			$scope.switchToDefaultMeasureDetailView();
+		});
 	};
 	// Make RESTful call to run summary report.
 	$scope.loadSummaryPane = function(){
