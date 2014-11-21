@@ -22,8 +22,8 @@ a {
 	overflow:         auto;
 }
 
-.container-fluid.fixed-160 {
-	height:           160px;
+.container-fluid.fixed-175 {
+	height:           175px;
 	overflow:         auto;
 }
 
@@ -32,17 +32,17 @@ a {
 	overflow:         auto;
 }
 
-.container-fluid.fixed-310 {
-	height:           310px;
+.container-fluid.fixed-335 {
+	height:           335px;
 	overflow:         auto;
 }
-.container-fluid.fixed-395 {
-	height:           395px;
+.container-fluid.fixed-410 {
+	height:           410px;
 	overflow:         auto;
 }
 
-.container-fluid.fixed-370 {
-	height:           370px;
+.container-fluid.fixed-385 {
+	height:           385px;
 	overflow:         auto;
 }
 .container-fluid.bg-black {

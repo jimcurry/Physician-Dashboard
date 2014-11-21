@@ -31,16 +31,12 @@
 			
 		</div>
 	</div>
-	<div class="container-fluid bg-gray no-margin">
+	<div class="container-fluid bg-gray">
 		<div class="row-fluid">
-			<div class="col-md-8">
-				<div class="row">
-					<span class="pull-left" style="color: MidnightBlue; font-size: x-large;">{{network.selectedHierarchyNode.name}}</span>
-				</div>
-				<div class="row">
-					<span class="pull-left" style="color: MidnightBlue; font-size: medium;">Program:
-						{{program.selectedProgram.programName}}</span>
-				</div>
+			<div class="col-md-8" style="padding-top: 5px">
+				<span style="color: MidnightBlue; font-size: medium;">Program:
+					{{program.selectedProgram.programName}}
+				</span>
 			</div>
 			<div  class="col-md-1"></div>
 			<div class="col-md-3" dropdown is-open="status.isopen4">
@@ -54,14 +50,12 @@
 			</div>
 		</div>
 	</div>
-	<div class="container-fluid bg-white no-margin no-padding">
+	<div class="container-fluid bg-white no-padding">
 		<div class="row-fluid">
 			<div id="topPanel" ng-bind-html="renderHtml(summaryPaneContent)" class="container-fluid bg-white">
-				<!-- <p style="padding-left:5px; color:white;">Summary Pane</p> -->
 			</div>
 			<div class="container-fluid bg-darkgray"></div>
-			<div id="bottomPanel" ng-bind-html="renderHtml(contentPaneContent)" class="container-fluid fixed-160 bg-white">
-				<!-- <p style="padding-left:5px;">Report Content Pane</p>  -->
+			<div id="bottomPanel" ng-bind-html="renderHtml(contentPaneContent)" class="container-fluid fixed-175 bg-white">
 			</div>
 		</div>
 	</div>

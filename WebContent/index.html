@@ -107,7 +107,7 @@
 			</div>
 			<div class="col-md-4">
 				<h4>
-					Physician Dashboard: <small>{{user.healthNetworkName}}</small>
+					Physician Dashboard:&nbsp;<small>{{user.healthNetworkName}}</small>
 				</h4>
 			</div>
 			<div class="col-md-4">
@@ -117,10 +117,11 @@
 	</div>
 	<div class="row-fluid">
 		<div class="container-fluid bg-blue">
-			<span style="padding-left: 5px; color: white;"> <span ng-repeat="item in network.selectedPath"> <a
-					ng-if="!$last" href="javascript:void(0)" ng-click="resetSelectedEntity(item.hierarchyId)"
-					style="text-decoration: underline;"> <font color="#FFFFFF">{{item.name}} </font>
-				</a> <span ng-if="!$last"> &nbsp;/&nbsp;</span> <span ng-if="$last"><font color="#FFFFFF">{{item.name}}</font></span>
+			<span style="padding-left: 5px; color: white;">
+			<span ng-repeat="item in network.selectedPath" style="font-size:12pt; color:#FFFFFF"> 
+			<a	ng-if="!$last" href="javascript:void(0)" ng-click="resetSelectedEntity(item.hierarchyId)"
+					style="text-decoration: underline; font-size:12pt; color:#FFFFFF">{{item.name}}
+				</a> <span ng-if="!$last"> &nbsp;/&nbsp;</span> <span ng-if="$last">{{item.name}}</span>
 			</span>
 			</span>
 			<div class="container-fluid bg-lightblue">

@@ -20,16 +20,12 @@
 			</div>
 		</div>
 	</div>
-	<div class="container-fluid bg-gray no-margin">
+	<div class="container-fluid bg-gray">
 		<div class="row-fluid">
-			<div class="col-md-8">
-				<div class="row">
-					<span class="pull-left" style="color: MidnightBlue; font-size: x-large;">{{network.selectedHierarchyNode.name}}</span>
-				</div>
-				<div class="row">
-					<span class="pull-left" style="color: MidnightBlue; font-size: medium;">Program:
-						{{program.selectedProgram.programName}}</span>
-				</div>
+			<div class="col-md-8" style="padding-top: 5px">
+				<span style="color: MidnightBlue; font-size: medium;">Program:
+					{{program.selectedProgram.programName}}
+				</span>
 			</div>
 			<div class="col-md-4" dropdown is-open="status.isopen3">
 				<button type="button" class="pull-right btn btn-default dropdown-toggle" ng-disabled="disabled">
@@ -41,7 +37,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="container-fluid bg-lightblue no-margin no-padding">
+	<div class="container-fluid bg-lightblue no-padding">
 		<div class="row-fluid">
 			<ul class="nav nav-tabs" id="myTab" role="tablist" ng-init="tab = 1">
 				<li ng-repeat="domain in domainData" ng-class="{active: isSelected(domain)}"><a href="" role="tab"
@@ -52,7 +48,7 @@
 					class="container-fluid no-padding fixed-110 bg-white">
 				</div>
 				<div class="container-fluid bg-darkgray"></div>
-				<div id="bottomPanel" ng-bind-html="renderHtml(contentPaneContent)" class="container-fluid fixed-310 bg-white">
+				<div id="bottomPanel" ng-bind-html="renderHtml(contentPaneContent)" class="container-fluid fixed-335 bg-white">
 				</div>
 				<div ng-show="showLegend" class="container-fluid" style="background-color: #E7E5E5; margin-left: 10px; margin-right: 5px; padding-left: 5px;">
 					<div class="pull-right">
