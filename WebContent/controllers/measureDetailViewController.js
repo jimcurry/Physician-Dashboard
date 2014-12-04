@@ -49,8 +49,6 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 	}
 	
 
-
-	
 	//bind data that view uses
 	$scope.user = userService.user;
 	$scope.network = networkHierarchyService.network;
@@ -72,7 +70,6 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 							"Domain Comparative",
 							"Domain Summary",
 							"Measure Comparative"
-
 							];
 	$scope.selectedView = "Measure Detail";
 
@@ -190,18 +187,19 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 		var cacheData = cacheService.get("MeasureDetailSummary" + parmString);
 		if (cacheData != null) {
 			$scope.summaryPaneContent = cacheData.data;
+			$scope.loadContentPane();
 			return;
 		}
 
-		$scope.summaryPaneContent = '<div style="height : 300px;"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
+		$scope.summaryPaneContent = '<div style="height : 240px;"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
 
 		var url = reportInfoService.getHtmlFragmentReportString("MeasureDetailSummary") + parmString;
 
 		var request = $http.get(url);
 		request.then(function(report_response){
-			cacheService.push("MeasureDetailSummary" + parmString, report_response.data);
-
-			$scope.summaryPaneContent = report_response.data;
+			var divText = report_response.data.replace("999.000000px", "100%");
+			cacheService.push("MeasureDetailSummary" + parmString, divText);
+			$scope.summaryPaneContent = divText;
 		}, function(report_response){
 			if (report_response.status == "403") {
 				// use write/read/write lock to make sure only one redirect is done.
@@ -299,6 +297,6 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 		});
 	};
 
-	$scope.loadSummaryPane();
 	$scope.loadContentPane();
+	$scope.loadSummaryPane();
 });

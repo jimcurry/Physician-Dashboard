@@ -1,6 +1,6 @@
 var dashboardApp = angular.module("dashboardApp");
 
-dashboardApp.controller("domainSummaryViewController", function($scope, $sce, $http, $stateParams, ngDialog, userService, reportingPeriodService, networkHierarchyService, programService, measureService, reportInfoService, cacheService) {
+dashboardApp.controller("domainSummaryViewController", function($scope, $window, $sce, $http, $stateParams, ngDialog, userService, reportingPeriodService, networkHierarchyService, programService, measureService, reportInfoService, cacheService) {
 
 	// Make sure services are initialized 
 	if (!userService.user.isInitialized) {
@@ -49,11 +49,12 @@ dashboardApp.controller("domainSummaryViewController", function($scope, $sce, $h
 	$scope.network = networkHierarchyService.network;
 	$scope.reportingPeriod = reportingPeriodService.reportingPeriod;
 	$scope.program = programService.programData;
+	$scope.divHeight = 400;
 	
 	//Handles when the reporting period is changed
 	$scope.selectReportingPeriod = function(selectedValue) {
 		 reportingPeriodService.setSelectedItemByUseValue(selectedValue);
-		 $scope.switchToDefaultDomainComparativeView();
+		 $scope.switchToDefaultDomainSummaryView();
 	};
 
 	//Set up the view switcher
@@ -170,7 +171,7 @@ dashboardApp.controller("domainSummaryViewController", function($scope, $sce, $h
 			return;
 		}
 
-		$scope.contentPaneContent = '<div style="height : 200px"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
+		$scope.contentPaneContent = '<div style="height : 100px"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
 
 		var url = reportInfoService.getHtmlFragmentReportString("DomainSummaryDetail") + parmString;
 

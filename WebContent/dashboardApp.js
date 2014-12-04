@@ -66,3 +66,37 @@ dashboardApp.config(function($stateProvider, $urlRouterProvider) {
 		controller : "defaultController"
 	});
 });
+
+dashboardApp.directive('resizebottomdiv', function($window, $timeout) {
+	return {
+		link : function(scope, elem, attrs) {
+			scope.onResize = function() {
+				var offsets = document.getElementById(elem.attr("id")).getBoundingClientRect();
+				var divTop = offsets.top;
+
+				var winHeight = $window.innerHeight;
+
+				var divOffset = attrs.resizebottomdiv ? attrs.resizebottomdiv : 0;
+
+				divOffset = parseInt(divOffset);
+
+				var divHeight = winHeight - divTop - divOffset;
+				if (divHeight < 200) {
+					divHeight = 200;
+				}
+
+				elem.css('height', divHeight + 'px');
+			};
+			scope.onResize();
+
+			var w = angular.element($window).bind('resize', function() {
+				scope.onResize();
+			});
+			
+
+			$timeout(function() {
+				w.triggerHandler('resize');
+			});
+		}
+	};
+});
