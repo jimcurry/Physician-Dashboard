@@ -1,4 +1,3 @@
-<div>
 	<div class="container-fluid bg-darkgray no-margin">
 		<div class="row-fluid">
 			<div class="col-md-5" dropdown is-open="status.isopen1">
@@ -18,6 +17,16 @@
 					</li>
 				</ul>
 			</div>
+			<div class="col-md-3" dropdown is-open="status.isopen3">
+				<span>Benchmark:</span>
+				<button type="button" class="btn btn-default dropdown-toggle "ng-disabled="disabled">
+					{{measure.selectedBenchmark.displayValue || 'Benchmark'}} <span class="caret"></span>
+				</button>
+				
+				<ul class="dropdown-menu" role="menu" style="right: auto; left: 95px;">
+					<li ng-repeat="item in benchmarkData"><a ng-click="selectBenchmark(item)">{{item.displayValue}}</a></li>
+				</ul>
+			</div>		
 		</div>
 	</div>
 	<div class="container-fluid bg-gray">
@@ -27,11 +36,13 @@
 					{{program.selectedProgram.programName}}
 				</span>
 			</div>
-			<div class="col-md-4" dropdown is-open="status.isopen3">
-				<button type="button" class="pull-right btn btn-default dropdown-toggle" ng-disabled="disabled">
+			<div  class="col-md-1"></div>
+			<div class="col-md-3" dropdown is-open="status.isopen4">
+			<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+				<button type="button" class="btn btn-default dropdown-toggle text-center" ng-disabled="disabled">
 					{{selectedView || 'View'}} <span class="caret"></span>
 				</button>
-				<ul class="dropdown-menu" role="menu" style="right: 15px; left: auto;">
+				<ul class="dropdown-menu" role="menu" style="right: 70px; left: auto;">
 					<li ng-repeat="item in viewList"><a ng-click="selectView(item)">{{item}}</a></li>
 				</ul>
 			</div>
@@ -45,20 +56,10 @@
 			</ul>
 			<div id="tabPanel" class="container-fluid no-margin gray-border bg-white">
 				<div id="topPanel" ng-bind-html="renderHtml(summaryPaneContent)"
-					class="container-fluid no-padding bg-white" >
+					class="container-fluid no-padding bg-white">
 				</div>
 				<div class="container-fluid bg-darkgray"></div>
-				<div resizebottomdiv="52" id="bottomPanel" ng-bind-html="renderHtml(contentPaneContent)" class="container-fluid fixed-110 bg-white">
-				</div>
-				<div ng-show="showLegend" class="container-fluid" style="background-color: #E7E5E5; margin-left: 10px; margin-right: 5px; padding-left: 5px;">
-					<div class="pull-right">
-						<span style="font-weight: bold;">Legend:&nbsp;&nbsp;</span> 
-						<img style="vertical-align: middle" src="./images/red_square.png"><span style="vertical-align: middle;">&nbsp; failing to meet threshold&nbsp;&nbsp;</span>
-						<img style="vertical-align: middle" src="./images/yellow_triangle.png"><span style="vertical-align: middle;">&nbsp;at risk to fail threshold&nbsp;&nbsp;</span>
-						<img style="vertical-align: middle" src="./images/green_circle.png"><span style="vertical-align: middle;">&nbsp; meeting or exceeding threshold threshold</span>
-					</div>
-				</div>
-				<div ng-hide="showLegend" style="height:20px">
+				<div resizebottomdiv="31" id="bottomPanel" ng-bind-html="renderHtml(contentPaneContent)" class="container-fluid fixed-110 bg-white">
 				</div>
 			</div>
 		</div>

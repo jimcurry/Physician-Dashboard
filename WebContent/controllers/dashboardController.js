@@ -21,7 +21,15 @@ dashboardApp.controller("dashboardController", function($scope, $http, $state, u
 			"domainId" : programService.programData.selectedDomain.id
 		});
 	};
-
+	
+	$scope.switchToDefaultMeasureSummaryView = function() {
+		$state.go("measureSummaryView", {
+			"hierarchyId" : networkHierarchyService.network.selectedHierarchyNode.hierarchyId,
+			"reportingPeriod" : reportingPeriodService.reportingPeriod.selectedItem.useValue,
+			"domainId" : programService.programData.selectedDomain.id
+		});
+	};
+	
 	$scope.switchToDefaultDomainComparativeView = function() {
 		$state.go("domainComparativeView", {
 			"hierarchyId" : networkHierarchyService.network.selectedHierarchyNode.hierarchyId,

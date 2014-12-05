@@ -14,6 +14,7 @@ dashboardApp.factory("measureService", function($http, $q, userService, Dropwiza
 	var measureData = {
 		data : null,
 		selectedRange : null,
+		selectedBenchmark : {useValue : "90", displayValue : "90th Percentile"},
 		fromDbInd : "N"
 	};
 	
