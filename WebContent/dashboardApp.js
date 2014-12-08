@@ -2,8 +2,8 @@ var dashboardApp = angular.module("dashboardApp", ['ngDialog', 'ui.router', 'ui.
 
 dashboardApp.constant("CognosMashupURL", "https://c3duhcogapp1.premierinc.com:9444/ServletGateway/servlet/Gateway/rds");
 dashboardApp.constant("CognosNamespace", "Tivoli_LDAP");
-//dashboardApp.constant("DropwizardURL", "http://c3dupceapr1.premierinc.com:9010");
-dashboardApp.constant("DropwizardURL", "http://localhost:9010");
+dashboardApp.constant("DropwizardURL", "http://c3dupceapr1.premierinc.com:9010");
+//dashboardApp.constant("DropwizardURL", "http://localhost:9010");
 
 
 dashboardApp.config(function($httpProvider){
