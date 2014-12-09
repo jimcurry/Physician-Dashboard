@@ -17,11 +17,7 @@ dashboardApp.config(function($stateProvider, $urlRouterProvider) {
 	$urlRouterProvider.otherwise("/default");
 	//
 	// Now set up the states
-	$stateProvider.state('snippets', {
-		url : "/snippets/:reportingPeriod",
-		templateUrl : "./views/snippets.html",
-		controller : "snippetsController"
-	}).state('measureComparativeView', {
+	$stateProvider.state('measureComparativeView', {
 		url : "/measureComparativeView/:hierarchyId/:reportingPeriod/:domainId",
 		templateUrl : "./views/measureComparativeView.html",
 		controller : "measureComparativeViewController"
@@ -78,8 +74,8 @@ dashboardApp.directive('resizebottomdiv', function($window, $timeout) {
 				var offsets = document.getElementById(elem.attr("id")).getBoundingClientRect();
 				var divTop = offsets.top;
 
-				var winHeight = $window.innerHeight;
-
+				//var winHeight = $window.innerHeight;
+				var winHeight = document.documentElement.clientHeight;
 				var divOffset = attrs.resizebottomdiv ? attrs.resizebottomdiv : 0;
 
 				divOffset = parseInt(divOffset);
