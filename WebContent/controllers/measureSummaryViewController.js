@@ -217,7 +217,7 @@ dashboardApp.controller("measureSummaryViewController", function($scope, $sce, $
 
 		var request = $http.get(url);
 		request.then(function(report_response){
-			var divText = report_response.data.replace(/4.000000in/g, "100%");
+			var divText = report_response.data.replace(/6.500000in/g, "100%");
 			
 			cacheService.push(reportName + parmString, divText);
 
