@@ -14,7 +14,7 @@ dashboardApp.controller("defaultController", function($scope, $http, $location, 
 	}
 	else {
 		//console.log("Standard redirect");
-		$scope.switchToDefaultMeasureComparativeView();
+		$scope.switchToDefaultDomainComparativeView();
 	}
 
 });

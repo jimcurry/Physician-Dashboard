@@ -126,7 +126,7 @@ dashboardApp.controller("domainSummaryViewController", function($scope, $window,
 			return;
 		}
 
-		$scope.summaryPaneContent = '<div style="height: 75px"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
+		$scope.summaryPaneContent = '<div style="height: 75px"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:75px;height:75px" src="./images/loading.gif"/></td></tr></div>';
 
 		var url = reportInfoService.getHtmlFragmentReportString("DomainSummarySummary") + parmString;
 
@@ -175,7 +175,7 @@ dashboardApp.controller("domainSummaryViewController", function($scope, $window,
 			return;
 		}
 
-		$scope.contentPaneContent = '<div style="height : 100px"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:32px;height:32px" src="./images/loading.gif"/></td></tr></div>';
+		$scope.contentPaneContent = '<div style="height : 100px"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:75px;height:75px" src="./images/loading.gif"/></td></tr></div>';
 
 		var url = reportInfoService.getHtmlFragmentReportString("DomainSummaryDetail") + parmString;
 
