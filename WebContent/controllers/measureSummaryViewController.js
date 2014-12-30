@@ -165,7 +165,7 @@ dashboardApp.controller("measureSummaryViewController", function($scope, $sce, $
 			return;
 		}
 
-		$scope.summaryPaneContent = '<div style="height : 60px;"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:60px;height:60px" src="./images/loading.gif"/></td></tr></div>';
+		$scope.summaryPaneContent = '<div style="height : 60px;"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img src="./images/loading.gif"/></td></tr></div>';
 
 		var url = reportInfoService.getHtmlFragmentReportString("MeasureSummarySummary") + parmString;
 
@@ -211,7 +211,7 @@ dashboardApp.controller("measureSummaryViewController", function($scope, $sce, $
 			return;
 		}
 
-		$scope.contentPaneContent = '<div style="height : 200px;"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img style="width:75px;height:75px" src="./images/loading.gif"/></td></tr></div>';
+		$scope.contentPaneContent = '<div style="height : 200px;"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img src="./images/loading.gif"/></td></tr></div>';
 
 		var url = reportInfoService.getHtmlFragmentReportString(reportName) + parmString;
 
