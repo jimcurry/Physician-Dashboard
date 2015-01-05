@@ -68,7 +68,9 @@ dashboardApp.controller("measureSummaryViewController", function($scope, $sce, $
 	                        {displayValue: "80th Percentile", useValue : 80 },
 	                        {displayValue: "90th Percentile", useValue : 90 }
 	];
-	
+
+	$scope.showLegend = false;
+
 	//Handles when the reporting period is changed
 	$scope.selectReportingPeriod = function(selectedValue) {
 		 reportingPeriodService.setSelectedItemByUseValue(selectedValue);
@@ -208,10 +210,12 @@ dashboardApp.controller("measureSummaryViewController", function($scope, $sce, $
 		var cacheData = cacheService.get(reportName + parmString);
 		if (cacheData != null) {
 			$scope.contentPaneContent = cacheData.data;
+			$scope.showLegend = true;
 			return;
 		}
 
 		$scope.contentPaneContent = '<div style="height : 200px;"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img src="./images/loading.gif"/></td></tr></div>';
+		$scope.showLegend = false;
 
 		var url = reportInfoService.getHtmlFragmentReportString(reportName) + parmString;
 
@@ -222,6 +226,7 @@ dashboardApp.controller("measureSummaryViewController", function($scope, $sce, $
 			cacheService.push(reportName + parmString, divText);
 
 			$scope.contentPaneContent = divText;
+			$scope.showLegend = true;
 		}, function(report_response){
 			if (report_response.status == "403") {
 				// use write/read/write lock to make sure only one redirect is done.

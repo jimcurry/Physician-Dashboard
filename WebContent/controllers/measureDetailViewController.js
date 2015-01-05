@@ -58,7 +58,9 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 	
 	var detailSortField = 1;
 	var detailFilterField = "Not Met";
-	
+
+	$scope.showLegend = false;
+
 	//Handles when the reporting period is changed
 	$scope.selectReportingPeriod = function(selectedValue) {
 		 reportingPeriodService.setSelectedItemByUseValue(selectedValue);
@@ -268,10 +270,12 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 		var cacheData = cacheService.get(reportName + parmString);
 		if (cacheData != null) {
 			$scope.contentPaneContent = cacheData.data;
+			$scope.showLegend = true;
 			return;
 		}
 
 		$scope.contentPaneContent = '<div style="height : 100px"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img src="./images/loading.gif"/></td></tr></div>';
+		$scope.showLegend = false;
 
 		var url = reportInfoService.getHtmlFragmentReportString(reportName) + parmString;
 
@@ -280,6 +284,7 @@ dashboardApp.controller("measureDetailViewController", function($scope, $sce, $h
 			cacheService.push(reportName + parmString, report_response.data);
 			
 			$scope.contentPaneContent = report_response.data;
+			$scope.showLegend = true;
 		}, function(report_response){
 			if (report_response.status == "403") {
 				// use write/read/write lock to make sure only one redirect is done.
