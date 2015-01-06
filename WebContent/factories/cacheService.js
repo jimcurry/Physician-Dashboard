@@ -20,8 +20,8 @@ dashboardApp.factory("cacheService", function() {
 	function push(parmString, data) {
 		if (cacheData.isEnabled) {
 			var maxIndex = cacheData.cache.length;
-			if (maxIndex > 15) {
-				maxIndex = 15;
+			if (maxIndex > 20) {
+				maxIndex = 20;
 			}
 
 			if (get(parmString) == null) {
