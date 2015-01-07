@@ -1,24 +1,27 @@
 <div class="modal-header">
 	<h3 class="modal-title">Log on</h3>
 </div>
-<div class="modal-body">
-	<div>
-		<ul class="list-group">
-			<li class="list-group-item list-group-item-danger" ng-repeat="error in errors">{{error}}
-		</ul>
-	</div>
-	<div class="form-group">
-		<h4>User ID:</h4>
-		<input class="form-control" type="text" ng-model="user.userNameToTry" focus-me="true">
-	</div>
-	<div class="form-group">
-		<h4>Password:</h4>
-		<input class="form-control" type="password" ng-model="user.password">
-	</div>
+<form>
+	<div class="modal-body">
+		<div>
+			<ul class="list-group">
+				<li class="list-group-item list-group-item-danger" ng-repeat="error in errors">{{error}}
+			</ul>
+		</div>
+		<div class="form-group">
+			<h4>User ID:</h4>
+			<input class="form-control" type="text" ng-model="user.userNameToTry" focus-me="true">
+		</div>
+		<div class="form-group">
+			<h4>Password:</h4>
+			<input class="form-control" type="password" ng-model="user.password">
+		</div>
 
-</div>
-<div class="modal-footer">
-	<button class="btn btn-primary" ng-click="OK()">&nbsp;&nbsp;&nbsp;OK&nbsp;&nbsp;&nbsp;</button>
-	<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" ng-click="OK()" type="submit">&nbsp;&nbsp;&nbsp;OK&nbsp;&nbsp;&nbsp;</button>
+		<button class="btn btn-warning" ng-click="cancel()" type="button">Cancel</button>
+	</div>
+</form>
+
 
