@@ -211,8 +211,8 @@ dashboardApp.controller("domainComparativeViewController", function($scope, $sce
 								"&p_p_level_id=" + $scope.network.selectedHierarchyNode.data.id + 
 								"&p_p_selected_date=" + $scope.reportingPeriod.selectedItem.useValue +
 								"&p_p_target_level=" + targetLevel +
-								"&p_p_sort=" + programService.programData.selectedProgram.domainIdToSortBy +
-								"&p_program_id=" + programService.programData.selectedProgram.programId +
+								"&p_p_sort=" + programService.programData.selectedProgram.domainIdToSortBy + 
+								"&p_p_program_id=" + programService.programData.selectedProgram.programId +
 								"&p_p_drill_down=" + drillDownInd;
 
 		var cacheData = cacheService.get("DomainComparativeDetail" + parmString);
