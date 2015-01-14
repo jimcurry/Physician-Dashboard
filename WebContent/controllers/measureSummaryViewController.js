@@ -155,46 +155,6 @@ dashboardApp.controller("measureSummaryViewController", function($scope, $sce, $
 			targetLevel = "99";
 	}
 	
-	$scope.loadSummaryPane = function(){
-		var parmString = 	"&p_pLevelType=" + targetLevel + 
-								"&p_pLevelId=" + $scope.network.selectedHierarchyNode.data.id +
-								"&p_pReportingPeriod=" + $scope.reportingPeriod.selectedItem.useValue + 
-								"&p_pDomainId=" + programService.programData.selectedDomain.id;
-
-		var cacheData = cacheService.get("MeasureSummarySummary" + parmString);
-		if (cacheData != null) {
-			$scope.summaryPaneContent = cacheData.data;
-			return;
-		}
-
-		$scope.summaryPaneContent = '<div style="height : 60px;"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img src="./images/loading.gif"/></td></tr></div>';
-
-		var url = reportInfoService.getHtmlFragmentReportString("MeasureSummarySummary") + parmString;
-
-		var request = $http.get(url);
-		request.then(function(report_response){
-			cacheService.push("MeasureSummarySummary" + parmString, report_response.data);
-			
-			$scope.summaryPaneContent = report_response.data;
-		}, function(report_response){
-			if (report_response.status == "403") {
-				// use write/read/write lock to make sure only one redirect is done.
-				if (userService.redirectSpec.view == null) {
-					userService.redirectSpec.view = "Summary";
-					if (userService.redirectSpec.view == "Summary") {
-						userService.user.isInitialized = false;
-						userService.redirectSpec.view = "measureSymmaryView";
-						userService.redirectSpec.params = $stateParams;
-						$scope.switchToDefaultView();
-						return;
-					}
-				}
-			}
-			else {
-				$scope.summaryPaneContent = 'Error encountered, status message returned was "' + report_response.statusText + '"';
-			}
-		});
-	};
 
 	// Make RESTful call to run detail report.
 	$scope.loadContentPane = function() {
@@ -248,6 +208,5 @@ dashboardApp.controller("measureSummaryViewController", function($scope, $sce, $
 	};
 
 	$scope.loadContentPane();
-	$scope.loadSummaryPane();
 
 });

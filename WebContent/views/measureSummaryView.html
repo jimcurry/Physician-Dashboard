@@ -55,14 +55,10 @@
 					data-toggle="tab" ng-click="loadTab(domain)">{{domain.name}}</a></li>
 			</ul>
 			<div id="tabPanel" class="container-fluid no-margin gray-border bg-white">
-				<div id="topPanel" ng-bind-html="renderHtml(summaryPaneContent)"
-					class="container-fluid no-padding bg-white">
-				</div>
-				<div class="container-fluid bg-darkgray"></div>
 				<div resizebottomdiv="52" id="bottomPanel" ng-bind-html="renderHtml(contentPaneContent)" class="container-fluid fixed-110 bg-white">
 				</div>
 				<div ng-show="showLegend" class="container-fluid" style="background-color: #CFD8E6; margin-left: 5px; margin-right: 5px; padding-left: 0px;">
-					<div class="col-md-3" style=" padding-left: 10px;">* Indicates an ACO level measure
+					<div class="col-md-3" style="padding-left: 10px;">* Indicates an ACO level measure
 					</div>
 					<div class="pull-right">
 						<span style="font-weight: bold;">Legend:&nbsp;&nbsp;</span> 
