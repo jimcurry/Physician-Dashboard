@@ -55,13 +55,20 @@
 					data-toggle="tab" ng-click="loadTab(domain)">{{domain.name}}</a></li>
 			</ul>
 			<div id="tabPanel" class="container-fluid no-margin gray-border bg-white">
-				<div resizebottomdiv="52" id="bottomPanel" ng-bind-html="renderHtml(contentPaneContent)" class="container-fluid fixed-110 bg-white">
+				<div resizebottomdiv="52" id="bottomPanel" class="container-fluid fixed-110 bg-white bluegradient">
+					<div ng-repeat="measureGraph in measureGraphs track by $index" class="row-fluid" ng-if="$index % 3 == 0">
+							<div  class="col-md-4" ng-if="measureGraphs[$index+0]" ng-bind-html="renderHtml(measureGraphs[$index+0])"></div>
+							<div  class="col-md-4" ng-if="measureGraphs[$index+1]" ng-bind-html="renderHtml(measureGraphs[$index+1])"></div>
+							<div  class="col-md-4" ng-if="measureGraphs[$index+2]" ng-bind-html="renderHtml(measureGraphs[$index+2])"></div>
+					</div>
 				</div>
 				<div ng-show="showLegend" class="container-fluid" style="background-color: #CFD8E6; margin-left: 5px; margin-right: 5px; padding-left: 0px;">
 					<div class="col-md-3" style="padding-left: 10px;">* Indicates an ACO level measure
 					</div>
 					<div class="pull-right">
 						<span style="font-weight: bold;">Legend:&nbsp;&nbsp;</span> 
+						<img style="vertical-align: middle" src="./images/benchmark_line.png"><span style="vertical-align: middle;">&nbsp; Benchmark&nbsp;&nbsp;</span>
+						<img style="vertical-align: middle" src="./images/current_year_color.png"><span style="vertical-align: middle;">&nbsp; {{reportingYear}}&nbsp;&nbsp;</span>
 						<img style="vertical-align: middle" src="./images/red_square.png"><span style="vertical-align: middle;">&nbsp; failing to meet threshold&nbsp;&nbsp;</span>
 						<img style="vertical-align: middle" src="./images/yellow_triangle.png"><span style="vertical-align: middle;">&nbsp;at risk to fail threshold&nbsp;&nbsp;</span>
 						<img style="vertical-align: middle" src="./images/green_circle.png"><span style="vertical-align: middle;">&nbsp; meeting or exceeding threshold</span>

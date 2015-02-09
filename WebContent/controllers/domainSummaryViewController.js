@@ -178,7 +178,7 @@ dashboardApp.controller("domainSummaryViewController", function($scope, $window,
 			return;
 		}
 
-		$scope.contentPaneContent = '<div style="height : 100px"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img src="./images/loading.gif"/></td></tr></div>';
+		$scope.contentPaneContent = '<div style="height : 100px"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img src="./images/loading_alt.gif"/></td></tr></div>';
 		$scope.showLegend = false;
 
 		var url = reportInfoService.getHtmlFragmentReportString("DomainSummaryDetail") + parmString;

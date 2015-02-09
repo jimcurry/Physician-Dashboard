@@ -39,11 +39,11 @@ dashboardApp.controller("measureSummaryViewController", function($scope, $sce, $
 	}
 	
 	// This page doesn't support practitioner level if move up a level if that is where we are.
-	if (networkHierarchyService.network.selectedHierarchyNode.data.type == "PRACTITIONER") {
-		networkHierarchyService.setSelectedNode(networkHierarchyService.network.selectedHierarchyNode.parentHierarchyId);
-		$scope.switchToDefaultDomainComparativeView();
-		return;
-	}
+	//if (networkHierarchyService.network.selectedHierarchyNode.data.type == "PRACTITIONER") {
+	//	networkHierarchyService.setSelectedNode(networkHierarchyService.network.selectedHierarchyNode.parentHierarchyId);
+	//	$scope.switchToDefaultMeasureSummaryView();
+	//	return;
+	//}
 
 	// If url had bad values repaint the view so it will pick up the new values.
 	if (invalidUrlParm) {
@@ -55,12 +55,11 @@ dashboardApp.controller("measureSummaryViewController", function($scope, $sce, $
 	$scope.user = userService.user;
 	$scope.network = networkHierarchyService.network;
 	$scope.reportingPeriod = reportingPeriodService.reportingPeriod;
+	$scope.reportingYear = reportingPeriodService.reportingPeriod.selectedItem.useValue.substring(0,4);
 	$scope.domainData = programService.programData.selectedProgramDomains;
 	$scope.program = programService.programData;
 	$scope.measure = measureService.measureData;
-	$scope.benchmarkData = [{displayValue: "10th Percentile", useValue : 10 },
-	                        {displayValue: "20th Percentile", useValue : 20 },
-	                        {displayValue: "30th Percentile", useValue : 30 },
+	$scope.benchmarkData = [{displayValue: "30th Percentile", useValue : 30 },
 	                        {displayValue: "40th Percentile", useValue : 40 },
 	                        {displayValue: "50th Percentile", useValue : 50 },
 	                        {displayValue: "60th Percentile", useValue : 60 },
@@ -68,6 +67,14 @@ dashboardApp.controller("measureSummaryViewController", function($scope, $sce, $
 	                        {displayValue: "80th Percentile", useValue : 80 },
 	                        {displayValue: "90th Percentile", useValue : 90 }
 	];
+	
+	$scope.measureGraphs = new Array(programService.programData.selectedDomain.measures.length);
+	
+	for (var i = 0; i < $scope.measureGraphs.length; i++) {
+		$scope.measureGraphs[i] = '<div></div>';
+	}
+	
+	$scope.measureGraphs[1] = '<div style="height : 200px;"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img src="./images/loading_alt.gif"/></td></tr></div>';
 
 	$scope.showLegend = false;
 
@@ -79,7 +86,19 @@ dashboardApp.controller("measureSummaryViewController", function($scope, $sce, $
 
 	$scope.selectBenchmark = function(benchmark) {
 		measureService.measureData.selectedBenchmark = benchmark;
-		$scope.loadContentPane();
+
+		
+		for (var i = 0; i < $scope.measureGraphs.length; i++) {
+			$scope.measureGraphs[i] = '<div></div>';
+		}
+		
+		$scope.measureGraphs[1] = '<div style="height : 200px;"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img src="./images/loading_alt.gif"/></td></tr></div>';
+
+		
+		$scope.showLegend = false;		
+		for (var i = 0; i < programService.programData.selectedDomain.measures.length; i++) {
+			$scope.loadContentPane(programService.programData.selectedDomain.measures[i].measureCode);
+		}
 	};
 	
 	//Set up the view switcher
@@ -157,7 +176,7 @@ dashboardApp.controller("measureSummaryViewController", function($scope, $sce, $
 	
 
 	// Make RESTful call to run detail report.
-	$scope.loadContentPane = function() {
+	$scope.loadContentPane = function(measureCode) {
 		var reportName = "MeasureSummaryDetail";
 		
 		var parmString = 	"&p_p_level=" + $scope.network.selectedHierarchyNode.data.type + 
@@ -165,28 +184,47 @@ dashboardApp.controller("measureSummaryViewController", function($scope, $sce, $
 								"&p_pReportingPeriod=" + $scope.reportingPeriod.selectedItem.useValue + 
 								"&p_p_domain_id=" + programService.programData.selectedDomain.id +
 								"&p_p_target_level=" + $scope.network.selectedHierarchyNode.data.type + 
-								"&p_p_benchmark=" + measureService.measureData.selectedBenchmark.useValue;	
+								"&p_p_benchmark=" + measureService.measureData.selectedBenchmark.useValue + 
+								"&p_p_measure_code=" + measureCode;
 
+		
 		var cacheData = cacheService.get(reportName + parmString);
 		if (cacheData != null) {
-			$scope.contentPaneContent = cacheData.data;
-			$scope.showLegend = true;
+			if (!$scope.showLegend) {
+				$scope.showLegend = true;
+				$scope.measureGraphs[1] = '<div></div>';
+			}
+
+			for (var i = 0; i < programService.programData.selectedDomain.measures.length; i++) {
+				if (cacheData.parmString.indexOf(programService.programData.selectedDomain.measures[i].measureCode) > 0) {
+					$scope.measureGraphs[i] = cacheData.data;
+					break;
+				}
+			}
+
 			return;
 		}
-
-		$scope.contentPaneContent = '<div style="height : 200px;"><table style="width: 100%; height:100%; margin:0; padding:0; border:0;"><tr><td style="vertical-algin: middle; text-align:center;"><img src="./images/loading.gif"/></td></tr></div>';
-		$scope.showLegend = false;
 
 		var url = reportInfoService.getHtmlFragmentReportString(reportName) + parmString;
 
 		var request = $http.get(url);
 		request.then(function(report_response){
-			var divText = report_response.data.replace(/6.500000in/g, "100%");
+			if (!$scope.showLegend) {
+				$scope.showLegend = true;
+				$scope.measureGraphs[1] = '<div></div>';
+			}
+
+			var divText = report_response.data.replace(/3.750000in/g, "100%");
 			
 			cacheService.push(reportName + parmString, divText);
 
-			$scope.contentPaneContent = divText;
-			$scope.showLegend = true;
+			for (var i = 0; i < programService.programData.selectedDomain.measures.length; i++) {
+				if (divText.indexOf(programService.programData.selectedDomain.measures[i].measureCode) > 0) {
+					$scope.measureGraphs[i] = divText;
+					break;
+				}
+			}
+
 		}, function(report_response){
 			if (report_response.status == "403") {
 				// use write/read/write lock to make sure only one redirect is done.
@@ -207,6 +245,9 @@ dashboardApp.controller("measureSummaryViewController", function($scope, $sce, $
 		});
 	};
 
-	$scope.loadContentPane();
+	$scope.showLegend = false;
+	for (var i = 0; i < programService.programData.selectedDomain.measures.length; i++) {
+		$scope.loadContentPane(programService.programData.selectedDomain.measures[i].measureCode);
+	}
 
 });

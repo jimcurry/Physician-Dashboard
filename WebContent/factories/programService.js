@@ -11,6 +11,14 @@ dashboardApp.factory("programService", function($http, $q, userService, Dropwiza
 //			0:	{
 //					id: "1"
 //					name: "Preventive Health"
+//					measures: [8]
+//					0:  {
+//							measureCode: "ACO16"
+//							measureGroupCode: "ACO"
+//							measureTypeCode: "Percent"
+//							reverseScoreInd: "N"
+//							ranges: null
+//					}-
 //				}
 //		...
 	var programData = {
